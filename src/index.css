@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", sans-serif;
+  --color-ink: #0d0204;
+  --color-brand: #ef4444;
+  --color-brand-soft: #ff6b6b;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--color-ink);
+  color: #fff;
+  font-family: var(--font-sans);
+}
+
+section { scroll-margin-top: 80px; }
+
+/* Reusable glass card */
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(14px);
+  border-radius: 1.25rem;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+.float { animation: float 6s ease-in-out infinite; }
+
+@keyframes vinyl {
+  to { transform: rotate(360deg); }
+}
+.vinyl-spin {
+  animation: vinyl 8s linear infinite;
+}
