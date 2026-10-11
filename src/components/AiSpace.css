@@ -1,0 +1,437 @@
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+.aisp-card {
+  --moon-opacity: 1;
+  --orbit-thickness: 1.2px;
+  --orbit-opacity: 0.40;
+
+  position: relative;
+  isolation: isolate;
+  width: min(100%, 740px);
+  height: 590px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid #ffccd51a;
+  border-radius: 30px;
+  background: linear-gradient(145deg, #210c17, #14070e 78%);
+  box-shadow: 0 30px 100px #0009, inset 0 1px #ffffff09;
+  font-family: 'Space Grotesk', sans-serif;
+  color: #f8eaf0;
+  text-align: left;
+}
+
+.aisp-card *,
+.aisp-card *::before,
+.aisp-card *::after {
+  box-sizing: border-box;
+}
+
+/* Background stars inside the card */
+.aisp-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 12% 22%, #e8a3b577 99%, transparent),
+    radial-gradient(1px 1px at 77% 18%, #ffffff66 99%, transparent),
+    radial-gradient(1px 1px at 85% 78%, #e77a8a66 99%, transparent),
+    radial-gradient(2px 2px at 22% 80%, #c34c6466 99%, transparent);
+  background-size: 220px 210px, 280px 250px, 310px 290px, 270px 260px;
+  opacity: .3;
+}
+
+/* Header */
+.aisp-header {
+  position: absolute;
+  z-index: 10;
+  top: 26px;
+  left: 30px;
+  right: 30px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #e9d2da;
+}
+
+.aisp-online {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.aisp-online i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #8ee5b8;
+  box-shadow: 0 0 10px #8ee5b888;
+}
+
+/* Orbit stage */
+.aisp-stage {
+  position: absolute;
+  width: min(92%, 580px);
+  aspect-ratio: 1.5;
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -50%);
+  isolation: isolate;
+}
+
+/* Nebula clouds behind everything */
+.aisp-stage::after {
+  content: "";
+  position: absolute;
+  z-index: -3;
+  inset: -5%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 30% 35%, rgba(190, 30, 55, .22), transparent 38%),
+    radial-gradient(ellipse at 70% 55%, rgba(125, 15, 40, .24), transparent 40%),
+    radial-gradient(ellipse at 48% 72%, rgba(220, 45, 60, .15), transparent 35%);
+  filter: blur(18px);
+  animation: aispNebula 18s ease-in-out infinite alternate;
+}
+
+/* Particle layer */
+.aisp-particles {
+  position: absolute;
+  z-index: -1;
+  inset: -5%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.aisp-particle {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  background: #ff626f;
+  box-shadow: 0 0 6px #ff344b99, 0 0 14px #e8274380;
+  animation: aispParticle var(--duration) ease-in-out infinite alternate;
+  animation-delay: var(--delay);
+}
+
+.aisp-particle.aisp-dust {
+  background: #ffb6c2;
+  box-shadow: 0 0 5px #ffabb888;
+}
+
+.aisp-particle.aisp-glow {
+  background: #ed304c;
+  box-shadow: 0 0 8px #ff394b, 0 0 20px #ff263b88;
+}
+
+/* Central blood moon */
+.aisp-moon {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  width: 48%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+
+  opacity: var(--moon-opacity);
+  background-color: #240611;
+  background-image:
+    radial-gradient(circle at 32% 25%, rgba(255, 35, 65, 0.22), transparent 48%),
+    url("https://images.unsplash.com/photo-1758615498429-a57bd34ec0a7?q=80&w=1504&auto=format&fit=crop&ixlib=rb-4.1.0");
+
+  /* Zoom the actual moon inside the globe */
+  background-size: 100% 100%, 450% auto;
+  background-position: center center, center center;
+  background-repeat: no-repeat;
+  background-blend-mode: screen, screen;
+  box-shadow:
+    0 0 20px rgba(255, 50, 70, .25),
+    0 0 55px rgba(210, 25, 50, .25),
+    0 0 100px rgba(150, 15, 40, .18),
+    inset -18px -12px 35px rgba(8, 2, 8, .35);
+
+  animation: aispMoonPulse 9s ease-in-out infinite;
+}
+
+/* Each half of the orbit rings */
+.aisp-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.aisp-back {
+  z-index: 0;
+  clip-path: inset(0 0 50% 0);
+}
+
+.aisp-front {
+  z-index: 3;
+  clip-path: inset(50% 0 0 0);
+}
+
+.aisp-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform: rotate(-17deg);
+  pointer-events: none;
+}
+
+.aisp-lines ellipse {
+  fill: none;
+  stroke: rgba(231, 186, 200, var(--orbit-opacity));
+  stroke-width: var(--orbit-thickness);
+  vector-effect: non-scaling-stroke;
+}
+
+.aisp-lines ellipse:nth-child(2) {
+  stroke: rgba(231, 186, 200, .28);
+  stroke-width: 1px;
+}
+
+.aisp-lines ellipse:nth-child(3) {
+  stroke: rgba(231, 186, 200, .20);
+  stroke-width: 1.8px;
+}
+
+.aisp-items {
+  position: absolute;
+  z-index: auto;
+  inset: 0;
+  pointer-events: none;
+}
+
+.aisp-item {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  top: 50%;
+  width: 29px;
+  height: 29px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e4c1d026;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #32111ff5, #170711f5);
+  box-shadow: 0 3px 12px #0005, 0 0 12px #b72d4210;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+.aisp-item svg {
+  width: 16px;
+  height: 16px;
+}
+
+.aisp-code {
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.aisp-claude {
+  color: #e8b99b;
+  font-size: 17px;
+}
+
+.aisp-skills {
+  font-size: 14px;
+  font-weight: 700;
+  color: #d9a6bb;
+}
+
+.aisp-ai {
+  font-size: 11px;
+  font-weight: 700;
+  color: #e2b5ca;
+}
+
+.aisp-name {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  color: #c5a4b4;
+  white-space: nowrap;
+}
+
+/* Footer */
+.aisp-footer {
+  position: absolute;
+  z-index: 10;
+  left: 32px;
+  right: 32px;
+  bottom: 26px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.aisp-info {
+  position: relative;
+  min-width: 0;
+  min-height: auto;
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.aisp-info:first-child {
+  margin-right: auto;
+  text-align: left;
+  align-items: flex-start;
+}
+
+.aisp-info:nth-child(2) {
+  margin-left: auto;
+  text-align: right;
+  align-items: flex-end;
+}
+
+/* Crimson indicator line */
+.aisp-info::before {
+  content: "";
+  display: block;
+  width: 23px;
+  height: 2px;
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, #ff405e, rgba(255, 64, 94, .12));
+  box-shadow: 0 0 8px rgba(255, 50, 80, .25);
+}
+
+.aisp-label {
+  margin: 0 0 5px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: #d99cad;
+}
+
+.aisp-info strong {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  line-height: 1.25;
+  color: #ffe0e5;
+  text-shadow: 0 0 12px rgba(255, 70, 100, .12);
+}
+
+.aisp-info:nth-child(2) strong {
+  color: #ff9aa8;
+  text-shadow: 0 0 10px rgba(255, 50, 80, .14);
+}
+
+.aisp-caption {
+  margin-top: 3px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .7px;
+  line-height: 1.4;
+  color: #a98a9a;
+}
+
+/* Animations */
+@keyframes aispMoonPulse {
+  0%, 100% { scale: .97; }
+  50% { scale: 1.04; }
+}
+
+@keyframes aispNebula {
+  from { transform: translate(-2%, -1%) scale(.98); }
+  to   { transform: translate(2%, 2%) scale(1.04); }
+}
+
+@keyframes aispParticle {
+  0%   { transform: translate(-4px, 5px); opacity: .2; }
+  50%  { opacity: .8; }
+  100% { transform: translate(7px, -10px); opacity: .35; }
+}
+
+/* Small screens */
+@media (max-width: 520px) {
+  .aisp-card { height: 560px; border-radius: 24px; }
+  .aisp-header { left: 18px; right: 18px; font-size: 8px; }
+  .aisp-stage { width: 96%; top: 43%; }
+  .aisp-item { width: 25px; height: 25px; }
+  .aisp-item svg { width: 14px; height: 14px; }
+  .aisp-claude { font-size: 15px; }
+  .aisp-skills { font-size: 12px; }
+  .aisp-name { font-size: 5px; letter-spacing: .5px; }
+  .aisp-footer { left: 12px; right: 12px; bottom: 14px; gap: 7px; }
+  .aisp-info { flex: 1 1 0; }
+  .aisp-label { font-size: 10px; letter-spacing: 1.5px; }
+  .aisp-info strong { font-size: 20px; overflow-wrap: anywhere; }
+  .aisp-caption { font-size: 9px; }
+}
+
+/* Pause all the motion while the card is off screen */
+.aisp-paused *,
+.aisp-paused *::before,
+.aisp-paused *::after {
+  animation-play-state: paused !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aisp-stage::after,
+  .aisp-moon,
+  .aisp-particle {
+    animation: none;
+  }
+}
+
+/* ---------- size control ---------- */
+.aisp-wrap {
+  position: relative;
+  margin: 0 auto;
+}
+
+.aisp-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 540px;
+  height: 590px;
+  margin: 0;
+  transform-origin: top left;
+}
+
+/* pause the scene while the welcome screen or the music popup is open */
+html.overlay-open .aisp-card,
+html.overlay-open .aisp-card *,
+html.overlay-open .aisp-card *::before,
+html.overlay-open .aisp-card *::after {
+  animation-play-state: paused !important;
+}

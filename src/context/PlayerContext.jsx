@@ -97,7 +97,7 @@ export function PlayerProvider({ children }) {
   /* audio element */
   useEffect(() => {
     const audio = new Audio();
-    audio.preload = "none";
+    audio.preload = "metadata";
     audio.volume = 0.6;
     audioRef.current = audio;
 

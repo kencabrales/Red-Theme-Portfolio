@@ -7,25 +7,29 @@ import { usePlayer } from "../context/PlayerContext";
 export default function MusicModal() {
   const { modalOpen, closeModal, list, choose, volume, setVolume, notice } = usePlayer();
 
-  useEffect(() => {
-    if (!modalOpen) return;
-    const onKey = (e) => e.key === "Escape" && closeModal();
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [modalOpen, closeModal]);
+useEffect(() => {
+  if (!modalOpen) return;
+  document.documentElement.classList.add("overlay-open");
+  const onKey = (e) => e.key === "Escape" && closeModal();
+  window.addEventListener("keydown", onKey);
+  return () => {
+    document.documentElement.classList.remove("overlay-open");
+    window.removeEventListener("keydown", onKey);
+  };
+}, [modalOpen, closeModal]);
 
   return (
     <AnimatePresence>
       {modalOpen && (
         <motion.div
-          className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+          className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/80"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={closeModal}
         >
           <motion.div
-            className="relative w-full max-w-md max-h-[92vh] overflow-y-auto glass p-6"
+            className="relative w-full max-w-md max-h-[92vh] overflow-y-auto rounded-[1.25rem] border border-white/10 bg-[#1a0508]/95 p-6"
             initial={{ scale: 0.9, y: 20 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.9, y: 20 }}

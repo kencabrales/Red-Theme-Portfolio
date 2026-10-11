@@ -1,7 +1,9 @@
 import { TypeAnimation } from "react-type-animation";
 import { FaGithub, FaLinkedinIn, FaInstagram } from "react-icons/fa";
 import { ExternalLink, Mail } from "lucide-react";
+import AiSpace from "./AiSpace";
 
+const AI_SCALE = 0.75;
 const chips = ["React", "JavaScript", "Node.js", "Tailwind"];
 
 export default function Hero() {
@@ -55,20 +57,9 @@ export default function Hero() {
 
         {/* right: floating mockup card */}
         <div className="float hidden md:block">
-          <div className="glass p-6">
-            <div className="flex justify-between text-xs tracking-widest text-white/60">
-              <span className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-brand animate-pulse" /> SYSTEM ONLINE
-              </span>
-              <span>IT CORE</span>
+          <div className="glass p-2 mx-auto" style={{ maxWidth: 500 * AI_SCALE + 50 }}>
+            <AiSpace scale={AI_SCALE} />
             </div>
-            <div className="mt-6 glass p-5 space-y-3">
-              {[80, 60, 70, 45, 55].map((w, i) => (
-                <div key={i} className="h-2 rounded bg-gradient-to-r from-brand/70 to-transparent" style={{ width: `${w}%` }} />
-              ))}
-              <p className="pt-2 text-xs text-white/50">build ok</p>
-            </div>
-          </div>
         </div>
       </div>
     </section>

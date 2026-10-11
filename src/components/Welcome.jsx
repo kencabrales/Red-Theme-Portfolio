@@ -6,25 +6,33 @@ import VinylCard from "./VinylCard";
 
 export default function Welcome() {
   const [visible, setVisible] = useState(() => {
-    try { return !sessionStorage.getItem("welcomed"); } catch { return true; }
-  });
+  try {
+    const forced = new URLSearchParams(window.location.search).has("welcome");
+    return forced || !sessionStorage.getItem("welcomed");
+  } catch {
+    return true;
+  }
+});
   const [progress, setProgress] = useState(0);
   const ready = progress >= 100;
 
   useEffect(() => {
     if (!visible) return;
-    document.body.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
+      document.documentElement.classList.add("overlay-open");
     const timer = setInterval(() => setProgress((p) => Math.min(p + 2, 100)), 70);
     return () => {
       clearInterval(timer);
       document.body.style.overflow = "";
+      document.documentElement.classList.remove("overlay-open");
     };
   }, [visible]);
 
   const enter = () => {
-    try { sessionStorage.setItem("welcomed", "1"); } catch {}
-    setVisible(false);
-  };
+  try { sessionStorage.setItem("welcomed", "1"); } catch {}
+  window.history.replaceState({}, "", window.location.pathname + window.location.hash);
+  setVisible(false);
+};
 
   const chip = "px-4 py-1.5 rounded-full border border-white/15 bg-white/5 text-[10px] tracking-[0.25em] font-semibold";
 
@@ -38,7 +46,7 @@ export default function Welcome() {
         >
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(239,68,68,0.3),transparent_60%)]" />
 
-          <div className="relative w-full max-w-6xl glass p-8 md:p-12 overflow-hidden">
+          <div className="relative w-full max-w-6xl rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-8 md:p-12 overflow-hidden">
             <span className="absolute right-6 top-4 text-[9rem] font-extrabold text-white/[0.04] leading-none select-none pointer-events-none hidden lg:block">
               WELCOME
             </span>

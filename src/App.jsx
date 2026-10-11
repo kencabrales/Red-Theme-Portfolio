@@ -32,7 +32,6 @@ export default function App() {
   return (
     <PlayerProvider>
       <Welcome />
-      <ScrollHandler />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/project/:id" element={<ProjectDetail />} />
