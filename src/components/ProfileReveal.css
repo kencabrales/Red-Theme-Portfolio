@@ -1,5 +1,7 @@
 .profile-reveal,
-.profile-reveal * { box-sizing: border-box; }
+.profile-reveal * {
+  box-sizing: border-box;
+}
 
 .profile-reveal {
   position: relative;
@@ -46,41 +48,70 @@
   font-size: .7rem;
 }
 
+/* Larger capsules; the original five-piece diagonal layout is retained. */
 .mask-svg .piece {
   opacity: 0;
-  animation-duration: .9s;
+  animation-duration: 1.45s;
   animation-timing-function: cubic-bezier(.22,.75,.25,1);
-  animation-fill-mode: forwards;
+  animation-fill-mode: both;
   will-change: transform, opacity;
 }
-.profile-reveal.is-visible .piece-1 {
-  animation-name: diagonal-from-top-right; animation-delay: 0s;
+
+/* Entering while scrolling down plays the original CodePen directions. */
+.profile-reveal.is-visible:not(.is-reverse) .piece-1,
+.profile-reveal.is-visible:not(.is-reverse) .piece-3,
+.profile-reveal.is-visible:not(.is-reverse) .piece-5 {
+  animation-name: diagonal-from-top-right;
 }
-.profile-reveal.is-visible .piece-2 {
-  animation-name: diagonal-from-bottom-left; animation-delay: .14s;
-}
-.profile-reveal.is-visible .piece-3 {
-  animation-name: diagonal-from-top-right; animation-delay: .28s;
-}
-.profile-reveal.is-visible .piece-4 {
-  animation-name: diagonal-from-bottom-left; animation-delay: .42s;
-}
-.profile-reveal.is-visible .piece-5 {
-  animation-name: diagonal-from-top-right; animation-delay: .56s;
+.profile-reveal.is-visible:not(.is-reverse) .piece-2,
+.profile-reveal.is-visible:not(.is-reverse) .piece-4 {
+  animation-name: diagonal-from-bottom-left;
 }
 
-@keyframes diagonal-from-top-right {
-  from { transform: translate(650px,-650px); opacity: 0; }
-  to { transform: translate(0,0); opacity: 1; }
+/* Entering while scrolling up plays every capsule in the opposite direction. */
+.profile-reveal.is-visible.is-reverse .piece-1,
+.profile-reveal.is-visible.is-reverse .piece-3,
+.profile-reveal.is-visible.is-reverse .piece-5 {
+  animation-name: diagonal-from-bottom-left;
 }
+.profile-reveal.is-visible.is-reverse .piece-2,
+.profile-reveal.is-visible.is-reverse .piece-4 {
+  animation-name: diagonal-from-top-right;
+}
+
+/* Slightly wider gaps between each start keep the movement easy to follow. */
+.mask-svg .piece-1 { animation-delay: 0s; }
+.mask-svg .piece-2 { animation-delay: .18s; }
+.mask-svg .piece-3 { animation-delay: .36s; }
+.mask-svg .piece-4 { animation-delay: .54s; }
+.mask-svg .piece-5 { animation-delay: .72s; }
+
+@keyframes diagonal-from-top-right {
+  from {
+    transform: translate(650px, -650px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
 @keyframes diagonal-from-bottom-left {
-  from { transform: translate(-650px,650px); opacity: 0; }
-  to { transform: translate(0,0); opacity: 1; }
+  from {
+    transform: translate(-650px, 650px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
 }
 
 @media (min-width: 768px) {
-  .profile-reveal { width: min(90vw,24rem); }
+  .profile-reveal { width: min(90vw, 24rem); }
 }
+
 @media (prefers-reduced-motion: reduce) {
   .mask-svg .piece {
     animation: none !important;
