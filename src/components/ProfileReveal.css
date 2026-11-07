@@ -5,7 +5,7 @@
 
 .profile-reveal {
   position: relative;
-  width: min(90vw, 24rem);
+  width: min(92vw, 30rem);
   aspect-ratio: 1;
   margin-inline: auto;
   overflow: visible;
@@ -48,7 +48,7 @@
   font-size: .7rem;
 }
 
-/* Larger capsules; the original five-piece diagonal layout is retained. */
+/* Full composition enlarged while restoring the original capsule thickness and spacing. */
 .mask-svg .piece {
   opacity: 0;
   animation-duration: 1.45s;
@@ -109,7 +109,7 @@
 }
 
 @media (min-width: 768px) {
-  .profile-reveal { width: min(90vw, 24rem); }
+  .profile-reveal { width: min(92vw, 30rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
