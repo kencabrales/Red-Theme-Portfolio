@@ -5,7 +5,7 @@
 
 .profile-reveal {
   position: relative;
-  width: min(92vw, 30rem);
+  width: min(94vw, 33rem);
   aspect-ratio: 1;
   margin-inline: auto;
   overflow: visible;
@@ -109,7 +109,7 @@
 }
 
 @media (min-width: 768px) {
-  .profile-reveal { width: min(92vw, 30rem); }
+  .profile-reveal { width: min(94vw, 33rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
