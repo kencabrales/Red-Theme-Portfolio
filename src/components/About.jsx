@@ -1,6 +1,5 @@
 import { Code2, Award, Globe, FileText, Sparkles } from "lucide-react";
 import Reveal from "./Reveal";
-import ProfileReveal from "./ProfileReveal";
 
 const stats = [
   { icon: Code2, label: "TOTAL PROJECTS", desc: "Web, design, and editing work delivered", value: 7 },
