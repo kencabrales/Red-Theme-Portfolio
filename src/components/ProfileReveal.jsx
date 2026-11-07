@@ -98,31 +98,31 @@ export default function ProfileReveal({ imageSrc = "/profile.jpg" }) {
 
               <g className="piece piece-1">
                 <g transform="rotate(-45 190 210)">
-                  <rect x="110" y="164" width="250" height="104" rx="52" fill="white" />
+                  <rect x="125" y="175" width="220" height="82" rx="41" fill="white" />
                 </g>
               </g>
 
               <g className="piece piece-2">
                 <g transform="rotate(-45 275 295)">
-                  <rect x="135" y="219" width="390" height="104" rx="52" fill="white" />
+                  <rect x="150" y="230" width="360" height="82" rx="41" fill="white" />
                 </g>
               </g>
 
               <g className="piece piece-3">
                 <g transform="rotate(-45 395 310)">
-                  <rect x="315" y="229" width="260" height="104" rx="52" fill="white" />
+                  <rect x="330" y="240" width="230" height="82" rx="41" fill="white" />
                 </g>
               </g>
 
               <g className="piece piece-4">
                 <g transform="rotate(-45 270 430)">
-                  <rect x="240" y="354" width="140" height="104" rx="52" fill="white" />
+                  <rect x="250" y="365" width="120" height="82" rx="41" fill="white" />
                 </g>
               </g>
 
               <g className="piece piece-5">
                 <g transform="rotate(-45 405 420)">
-                  <rect x="345" y="344" width="250" height="104" rx="52" fill="white" />
+                  <rect x="360" y="355" width="220" height="82" rx="41" fill="white" />
                 </g>
               </g>
             </mask>
