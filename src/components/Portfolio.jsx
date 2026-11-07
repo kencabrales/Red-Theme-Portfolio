@@ -1,6 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Code2, Award, Layers, ExternalLink, ArrowRight } from "lucide-react";
+import {
+  Code2,
+  Award,
+  Layers,
+  ExternalLink,
+  ArrowRight,
+  Expand,
+  X,
+} from "lucide-react";
 import { useProjects } from "../hooks/useProjects";
 import { useCertificates } from "../hooks/useCertificates";
 import { techstack } from "../data/techstack";
@@ -18,8 +26,28 @@ export default function Portfolio() {
   const { certificates } = useCertificates();
   const [mainTab, setMainTab] = useState("projects");
   const [subTab, setSubTab] = useState("Project");
+  const [selectedCertificate, setSelectedCertificate] = useState(null);
 
   const filtered = projects.filter((project) => project.category === subTab);
+
+  useEffect(() => {
+    if (!selectedCertificate) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") setSelectedCertificate(null);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedCertificate]);
+
+  const openCertificate = (certificate) => setSelectedCertificate(certificate);
 
   return (
     <section id="portfolio" className="px-6 py-28">
@@ -38,7 +66,10 @@ export default function Portfolio() {
             {mainTabs.map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
-                onClick={() => setMainTab(id)}
+                onClick={() => {
+                  setMainTab(id);
+                  setSelectedCertificate(null);
+                }}
                 className={
                   "flex flex-col items-center gap-1 rounded-xl py-4 font-semibold transition " +
                   (mainTab === id ? "bg-brand/25" : "text-white/70 hover:bg-white/5")
@@ -117,19 +148,37 @@ export default function Portfolio() {
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {certificates.map((certificate, index) => (
               <Reveal key={certificate.id} delay={(index % 3) * 0.1}>
-                <div className="glass overflow-hidden transition hover:-translate-y-1">
-                  <img
-                    src={certificate.imageUrl}
-                    alt={certificate.title}
-                    className="aspect-video w-full object-cover"
-                  />
+                <button
+                  type="button"
+                  onClick={() => openCertificate(certificate)}
+                  aria-label={"View certificate: " + certificate.title}
+                  className="glass group w-full overflow-hidden text-left transition hover:-translate-y-1 hover:border-brand/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand"
+                >
+                  <div className="relative overflow-hidden bg-black/20">
+                    <img
+                      src={certificate.imageUrl}
+                      alt={certificate.title}
+                      className="aspect-video w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition group-hover:bg-black/35">
+                      <span className="flex items-center gap-2 rounded-full border border-white/25 bg-black/65 px-4 py-2 text-xs font-semibold tracking-wide text-white opacity-0 transition group-hover:opacity-100">
+                        <Expand size={14} /> VIEW CERTIFICATE
+                      </span>
+                    </div>
+                  </div>
                   <div className="p-4">
                     <h3 className="font-semibold">{certificate.title}</h3>
                     <p className="text-sm text-white/60">{certificate.issuer}</p>
+                    <p className="mt-3 text-xs font-medium text-brand-soft/80">
+                      Click to view full certificate
+                    </p>
                   </div>
-                </div>
+                </button>
               </Reveal>
             ))}
+            {certificates.length === 0 && (
+              <p className="col-span-full text-center text-white/50">No certificates to display yet.</p>
+            )}
           </div>
         )}
 
@@ -155,6 +204,76 @@ export default function Portfolio() {
           </div>
         )}
       </div>
+
+      {selectedCertificate && (
+        <div
+          className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/85 p-3 backdrop-blur-sm md:p-6"
+          role="presentation"
+          onClick={(event) => {
+            if (event.target === event.currentTarget) setSelectedCertificate(null);
+          }}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="certificate-preview-title"
+            aria-describedby="certificate-preview-overview"
+            className="relative grid max-h-[94vh] w-full max-w-6xl grid-cols-1 overflow-hidden rounded-2xl border border-white/15 bg-[#10090b] shadow-2xl lg:grid-cols-[minmax(0,1.6fr)_minmax(280px,0.8fr)]"
+          >
+            <div className="relative flex min-h-[260px] max-h-[58vh] items-center justify-center bg-black/60 p-4 sm:p-6 lg:max-h-[84vh] lg:min-h-[70vh]">
+              <img
+                src={selectedCertificate.imageUrl}
+                alt={selectedCertificate.title + " certificate"}
+                className="max-h-[52vh] max-w-full object-contain sm:max-h-[54vh] lg:max-h-[78vh]"
+              />
+              <span className="absolute bottom-3 left-4 rounded-full border border-white/10 bg-black/65 px-3 py-1 text-[11px] text-white/65">
+                Full certificate preview
+              </span>
+              <button
+                type="button"
+                onClick={() => setSelectedCertificate(null)}
+                aria-label="Close certificate preview"
+                className="absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-black/75 text-white transition hover:bg-brand"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="flex max-h-[32vh] flex-col overflow-y-auto border-t border-white/10 p-6 sm:p-7 lg:max-h-[84vh] lg:border-l lg:border-t-0">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-soft/75">
+                Certificate overview
+              </p>
+              <h3 id="certificate-preview-title" className="mt-3 text-2xl font-bold leading-tight">
+                {selectedCertificate.title}
+              </h3>
+              <p className="mt-2 text-sm text-white/55">
+                Issued by {selectedCertificate.issuer}
+              </p>
+
+              <div className="my-6 h-px w-full bg-white/10" />
+
+              <h4 className="text-sm font-semibold text-white/85">About this certificate</h4>
+              <p
+                id="certificate-preview-overview"
+                className="mt-3 whitespace-pre-wrap text-sm leading-7 text-white/65"
+              >
+                {selectedCertificate.overview?.trim() ||
+                  "No overview has been added for this certificate yet."}
+              </p>
+
+              <div className="mt-auto pt-8">
+                <button
+                  type="button"
+                  onClick={() => setSelectedCertificate(null)}
+                  className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm font-semibold text-white/75 transition hover:border-brand/50 hover:bg-white/5 hover:text-white"
+                >
+                  Close preview
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
