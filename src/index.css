@@ -14,16 +14,16 @@ body {
   background: var(--color-ink);
   color: #fff;
   font-family: var(--font-sans);
-}n
+}
 
 section { scroll-margin-top: 80px; }
 
-/* Reusable glass card */
 .glass {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(14px);
   border-radius: 1.25rem;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 @keyframes float {
@@ -35,14 +35,11 @@ section { scroll-margin-top: 80px; }
 @keyframes vinyl {
   to { transform: rotate(360deg); }
 }
-.vinyl-spin {
-  animation: vinyl 8s linear infinite;
-}
+.vinyl-spin { animation: vinyl 8s linear infinite; }
 
-/* ---------- site themes: blood / white / blue ---------- */
-:root {
-  --glow: 239 68 68;
-}
+/* ---------- site themes ---------- */
+:root { --glow: 239 68 68; }
+
 html[data-theme="blood"] {
   --color-brand: #ef4444;
   --color-brand-soft: #ff6b6b;
@@ -62,22 +59,9 @@ html[data-theme="blue"] {
   --glow: 53 165 255;
 }
 
-body {
-  transition: background-color 1.2s ease;
-}
+body { transition: none; }
+html.theme-fade body { transition: background-color 1s ease; }
 
-/* colors fade for one second while the theme changes */
-html.theme-fade *:not([class*="msp-"]) {
-  transition:
-    color 0.9s ease,
-    background-color 0.9s ease,
-    border-color 0.9s ease,
-    fill 0.9s ease,
-    stroke 0.9s ease,
-    box-shadow 0.9s ease !important;
-}
-
-/* ---------- theme change: circular reveal ---------- */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
@@ -86,29 +70,6 @@ html.theme-fade *:not([class*="msp-"]) {
 ::view-transition-old(root) { z-index: 1; }
 ::view-transition-new(root) { z-index: 2; }
 
-/* the reveal does the color change, so the page color no longer fades by itself */
-body { transition: none; }
-html.theme-fade body { transition: background-color 1s ease; }
-
-/* ---------- theme change: circular reveal ---------- */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-::view-transition-old(root) { z-index: 1; }
-::view-transition-new(root) { z-index: 2; }
-
-/* the reveal does the color change, so the page color no longer fades by itself */
-body { transition: none; }
-html.theme-fade body { transition: background-color 1s ease; }
-
-/* ---------- lighter scrolling: no live blur behind cards ---------- */
-.glass {
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
 .backdrop-blur,
 .backdrop-blur-sm,
 .backdrop-blur-md,
@@ -117,3 +78,99 @@ html.theme-fade body { transition: background-color 1s ease; }
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
+
+/* ---------- rich-text editor ---------- */
+.rich-editor-tool {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.8);
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.rich-editor-tool:hover,
+.rich-editor-tool:focus-visible {
+  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.15);
+  color: #fff;
+  outline: none;
+}
+
+.rich-editor-select {
+  max-width: 132px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 0 8px;
+  background: #19090d;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 12px;
+  outline: none;
+}
+.rich-editor-select:focus { border-color: var(--color-brand); }
+.rich-editor-select option { background: #19090d; color: #fff; }
+
+.rich-editor-surface {
+  min-height: 250px;
+  max-height: 560px;
+  overflow-y: auto;
+  padding: 18px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 15px;
+  line-height: 1.75;
+  outline: none;
+  overflow-wrap: anywhere;
+}
+.rich-editor-surface:empty::before {
+  content: attr(data-placeholder);
+  color: rgba(255, 255, 255, 0.34);
+  pointer-events: none;
+}
+.rich-editor-surface p { margin: 0 0 0.75rem; }
+.rich-editor-surface h2 { margin: 1rem 0 0.5rem; font-size: 1.5rem; font-weight: 700; }
+.rich-editor-surface h3 { margin: 0.9rem 0 0.4rem; font-size: 1.2rem; font-weight: 700; }
+.rich-editor-surface ul,
+.rich-editor-surface ol { margin: 0.75rem 0; padding-left: 1.6rem; }
+.rich-editor-surface ul { list-style: disc; }
+.rich-editor-surface ol { list-style: decimal; }
+.rich-editor-surface blockquote {
+  margin: 0.9rem 0;
+  border-left: 3px solid var(--color-brand);
+  padding-left: 1rem;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* ---------- formatted project descriptions ---------- */
+.rich-content {
+  overflow-wrap: anywhere;
+  font-size: 1rem;
+  line-height: 1.85;
+}
+.rich-content > * + * { margin-top: 0.9rem; }
+.rich-content p { white-space: pre-wrap; }
+.rich-content h1,
+.rich-content h2,
+.rich-content h3,
+.rich-content h4 {
+  color: #fff;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.rich-content h1 { font-size: 2rem; }
+.rich-content h2 { font-size: 1.6rem; }
+.rich-content h3 { font-size: 1.3rem; }
+.rich-content h4 { font-size: 1.1rem; }
+.rich-content ul,
+.rich-content ol { padding-left: 1.5rem; }
+.rich-content ul { list-style: disc; }
+.rich-content ol { list-style: decimal; }
+.rich-content li + li { margin-top: 0.35rem; }
+.rich-content blockquote {
+  border-left: 3px solid var(--color-brand);
+  padding-left: 1rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-style: italic;
+}
+.rich-content a { color: var(--color-brand-soft); text-decoration: underline; }
