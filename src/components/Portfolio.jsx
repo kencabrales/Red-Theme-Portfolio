@@ -19,30 +19,30 @@ export default function Portfolio() {
   const [mainTab, setMainTab] = useState("projects");
   const [subTab, setSubTab] = useState("Project");
 
-  const filtered = projects.filter((p) => p.category === subTab);
+  const filtered = projects.filter((project) => project.category === subTab);
 
   return (
-    <section id="portfolio" className="py-28 px-6">
-      <div className="max-w-6xl mx-auto">
+    <section id="portfolio" className="px-6 py-28">
+      <div className="mx-auto max-w-6xl">
         <Reveal>
           <div className="text-center">
-            <h2 className="text-4xl md:text-5xl font-bold text-brand">Portfolio Showcase</h2>
-            <p className="mt-3 text-white/70 max-w-2xl mx-auto">
+            <h2 className="text-4xl font-bold text-brand md:text-5xl">Portfolio Showcase</h2>
+            <p className="mx-auto mt-3 max-w-2xl text-white/70">
               Explore my journey through projects, certifications, and technical expertise.
             </p>
           </div>
         </Reveal>
 
-        {/* main tabs */}
         <Reveal delay={0.1}>
-          <div className="glass mt-12 p-2 grid grid-cols-3 gap-2">
+          <div className="glass mt-12 grid grid-cols-3 gap-2 p-2">
             {mainTabs.map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 onClick={() => setMainTab(id)}
-                className={`py-4 rounded-xl flex flex-col items-center gap-1 font-semibold transition ${
-                  mainTab === id ? "bg-brand/25" : "text-white/70 hover:bg-white/5"
-                }`}
+                className={
+                  "flex flex-col items-center gap-1 rounded-xl py-4 font-semibold transition " +
+                  (mainTab === id ? "bg-brand/25" : "text-white/70 hover:bg-white/5")
+                }
               >
                 <Icon size={20} /> {label}
               </button>
@@ -50,50 +50,52 @@ export default function Portfolio() {
           </div>
         </Reveal>
 
-        {/* PROJECTS */}
         {mainTab === "projects" && (
           <>
-            <div className="glass mt-8 mx-auto w-fit p-1.5 flex gap-1">
-              {subTabs.map((t) => (
+            <div className="glass mx-auto mt-8 flex w-fit gap-1 p-1.5">
+              {subTabs.map((tab) => (
                 <button
-                  key={t}
-                  onClick={() => setSubTab(t)}
-                  className={`px-6 py-2.5 rounded-xl font-semibold transition ${
-                    subTab === t ? "bg-brand text-white" : "text-white/70 hover:text-white"
-                  }`}
+                  key={tab}
+                  onClick={() => setSubTab(tab)}
+                  className={
+                    "rounded-xl px-6 py-2.5 font-semibold transition " +
+                    (subTab === tab ? "bg-brand text-white" : "text-white/70 hover:text-white")
+                  }
                 >
-                  {t}
+                  {tab}
                 </button>
               ))}
             </div>
 
-            <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map((p, i) => (
-                <Reveal key={p.id} delay={(i % 3) * 0.1}>
-                  <div className="group relative overflow-hidden rounded-2xl aspect-[4/5] bg-white/5">
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {filtered.map((project, index) => (
+                <Reveal key={project.id} delay={(index % 3) * 0.1}>
+                  <div className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-white/5">
                     <img
-                      src={p.imageUrl}
-                      alt={p.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                      src={project.imageUrl}
+                      alt={project.title}
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                     <div className="absolute bottom-0 p-5">
-                      <h3 className="text-xl font-bold">{p.title}</h3>
-                      <div className="max-h-0 opacity-0 group-hover:max-h-40 group-hover:opacity-100 overflow-hidden transition-all duration-300">
-                        <p className="mt-2 text-sm text-white/80 line-clamp-2">{p.description}</p>
+                      <h3 className="text-xl font-bold">{project.title}</h3>
+                      <div className="max-h-0 overflow-hidden opacity-0 transition-all duration-300 group-hover:max-h-40 group-hover:opacity-100">
+                        <p className="mt-2 line-clamp-2 text-sm text-white/80">
+                          {project.shortDescription || project.description}
+                        </p>
                         <div className="mt-3 flex gap-3">
-                          {p.liveUrl && (
+                          {project.liveUrl && (
                             <a
-                              href={p.liveUrl}
+                              href={project.liveUrl}
                               target="_blank"
                               rel="noreferrer"
-                              className="flex items-center gap-2 px-4 py-2 rounded-lg glass text-sm"
+                              className="glass flex items-center gap-2 rounded-lg px-4 py-2 text-sm"
                             >
                               <ExternalLink size={14} /> VIEW APP
                             </a>
                           )}
                           <Link
-                            to={`/project/${p.id}`}
+                            to={"/project/" + project.id}
                             className="flex items-center gap-1 px-2 py-2 text-sm font-semibold"
                           >
                             Details <ArrowRight size={14} />
@@ -111,16 +113,19 @@ export default function Portfolio() {
           </>
         )}
 
-        {/* CERTIFICATES */}
         {mainTab === "certificates" && (
-          <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {certificates.map((c, i) => (
-              <Reveal key={c.id} delay={(i % 3) * 0.1}>
-                <div className="glass overflow-hidden hover:-translate-y-1 transition">
-                  <img src={c.imageUrl} alt={c.title} className="w-full aspect-video object-cover" />
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {certificates.map((certificate, index) => (
+              <Reveal key={certificate.id} delay={(index % 3) * 0.1}>
+                <div className="glass overflow-hidden transition hover:-translate-y-1">
+                  <img
+                    src={certificate.imageUrl}
+                    alt={certificate.title}
+                    className="aspect-video w-full object-cover"
+                  />
                   <div className="p-4">
-                    <h3 className="font-semibold">{c.title}</h3>
-                    <p className="text-sm text-white/60">{c.issuer}</p>
+                    <h3 className="font-semibold">{certificate.title}</h3>
+                    <p className="text-sm text-white/60">{certificate.issuer}</p>
                   </div>
                 </div>
               </Reveal>
@@ -128,17 +133,16 @@ export default function Portfolio() {
           </div>
         )}
 
-        {/* TECH STACK */}
         {mainTab === "tech" && (
-          <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {techstack.map(({ name, icon: Icon, badge, color }, i) => (
-              <Reveal key={name} delay={(i % 6) * 0.05}>
-                <div className="glass py-8 flex flex-col items-center gap-3 hover:-translate-y-1 hover:bg-white/10 transition">
+          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+            {techstack.map(({ name, icon: Icon, badge, color }, index) => (
+              <Reveal key={name} delay={(index % 6) * 0.05}>
+                <div className="glass flex flex-col items-center gap-3 py-8 transition hover:-translate-y-1 hover:bg-white/10">
                   {Icon ? (
                     <Icon size={44} color={color} />
                   ) : (
                     <span
-                      className="w-11 h-11 flex items-center justify-center rounded-lg border-2 text-xl font-bold"
+                      className="flex h-11 w-11 items-center justify-center rounded-lg border-2 text-xl font-bold"
                       style={{ color, borderColor: color }}
                     >
                       {badge}
