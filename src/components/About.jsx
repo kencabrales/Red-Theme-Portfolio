@@ -2,8 +2,8 @@ import { Code2, Award, Globe, FileText, Sparkles } from "lucide-react";
 import Reveal from "./Reveal";
 
 const stats = [
-  { icon: Code2, label: "TOTAL PROJECTS", desc: "Web, design, and editing work delivered", value: 13 },
-  { icon: Award, label: "CERTIFICATES", desc: "Professional skills validated", value: 3 },
+  { icon: Code2, label: "TOTAL PROJECTS", desc: "Web, design, and editing work delivered", value: 7 },
+  { icon: Award, label: "CERTIFICATES", desc: "Professional skills validated", value: 4 },
   { icon: Globe, label: "YEARS OF EXPERIENCE", desc: "Continuous learning journey", value: 2 },
 ];
 
@@ -27,14 +27,14 @@ export default function About() {
         <div className="mt-16 grid md:grid-cols-2 gap-12 items-center">
           <Reveal x={-40} y={0}>
             <div>
-              <h3 className="text-4xl font-bold text-brand-soft">Hello, I'm</h3>
-              <h3 className="text-4xl font-bold mt-1">Ken Ashly Cabrales</h3>
+              <h3 className="text-3xl font-bold text-brand-soft">Hello, I'm</h3>
+              <h3 className="text-5xl font-bold mt-1">Ken Ashly Cabrales</h3>
               <p className="mt-6 text-white/70 leading-relaxed">
-                Write your short bio here: your studies, your focus, and what drives you.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
               </p>
 
               <blockquote className="glass mt-6 px-5 py-4 italic text-white/90">
-                "Your favorite quote or motto goes here."
+                "Lorem ipsum dolor sit amet"
               </blockquote>
 
               <div className="mt-6 flex gap-4">
@@ -59,7 +59,7 @@ export default function About() {
             <img
               src="/profile.jpg"
               alt="Profile"
-              className="w-72 h-72 md:w-96 md:h-96 rounded-full object-cover shadow-[0_0_80px_rgba(239,68,68,0.45)]"
+              className="w-72 h-72 md:w-96 md:h-96 rounded-full object-cover shadow-[0_0_80px_rgb(var(--glow)/0.45)]"
             />
           </Reveal>
         </div>

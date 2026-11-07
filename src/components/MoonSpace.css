@@ -1,0 +1,606 @@
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+.msp-wrap {
+  position: relative;
+  margin: 0 auto;
+}
+
+.msp-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 540px;
+  height: 590px;
+  transform-origin: top left;
+  isolation: isolate;
+  font-family: 'Space Grotesk', sans-serif;
+  color: #f8eaf0;
+  text-align: left;
+
+  --moon-opacity: 1;
+  --orbit-thickness: 1.2px;
+
+  /* Bloodmoon palette (default) */
+  --m-accent: #ff647d;
+  --m-glow: rgba(255, 40, 75, .24);
+  --m-border: rgba(255, 110, 140, .22);
+  --m-orbit-1: rgba(255, 190, 205, .40);
+  --m-orbit-2: rgba(255, 190, 205, .28);
+  --m-orbit-3: rgba(255, 190, 205, .20);
+  --m-particle: #ff405e;
+  --m-dust: #ffc0cd;
+  --m-neb-1: rgba(190, 30, 55, .22);
+  --m-neb-2: rgba(125, 15, 40, .24);
+  --m-neb-3: rgba(220, 45, 60, .15);
+}
+
+/* Whitemoon palette */
+.msp-card[data-theme="white"] {
+  --m-accent: #e6eaff;
+  --m-glow: rgba(202, 216, 255, .24);
+  --m-border: rgba(220, 229, 255, .25);
+  --m-orbit-1: rgba(228, 233, 255, .48);
+  --m-orbit-2: rgba(220, 229, 255, .30);
+  --m-orbit-3: rgba(220, 229, 255, .20);
+  --m-particle: #cbd7ff;
+  --m-dust: #ffffff;
+  --m-neb-1: rgba(190, 201, 255, .22);
+  --m-neb-2: rgba(130, 151, 210, .20);
+  --m-neb-3: rgba(225, 231, 255, .12);
+}
+
+/* Bluemoon palette */
+.msp-card[data-theme="blue"] {
+  --m-accent: #72d5ff;
+  --m-glow: rgba(53, 165, 255, .28);
+  --m-border: rgba(105, 203, 255, .25);
+  --m-orbit-1: rgba(163, 222, 255, .48);
+  --m-orbit-2: rgba(115, 199, 255, .30);
+  --m-orbit-3: rgba(115, 199, 255, .20);
+  --m-particle: #59baff;
+  --m-dust: #c6f3ff;
+  --m-neb-1: rgba(25, 125, 255, .24);
+  --m-neb-2: rgba(20, 185, 255, .22);
+  --m-neb-3: rgba(70, 115, 255, .17);
+}
+
+/* ---------- header ---------- */
+.msp-header {
+  position: absolute;
+  z-index: 30;
+  top: 26px;
+  left: 30px;
+  right: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #e9d2da;
+  pointer-events: none;
+  transition: color 1s ease;
+}
+.msp-card[data-theme="white"] .msp-header { color: #e3e6ff; }
+.msp-card[data-theme="blue"] .msp-header { color: #bbebff; }
+
+.msp-online {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.msp-online i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #8ee5b8;
+  box-shadow: 0 0 10px #8ee5b888;
+}
+
+/* ---------- moon name carousel (text only) ---------- */
+.msp-carousel {
+  position: absolute;
+  z-index: 25;
+  top: 61px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(96%, 530px);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.msp-arrow {
+  flex: 0 0 25px;
+  width: 25px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: none;
+  border-radius: 7px;
+  color: var(--m-accent);
+  background: transparent;
+  font-family: Arial, sans-serif;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .3s ease, transform .3s ease, color .6s ease;
+}
+.msp-arrow:hover {
+  background: var(--m-glow);
+  transform: scale(1.1);
+}
+.msp-arrow:focus-visible,
+.msp-slide:focus-visible {
+  outline: 2px solid var(--m-accent);
+  outline-offset: 2px;
+}
+
+.msp-viewport {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 42px;
+  overflow: hidden;
+}
+.msp-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* all three names share the same center point */
+.msp-slide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 160px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #e7c8d3;
+  font-family: 'Oxanium', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  white-space: nowrap;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  filter: blur(2px);
+  opacity: .3;
+  transition: transform .5s ease, filter .4s ease, opacity .4s ease, color .5s ease;
+  will-change: transform, opacity;
+}
+.msp-slide.active {
+  z-index: 3;
+  color: var(--m-accent);
+  opacity: 1;
+  filter: blur(0);
+  letter-spacing: 2px;
+  transform: translate(-50%, -50%) scale(1.06);
+  text-shadow: 0 0 12px var(--m-glow);
+}
+.msp-slide.position-left {
+  z-index: 1;
+  transform: translate(-50%, -50%) translateX(-125px) scale(.84);
+}
+.msp-slide.position-right {
+  z-index: 1;
+  transform: translate(-50%, -50%) translateX(125px) scale(.84);
+}
+
+/* ---------- orbit stage ---------- */
+.msp-stage {
+  position: absolute;
+  width: min(92%, 580px);
+  aspect-ratio: 1.5;
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -50%);
+  isolation: isolate;
+}
+
+/* soft nebula behind the moon (gradients only, no blur) */
+.msp-nebula {
+  position: absolute;
+  z-index: -2;
+  inset: -5%;
+  border-radius: 50%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 30% 35%, var(--m-neb-1), transparent 38%),
+    radial-gradient(ellipse at 70% 55%, var(--m-neb-2), transparent 40%),
+    radial-gradient(ellipse at 48% 72%, var(--m-neb-3), transparent 35%);
+  animation: mspNebula 18s ease-in-out infinite alternate;
+}
+
+/* ---------- particles ---------- */
+.msp-particles {
+  position: absolute;
+  z-index: -1;
+  inset: -5%;
+  overflow: visible;
+  pointer-events: none;
+}
+.msp-particle {
+  position: absolute;
+  display: block;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: var(--m-particle);
+  box-shadow: 0 0 6px var(--m-glow), 0 0 14px var(--m-glow);
+  animation: mspParticle var(--duration) ease-in-out infinite alternate;
+  animation-delay: var(--delay);
+}
+.msp-particle.msp-dust { background: var(--m-dust); }
+.msp-particle.msp-glow {
+  background: var(--m-particle);
+  box-shadow: 0 0 8px var(--m-particle), 0 0 20px var(--m-glow);
+}
+
+/* ---------- the moon ---------- */
+.msp-moon {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  width: 48%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+  opacity: var(--moon-opacity);
+  background-color: #240611;
+  background-size: 100% 100%, 450% auto;
+  background-position: center center, center center;
+  background-repeat: no-repeat;
+  background-blend-mode: screen, screen;
+  box-shadow:
+    0 0 20px rgba(255, 50, 70, .25),
+    0 0 55px rgba(210, 25, 50, .25),
+    0 0 100px rgba(150, 15, 40, .18),
+    inset -18px -12px 35px rgba(8, 2, 8, .35);
+  animation: mspMoonPulse 9s ease-in-out infinite;
+  transition: box-shadow 1s ease;
+}
+.msp-card[data-theme="white"] .msp-moon {
+  background-color: #1c2033;
+  box-shadow:
+    0 0 24px rgba(202, 216, 255, .28),
+    0 0 65px rgba(185, 200, 255, .22),
+    inset -18px -12px 35px rgba(8, 8, 20, .38);
+}
+.msp-card[data-theme="blue"] .msp-moon {
+  background-color: #07132f;
+  box-shadow:
+    0 0 24px rgba(53, 165, 255, .30),
+    0 0 70px rgba(35, 120, 255, .22),
+    inset -18px -12px 35px rgba(2, 8, 20, .38);
+}
+
+/* the incoming moon fades and zooms in over the old one */
+.msp-moon-layer {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-size: 100% 100%, 450% auto;
+  background-position: center center, center center;
+  background-repeat: no-repeat;
+  background-blend-mode: screen, screen;
+  opacity: 0;
+  transform: scale(1.38);
+  transition:
+    opacity .8s cubic-bezier(.2, .7, .2, 1),
+    transform 1.05s cubic-bezier(.2, .8, .2, 1);
+}
+.msp-moon-layer.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ---------- orbit rings: back half behind the moon, front half in front ---------- */
+.msp-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.msp-back { z-index: 0; clip-path: inset(0 0 50% 0); }
+.msp-front { z-index: 3; clip-path: inset(50% 0 0 0); }
+
+.msp-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform: rotate(-17deg);
+  transform-origin: center center;
+  pointer-events: none;
+}
+.msp-lines ellipse {
+  fill: none;
+  stroke: var(--m-orbit-1);
+  stroke-width: var(--orbit-thickness);
+  vector-effect: non-scaling-stroke;
+  transition: stroke 1s ease;
+}
+.msp-lines ellipse:nth-child(2) { stroke: var(--m-orbit-2); stroke-width: 1px; }
+.msp-lines ellipse:nth-child(3) { stroke: var(--m-orbit-3); stroke-width: 1.8px; }
+
+/* ---------- orbiting icons ---------- */
+.msp-items {
+  position: absolute;
+  z-index: auto;
+  inset: 0;
+  pointer-events: none;
+}
+.msp-item {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  top: 50%;
+  width: 29px;
+  height: 29px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--m-border);
+  border-radius: 50%;
+  background: linear-gradient(145deg, #32111ff5, #170711f5);
+  box-shadow: 0 3px 12px #0005, 0 0 12px var(--m-glow);
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+.msp-card[data-theme="white"] .msp-item { background: linear-gradient(145deg, #202438f5, #0c1020f5); }
+.msp-card[data-theme="blue"] .msp-item { background: linear-gradient(145deg, #122943f5, #081322f5); }
+
+.msp-item svg { width: 16px; height: 16px; }
+
+.msp-code { font-size: 10px; font-weight: 700; }
+.msp-claude { color: #e8b99b; font-size: 17px; }
+.msp-skills { color: #d9a6bb; font-size: 14px; font-weight: 700; }
+.msp-ai { color: #e2b5ca; font-size: 11px; font-weight: 700; }
+
+.msp-card[data-theme="white"] .msp-claude,
+.msp-card[data-theme="white"] .msp-skills,
+.msp-card[data-theme="white"] .msp-ai { color: #e0e5ff; }
+.msp-card[data-theme="blue"] .msp-claude,
+.msp-card[data-theme="blue"] .msp-skills,
+.msp-card[data-theme="blue"] .msp-ai { color: #9cdfff; }
+
+.msp-name {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  color: #c5a4b4;
+  white-space: nowrap;
+}
+.msp-card[data-theme="white"] .msp-name { color: #c8cee8; }
+.msp-card[data-theme="blue"] .msp-name { color: #a6cce4; }
+
+/* ---------- footer (no cards) ---------- */
+.msp-footer {
+  position: absolute;
+  z-index: 10;
+  left: 32px;
+  right: 32px;
+  bottom: 26px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+.msp-info {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.msp-info:first-child {
+  margin-right: auto;
+  text-align: left;
+  align-items: flex-start;
+}
+.msp-info:nth-child(2) {
+  margin-left: auto;
+  text-align: right;
+  align-items: flex-end;
+}
+.msp-info::before {
+  content: "";
+  display: block;
+  width: 23px;
+  height: 2px;
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, var(--m-accent), transparent);
+  box-shadow: 0 0 8px var(--m-glow);
+}
+.msp-label {
+  margin: 0 0 5px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: #d99cad;
+  transition: color 1s ease;
+}
+.msp-info strong {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  line-height: 1.25;
+  color: #ffe0e5;
+}
+.msp-info:nth-child(2) strong {
+  color: var(--m-accent);
+  text-shadow: 0 0 10px var(--m-glow);
+}
+.msp-card[data-theme="white"] .msp-label { color: #c7cfe8; }
+.msp-card[data-theme="blue"] .msp-label { color: #a6d9f5; }
+
+/* ---------- theme switch effect (movement and opacity only) ---------- */
+.msp-flash {
+  position: absolute;
+  z-index: 7;
+  inset: -20%;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(.35);
+}
+.msp-changing .msp-stage {
+  animation: mspPunch 1.1s cubic-bezier(.2, .75, .2, 1);
+}
+.msp-changing .msp-flash {
+  animation: mspBurst .95s ease-out both;
+}
+
+/* ---------- animations ---------- */
+@keyframes mspMoonPulse {
+  0%, 100% { scale: .97; }
+  50% { scale: 1.04; }
+}
+@keyframes mspNebula {
+  from { transform: translate(-2%, -1%) scale(.98); }
+  to { transform: translate(2%, 2%) scale(1.04); }
+}
+@keyframes mspParticle {
+  0% { transform: translate(-4px, 5px); opacity: .2; }
+  50% { opacity: .8; }
+  100% { transform: translate(7px, -10px); opacity: .35; }
+}
+@keyframes mspPunch {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  38% { transform: translate(-50%, -50%) scale(1.11); }
+  67% { transform: translate(-50%, -50%) scale(.97); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes mspBurst {
+  0% { opacity: 0; transform: scale(.35); }
+  30% { opacity: .72; transform: scale(.95); }
+  100% { opacity: 0; transform: scale(1.8); }
+}
+
+/* pause everything while the welcome screen or music popup is open */
+html.overlay-open .msp-card,
+html.overlay-open .msp-card *,
+html.overlay-open .msp-card *::before,
+html.overlay-open .msp-card *::after,
+.msp-paused,
+.msp-paused *,
+.msp-paused *::before,
+.msp-paused *::after {
+  animation-play-state: paused !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .msp-nebula,
+  .msp-moon,
+  .msp-particle,
+  .msp-changing .msp-stage,
+  .msp-changing .msp-flash {
+    animation: none;
+  }
+  .msp-slide,
+  .msp-moon-layer {
+    transition: none;
+  }
+}
+
+/* ---------- wider, easier-to-hit moon switcher ---------- */
+.msp-carousel {
+  top: 56px;
+  width: 100%;
+  gap: 0;
+}
+.msp-arrow {
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  font-size: 34px;
+}
+.msp-viewport { height: 56px; }
+.msp-slide {
+  width: 190px;
+  height: 52px;
+  font-size: 12px;
+  letter-spacing: 2.2px;
+}
+.msp-slide.active {
+  letter-spacing: 2.6px;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+.msp-slide.position-left {
+  transform: translate(-50%, -50%) translateX(-165px) scale(.86);
+}
+.msp-slide.position-right {
+  transform: translate(-50%, -50%) translateX(165px) scale(.86);
+}
+
+/* a much bigger light burst when the moon changes */
+.msp-flash { inset: -150%; }
+
+/* ---------- wider, easier-to-hit moon switcher ---------- */
+.msp-carousel {
+  top: 56px;
+  width: 100%;
+  gap: 0;
+}
+.msp-arrow {
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  font-size: 34px;
+}
+.msp-viewport { height: 56px; }
+.msp-slide {
+  width: 190px;
+  height: 52px;
+  font-size: 12px;
+  letter-spacing: 2.2px;
+}
+.msp-slide.active {
+  letter-spacing: 2.6px;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+.msp-slide.position-left {
+  transform: translate(-50%, -50%) translateX(-165px) scale(.86);
+}
+.msp-slide.position-right {
+  transform: translate(-50%, -50%) translateX(165px) scale(.86);
+}
+
+/* a much bigger light burst when the moon changes */
+.msp-flash { inset: -150%; }
+
+/* lighter theme change: no scene zoom and no light burst */
+.msp-changing .msp-stage { animation: none; }
+.msp-flash { display: none; }
+
+/* freeze the moon scene's animations while the page is being scrolled */
+html.is-scrolling .msp-card,
+html.is-scrolling .msp-card *,
+html.is-scrolling .msp-card *::before,
+html.is-scrolling .msp-card *::after {
+  animation-play-state: paused !important;
+}

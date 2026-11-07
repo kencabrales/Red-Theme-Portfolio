@@ -10,7 +10,7 @@ import { LogOut, Pencil, Trash2, Plus, X, Upload } from "lucide-react";
 import { auth, db } from "../firebase";
 import { uploadImage } from "../utils/uploadImage";
 
-const swalTheme = { background: "#1a0508", color: "#fff", confirmButtonColor: "#ef4444" };
+const swalTheme = { background: "var(--color-ink)", color: "#fff", confirmButtonColor: "var(--color-brand)" };
 const emptyForm = { title: "", issuer: "", imageUrl: "" };
 
 export default function AdminCertificates() {

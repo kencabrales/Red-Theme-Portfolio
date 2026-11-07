@@ -22,7 +22,7 @@ export default function ProjectDetail() {
   }
 
   return (
-    <main className="min-h-screen px-6 py-12 bg-[radial-gradient(circle_at_20%_20%,rgba(239,68,68,0.15),transparent_50%)]">
+    <main className="min-h-screen px-6 py-12 bg-[radial-gradient(circle_at_20%_20%,rgb(var(--glow)/0.15),transparent_50%)]">
       <div className="max-w-6xl mx-auto">
         {/* back + breadcrumb */}
         <div className="flex flex-wrap items-center gap-3 text-sm">
@@ -70,7 +70,7 @@ export default function ProjectDetail() {
           <img
             src={project.imageUrl}
             alt={project.title}
-            className="w-full rounded-2xl shadow-[0_0_80px_rgba(239,68,68,0.25)]"
+            className="w-full rounded-2xl shadow-[0_0_80px_rgb(var(--glow)/0.25)]"
           />
         </div>
       </div>

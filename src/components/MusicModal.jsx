@@ -29,7 +29,7 @@ useEffect(() => {
           onClick={closeModal}
         >
           <motion.div
-            className="relative w-full max-w-md max-h-[92vh] overflow-y-auto rounded-[1.25rem] border border-white/10 bg-[#1a0508]/95 p-6"
+            className="relative w-full max-w-md max-h-[92vh] overflow-y-auto rounded-[1.25rem] border border-white/10 bg-ink/95 p-6"
             initial={{ scale: 0.9, y: 20 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.9, y: 20 }}

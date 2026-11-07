@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
+import { ThemeProvider } from "./context/ThemeContext";
 import { PlayerProvider } from "./context/PlayerContext";
+import SpaceBackground from "./components/SpaceBackground";
 import Welcome from "./components/Welcome";
 import MusicModal from "./components/MusicModal";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -11,6 +13,7 @@ import Admin from "./pages/Admin";
 import AdminCertificates from "./pages/AdminCertificates";
 import AdminMessages from "./pages/AdminMessages";
 import AdminMusic from "./pages/AdminMusic";
+import ScrollCalm from "./components/ScrollCalm";
 
 function ScrollHandler() {
   const { pathname, hash } = useLocation();
@@ -30,18 +33,27 @@ function ScrollHandler() {
 
 export default function App() {
   return (
-    <PlayerProvider>
-      <Welcome />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/project/:id" element={<ProjectDetail />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
-        <Route path="/admin/certificates" element={<ProtectedRoute><AdminCertificates /></ProtectedRoute>} />
-        <Route path="/admin/messages" element={<ProtectedRoute><AdminMessages /></ProtectedRoute>} />
-        <Route path="/admin/music" element={<ProtectedRoute><AdminMusic /></ProtectedRoute>} />
-      </Routes>
-      <MusicModal />
-    </PlayerProvider>
+    <ThemeProvider>
+      <PlayerProvider>
+        {/* the galaxy background, behind every page */}
+        <SpaceBackground />
+
+        <div className="relative z-10">
+          <Welcome />
+          <ScrollCalm />
+          <ScrollHandler />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/project/:id" element={<ProjectDetail />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+            <Route path="/admin/certificates" element={<ProtectedRoute><AdminCertificates /></ProtectedRoute>} />
+            <Route path="/admin/messages" element={<ProtectedRoute><AdminMessages /></ProtectedRoute>} />
+            <Route path="/admin/music" element={<ProtectedRoute><AdminMusic /></ProtectedRoute>} />
+          </Routes>
+          <MusicModal />
+        </div>
+      </PlayerProvider>
+    </ThemeProvider>
   );
 }

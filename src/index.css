@@ -38,3 +38,82 @@ section { scroll-margin-top: 80px; }
 .vinyl-spin {
   animation: vinyl 8s linear infinite;
 }
+
+/* ---------- site themes: blood / white / blue ---------- */
+:root {
+  --glow: 239 68 68;
+}
+html[data-theme="blood"] {
+  --color-brand: #ef4444;
+  --color-brand-soft: #ff6b6b;
+  --color-ink: #0d0204;
+  --glow: 239 68 68;
+}
+html[data-theme="white"] {
+  --color-brand: #6f7fc4;
+  --color-brand-soft: #e6eaff;
+  --color-ink: #090b17;
+  --glow: 202 216 255;
+}
+html[data-theme="blue"] {
+  --color-brand: #2f9bf0;
+  --color-brand-soft: #72d5ff;
+  --color-ink: #050d1a;
+  --glow: 53 165 255;
+}
+
+body {
+  transition: background-color 1.2s ease;
+}
+
+/* colors fade for one second while the theme changes */
+html.theme-fade *:not([class*="msp-"]) {
+  transition:
+    color 0.9s ease,
+    background-color 0.9s ease,
+    border-color 0.9s ease,
+    fill 0.9s ease,
+    stroke 0.9s ease,
+    box-shadow 0.9s ease !important;
+}
+
+/* ---------- theme change: circular reveal ---------- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 2; }
+
+/* the reveal does the color change, so the page color no longer fades by itself */
+body { transition: none; }
+html.theme-fade body { transition: background-color 1s ease; }
+
+/* ---------- theme change: circular reveal ---------- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 2; }
+
+/* the reveal does the color change, so the page color no longer fades by itself */
+body { transition: none; }
+html.theme-fade body { transition: background-color 1s ease; }
+
+/* ---------- lighter scrolling: no live blur behind cards ---------- */
+.glass {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.backdrop-blur,
+.backdrop-blur-sm,
+.backdrop-blur-md,
+.backdrop-blur-lg,
+.backdrop-blur-xl {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}

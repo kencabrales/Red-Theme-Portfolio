@@ -66,7 +66,7 @@ const Record = memo(function Record({ playing, coverUrl, album, title, artist })
           <div className="absolute inset-0 rounded-full bg-black" />
 
           {/* label: album cover, or the red label */}
-          <div className="absolute left-1/2 top-1/2 w-[82.6%] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full overflow-hidden bg-[#e11d2e] text-black">
+          <div className="absolute left-1/2 top-1/2 w-[82.6%] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full overflow-hidden bg-brand text-black">
             {showCoverLabel ? (
               <img src={coverUrl} alt={album || title} className="w-full h-full object-cover" />
             ) : (
@@ -291,7 +291,7 @@ export default function VinylCard() {
       {/* turntable */}
       <div className="relative aspect-square" ref={turntableRef}>
         {/* platter */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[92%] aspect-square rounded-full bg-[#0e0e10] border border-white/10 shadow-[0_0_60px_rgba(239,68,68,0.3),0_12px_40px_rgba(0,0,0,0.7)]" />
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[92%] aspect-square rounded-full bg-[#0e0e10] border border-white/10 shadow-[0_0_60px_rgb(var(--glow)/0.3),0_12px_40px_rgba(0,0,0,0.7)]" />
 
         <Record
           playing={playing}
@@ -336,7 +336,7 @@ export default function VinylCard() {
         <button
           onClick={toggle}
           aria-label={playing ? "Pause" : "Play"}
-          className="w-14 h-14 rounded-full bg-white text-[#1a0508] flex items-center justify-center hover:scale-105 transition"
+          className="w-14 h-14 rounded-full bg-white text-ink flex items-center justify-center hover:scale-105 transition"
         >
           {playing ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" className="ml-1" />}
         </button>

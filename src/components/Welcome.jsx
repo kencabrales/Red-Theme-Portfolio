@@ -44,7 +44,7 @@ export default function Welcome() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(239,68,68,0.3),transparent_60%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgb(var(--glow)/0.3),transparent_60%)]" />
 
           <div className="relative w-full max-w-6xl rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-8 md:p-12 overflow-hidden">
             <span className="absolute right-6 top-4 text-[9rem] font-extrabold text-white/[0.04] leading-none select-none pointer-events-none hidden lg:block">

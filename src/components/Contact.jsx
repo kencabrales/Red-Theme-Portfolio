@@ -5,7 +5,7 @@ import Reveal from "./Reveal";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
 
-const swalTheme = { background: "#1a0508", color: "#fff", confirmButtonColor: "#ef4444" };
+const swalTheme = { background: "var(--color-ink)", color: "#fff", confirmButtonColor: "var(--color-brand)" };
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });

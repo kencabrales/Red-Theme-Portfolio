@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import { LogOut, Mail, Trash2, Check } from "lucide-react";
 import { auth, db } from "../firebase";
 
-const swalTheme = { background: "#1a0508", color: "#fff", confirmButtonColor: "#ef4444" };
+const swalTheme = { background: "var(--color-ink)", color: "#fff", confirmButtonColor: "var(--color-brand)" };
 
 export default function AdminMessages() {
   const [items, setItems] = useState([]);

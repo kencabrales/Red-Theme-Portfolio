@@ -23,9 +23,9 @@ export default function Login() {
         icon: "error",
         title: "Login failed",
         text: "Wrong email or password.",
-        background: "#1a0508",
+        background: "var(--color-ink)",
         color: "#fff",
-        confirmButtonColor: "#ef4444",
+        confirmButtonColor: "var(--color-brand)",
       });
     } finally {
       setLoading(false);
@@ -36,7 +36,7 @@ export default function Login() {
     "w-full glass px-4 py-3 bg-white/5 outline-none focus:border-brand transition placeholder:text-white/40";
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-6 bg-[radial-gradient(circle_at_50%_20%,rgba(239,68,68,0.2),transparent_55%)]">
+    <main className="min-h-screen flex items-center justify-center px-6 bg-[radial-gradient(circle_at_50%_20%,rgb(var(--glow)/0.2),transparent_55%)]">
       <form onSubmit={handleSubmit} className="glass w-full max-w-sm p-8 space-y-4">
         <div className="flex flex-col items-center gap-2 mb-2">
           <div className="p-3 rounded-xl border border-brand/40 text-brand-soft">

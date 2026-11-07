@@ -11,7 +11,7 @@ import { auth, db } from "../firebase";
 import { uploadImage } from "../utils/uploadImage";
 import { uploadAudio } from "../utils/uploadAudio";
 
-const swalTheme = { background: "#1a0508", color: "#fff", confirmButtonColor: "#ef4444" };
+const swalTheme = { background: "var(--color-ink)", color: "#fff", confirmButtonColor: "var(--color-brand)" };
 const emptyTrack = { title: "", artist: "", album: "", audioUrl: "", coverUrl: "" };
 const emptyPlaylist = { name: "", trackIds: [] };
 const inputClass =

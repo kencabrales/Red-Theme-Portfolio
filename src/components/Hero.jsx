@@ -1,16 +1,15 @@
 import { TypeAnimation } from "react-type-animation";
 import { FaGithub, FaLinkedinIn, FaInstagram } from "react-icons/fa";
 import { ExternalLink, Mail } from "lucide-react";
-import AiSpace from "./AiSpace";
+import MoonSpace from "./MoonSpace";
 
-const AI_SCALE = 0.75;
 const chips = ["React", "JavaScript", "Node.js", "Tailwind"];
 
 export default function Hero() {
   return (
     <section id="home" className="relative min-h-screen flex items-center overflow-hidden">
       {/* red glow background */}
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_30%,rgba(239,68,68,0.25),transparent_55%)]" />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_30%,rgb(var(--glow)/0.25),transparent_55%)]" />
 
       <div className="max-w-6xl mx-auto px-6 pt-28 grid md:grid-cols-2 gap-12 items-center">
         {/* left */}
@@ -55,12 +54,7 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* right: floating mockup card */}
-        <div className="float hidden md:block">
-          <div className="glass p-2 mx-auto" style={{ maxWidth: 500 * AI_SCALE + 50 }}>
-            <AiSpace scale={AI_SCALE} />
-            </div>
-        </div>
+          <MoonSpace />
       </div>
     </section>
   );
