@@ -3,7 +3,7 @@ import Reveal from "./Reveal";
 import ProfileReveal from "./ProfileReveal";
 
 const stats = [
-  { icon: Code2, label: "TOTAL PROJECTS", desc: "Web, design, and editing work delivered", value: 7 },
+  { icon: Code2, label: "TOTAL PROJECTS", desc: "Web, design, and editing work delivered", value: 5 },
   { icon: Award, label: "CERTIFICATES", desc: "Professional skills validated", value: 4 },
   { icon: Globe, label: "YEARS OF EXPERIENCE", desc: "Continuous learning journey", value: 2 },
 ];
@@ -31,11 +31,9 @@ export default function About() {
               <h3 className="text-3xl font-bold text-brand-soft">Hello, I'm</h3>
               <h3 className="text-5xl font-bold mt-1">Ken Ashly Cabrales</h3>
               <p className="mt-6 text-white/70 leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              </p>
-
+                  As I explore the digital world, I continue to learn and grow through self-learning and hands-on experience. I'm passionate about design, development, and turning ideas into reality. I believe AI should enhance creativity and productivity, not replace independent thinking and the willingness to learn. Every project is a chance to improve and discover something new.</p>
               <blockquote className="glass mt-6 px-5 py-4 italic text-white/90">
-                "Lorem ipsum dolor sit amet"
+                "Use technology to enhance your potential, not replace your ability to think, create, and learn."
               </blockquote>
 
               <div className="mt-6 flex gap-4">
