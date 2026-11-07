@@ -1,5 +1,6 @@
 import { Code2, Award, Globe, FileText, Sparkles } from "lucide-react";
 import Reveal from "./Reveal";
+import ProfileReveal from "./ProfileReveal";
 
 const stats = [
   { icon: Code2, label: "TOTAL PROJECTS", desc: "Web, design, and editing work delivered", value: 7 },
@@ -56,11 +57,7 @@ export default function About() {
           </Reveal>
 
           <Reveal x={40} y={0} delay={0.2} className="flex justify-center">
-            <img
-              src="/profile.jpg"
-              alt="Profile"
-              className="w-72 h-72 md:w-96 md:h-96 rounded-full object-cover shadow-[0_0_80px_rgb(var(--glow)/0.45)]"
-            />
+            <ProfileReveal imageSrc="/profile.jpg" />
           </Reveal>
         </div>
 
