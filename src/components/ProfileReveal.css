@@ -1,25 +1,58 @@
-* {
+/* The original CodePen capsule reveal, fitted to the circular portrait area. */
+.profile-reveal,
+.profile-reveal * {
   box-sizing: border-box;
 }
 
-/* The CodePen capsule reveal, sized to fit the existing About portrait column. */
 .profile-reveal {
+  position: relative;
   width: min(90vw, 24rem);
   aspect-ratio: 1;
   margin-inline: auto;
-  overflow: hidden;
+  overflow: visible;
   border-radius: 50%;
-  background: #05070b;
-  filter: drop-shadow(0 0 34px rgb(var(--glow) / 0.22));
+  background: transparent;
+  filter: drop-shadow(0 0 24px rgb(var(--glow) / 0.16));
 }
 
 .mask-svg {
   display: block;
   width: 100%;
   height: 100%;
+  overflow: visible;
+  background: transparent;
 }
 
-/* Diagonal capsule assembly */
+/* Keep the space outside the circular portrait fully transparent. */
+.profile-reveal-fallback {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  border: 1px dashed rgb(var(--glow) / 0.5);
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(255, 235, 240, 0.82);
+  text-align: center;
+}
+
+.profile-reveal-fallback span {
+  color: var(--color-brand-soft);
+  font-family: 'Oxanium', sans-serif;
+  font-size: clamp(4rem, 10vw, 6rem);
+  font-weight: 700;
+}
+
+.profile-reveal-fallback small {
+  max-width: 75%;
+  color: rgba(255, 235, 240, 0.52);
+  font-size: 0.7rem;
+}
+
+/* The pieces stay hidden until the portrait enters the viewport. */
 .mask-svg .piece {
   opacity: 0;
   animation-duration: 0.9s;
@@ -28,32 +61,27 @@
   will-change: transform, opacity;
 }
 
-/* 1 — upper-left capsule: upper-right → original position */
-.mask-svg .piece-1 {
+.profile-reveal.is-visible .mask-svg .piece-1 {
   animation-name: diagonal-from-top-right;
   animation-delay: 0s;
 }
 
-/* 2 — long upper capsule: lower-left → original position */
-.mask-svg .piece-2 {
+.profile-reveal.is-visible .mask-svg .piece-2 {
   animation-name: diagonal-from-bottom-left;
   animation-delay: 0.14s;
 }
 
-/* 3 — right capsule: upper-right → original position */
-.mask-svg .piece-3 {
+.profile-reveal.is-visible .mask-svg .piece-3 {
   animation-name: diagonal-from-top-right;
   animation-delay: 0.28s;
 }
 
-/* 4 — lower-left capsule: lower-left → original position */
-.mask-svg .piece-4 {
+.profile-reveal.is-visible .mask-svg .piece-4 {
   animation-name: diagonal-from-bottom-left;
   animation-delay: 0.42s;
 }
 
-/* 5 — lower-right capsule: upper-right → original position */
-.mask-svg .piece-5 {
+.profile-reveal.is-visible .mask-svg .piece-5 {
   animation-name: diagonal-from-top-right;
   animation-delay: 0.56s;
 }
@@ -63,7 +91,6 @@
     transform: translate(650px, -650px);
     opacity: 0;
   }
-
   to {
     transform: translate(0, 0);
     opacity: 1;
@@ -75,16 +102,19 @@
     transform: translate(-650px, 650px);
     opacity: 0;
   }
-
   to {
     transform: translate(0, 0);
     opacity: 1;
   }
 }
 
+@media (min-width: 768px) {
+  .profile-reveal { width: min(90vw, 24rem); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mask-svg .piece {
-    animation: none;
+    animation: none !important;
     transform: none;
     opacity: 1;
   }
