@@ -13,11 +13,24 @@ const ALLOWED_TAGS = new Set([
   "h1", "h2", "h3", "h4", "blockquote", "a", "span", "div",
 ]);
 
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export function sanitizeRichText(value = "") {
   const source = String(value || "");
   if (!source.trim()) return "";
+
   if (typeof DOMParser === "undefined" || typeof document === "undefined") {
-    return source.replace(/<script\\b[^<]*(?:(?!<\\/script>)<[^<]*)*<\\/script>/gi, "");
+    return source
+      .split(/\r?\n/)
+      .map((line) => "<p>" + (escapeHtml(line) || "<br>") + "</p>")
+      .join("");
   }
 
   const parsed = new DOMParser().parseFromString(source, "text/html");
@@ -73,13 +86,7 @@ export function sanitizeRichText(value = "") {
 
 export function plainTextToHtml(value = "") {
   return String(value || "")
-    .split(/\\r?\\n/)
-    .map((line) => {
-      const escaped = line
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-      return "<p>" + (escaped || "<br>") + "</p>";
-    })
+    .split(/\r?\n/)
+    .map((line) => "<p>" + (escapeHtml(line) || "<br>") + "</p>")
     .join("");
 }
