@@ -10,7 +10,7 @@
   top: 0;
   left: 0;
   width: 540px;
-  height: 590px;
+  height: 635px;
   transform-origin: top left;
   isolation: isolate;
   font-family: 'Space Grotesk', sans-serif;
@@ -603,4 +603,71 @@ html.is-scrolling .msp-card *,
 html.is-scrolling .msp-card *::before,
 html.is-scrolling .msp-card *::after {
   animation-play-state: paused !important;
+}
+
+
+/* ---------- discoverable theme changer callout ---------- */
+.msp-theme-hint {
+  position: absolute;
+  z-index: 32;
+  top: 13px;
+  left: 50%;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  color: #fff5f7;
+  text-align: center;
+  pointer-events: none;
+  transform: translateX(-50%);
+  animation: mspHintWiggle 4.2s ease-in-out infinite;
+}
+
+.msp-theme-hint-label {
+  max-width: 100%;
+  padding: 0 8px;
+  font-family: 'Oxanium', sans-serif;
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: .6px;
+  line-height: 1.25;
+  white-space: nowrap;
+  text-shadow: 0 0 12px var(--m-glow), 0 2px 12px #0008;
+}
+
+.msp-theme-hint-arrow {
+  display: block;
+  margin-top: 1px;
+  color: var(--m-accent);
+  font-family: Arial, sans-serif;
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 1;
+  text-shadow: 0 0 12px var(--m-glow);
+  animation: mspHintArrow 1.55s ease-in-out infinite;
+}
+
+/* Leave space for the new hint above the original labels and theme selector. */
+.msp-header { top: 118px; }
+.msp-carousel { top: 145px; }
+.msp-stage { top: 55%; }
+
+@keyframes mspHintWiggle {
+  0%, 84%, 100% { transform: translate(-50%, 0) rotate(0deg); }
+  88% { transform: translate(-50%, -2px) rotate(-.7deg); }
+  92% { transform: translate(-50%, 0) rotate(.7deg); }
+  96% { transform: translate(-50%, -1px) rotate(-.35deg); }
+}
+
+@keyframes mspHintArrow {
+  0%, 100% { transform: translateY(0); opacity: .85; }
+  50% { transform: translateY(5px); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .msp-theme-hint,
+  .msp-theme-hint-arrow {
+    animation: none;
+  }
 }

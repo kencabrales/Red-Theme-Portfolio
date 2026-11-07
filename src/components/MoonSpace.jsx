@@ -75,7 +75,7 @@ const ITEMS = [
 ];
 
 const DESIGN_W = 540; // the scene's design size (px)
-const DESIGN_H = 590;
+const DESIGN_H = 635;
 const PARTICLE_COUNT = 24; // fewer = lighter on the computer
 const ORBIT_SPEED = 0.1;   // radians per second
 const TILT = (-17 * Math.PI) / 180;
@@ -366,6 +366,11 @@ useEffect(() => {
         ref={rootRef}
         style={{ transform: `scale(${fit})` }}
       >
+        <div className="msp-theme-hint" aria-label="Interactive Theme Changer">
+          <span className="msp-theme-hint-label">Interactive Theme Changer</span>
+          <span className="msp-theme-hint-arrow" aria-hidden="true">↓</span>
+        </div>
+
         <header className="msp-header">
           <span>AI SPACE</span>
           <span className="msp-online"><i /> ONLINE</span>
