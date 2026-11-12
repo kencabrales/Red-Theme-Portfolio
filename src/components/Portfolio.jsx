@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+
 import {
   Code2,
   Award,
@@ -22,7 +22,6 @@ const mainTabs = [
 const subTabs = ["Project", "Design", "Editing"];
 
 export default function Portfolio() {
-  const navigate = useNavigate();
   const { projects } = useProjects();
   const { certificates } = useCertificates();
   const [mainTab, setMainTab] = useState("projects");
@@ -30,25 +29,6 @@ export default function Portfolio() {
   const [selectedCertificate, setSelectedCertificate] = useState(null);
 
   const filtered = projects.filter((project) => project.category === subTab);
-
-  const openProject = (event, projectId) => {
-    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    event.preventDefault();
-
-    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    if (reduceMotion) {
-      navigate("/project/" + projectId);
-      return;
-    }
-
-    const root = document.documentElement;
-    root.classList.remove("project-launching");
-    void root.offsetWidth;
-    root.classList.add("project-launching");
-
-    window.setTimeout(() => navigate("/project/" + projectId), 340);
-    window.setTimeout(() => root.classList.remove("project-launching"), 1180);
-  };
 
   useEffect(() => {
     if (!selectedCertificate) return undefined;
@@ -166,7 +146,6 @@ export default function Portfolio() {
                         )}
                         <Link
                           to={"/project/" + project.id}
-                          onClick={(event) => openProject(event, project.id)}
                           className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-4 py-2.5 text-sm font-semibold text-white/85 transition hover:border-brand/40 hover:bg-white/5"
                         >
                           Details <ArrowRight size={15} />
@@ -188,7 +167,6 @@ export default function Portfolio() {
                         )}
                         <Link
                           to={"/project/" + project.id}
-                          onClick={(event) => openProject(event, project.id)}
                           className="inline-flex items-center gap-2 rounded-xl border border-white/30 bg-white/10 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-black/20 transition hover:border-white/60 hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
                         >
                           Details <ArrowRight size={16} />
