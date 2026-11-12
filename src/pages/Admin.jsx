@@ -48,8 +48,6 @@ const emptyForm = {
   repositoryUrl: "",
   projectType: "",
   role: "",
-  duration: "",
-  year: "",
   projectOutput: "",
   keyFeatures: [],
   objectives: [],
@@ -266,8 +264,6 @@ export default function Admin() {
         repositoryUrl: form.repositoryUrl.trim(),
         projectType: form.projectType.trim(),
         role: form.role.trim(),
-        duration: form.duration.trim(),
-        year: form.year.trim(),
         projectOutput: form.projectOutput.trim(),
         keyFeatures: form.keyFeatures.map((item) => item.trim()).filter(Boolean),
         objectives: form.objectives.map((item) => item.trim()).filter(Boolean),
@@ -333,8 +329,6 @@ export default function Admin() {
       repositoryUrl: project.repositoryUrl || "",
       projectType: project.projectType || "",
       role: project.role || "",
-      duration: project.duration || "",
-      year: project.year || "",
       projectOutput: project.projectOutput || "",
       keyFeatures: Array.isArray(project.keyFeatures) ? project.keyFeatures : [],
       objectives: Array.isArray(project.objectives) ? project.objectives : [],
@@ -494,11 +488,22 @@ export default function Admin() {
                 </p>
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-2">
-                <input name="projectType" value={form.projectType} onChange={handleChange} placeholder="Project type (e.g. Capstone, Course project)" className={inputClass} />
+              <div>
+                <label className="mb-2 block text-sm font-medium text-white/75">Project type</label>
+                <input name="projectType" value={form.projectType} onChange={handleChange} placeholder="e.g. Capstone project, Course project, Personal project" className={inputClass} />
+              </div>
+
+              <div className="rounded-2xl border border-brand/20 bg-brand/[0.045] p-4 sm:p-5">
+                <div className="mb-4">
+                  <h4 className="font-semibold text-white/90">My role & contributions</h4>
+                  <p className="mt-1 text-xs leading-5 text-white/45">These appear together in one section on the public project page.</p>
+                </div>
                 <input name="role" value={form.role} onChange={handleChange} placeholder="My role (e.g. UI/UX Designer, Team Leader)" className={inputClass} />
-                <input name="duration" value={form.duration} onChange={handleChange} placeholder="Duration (e.g. 3 months)" className={inputClass} />
-                <input name="year" value={form.year} onChange={handleChange} placeholder="Year (e.g. 2026)" className={inputClass} />
+                <div className="mt-4">
+                  <label className="mb-2 block text-sm font-medium text-white/75">What I contributed</label>
+                  <textarea rows={5} value={form.contributions.join("\n")} onChange={(event) => updateLineList("contributions", event.target.value)} placeholder={"One contribution per line\nExample: Designed the interface\nBuilt the authentication flow"} className={inputClass} />
+                  <p className="mt-1 text-xs text-white/35">Enter one contribution per line.</p>
+                </div>
               </div>
 
               <div>
@@ -517,11 +522,6 @@ export default function Admin() {
                   <label className="mb-2 block text-sm font-medium text-white/75">Project objectives</label>
                   <textarea rows={5} value={form.objectives.join("\n")} onChange={(event) => updateLineList("objectives", event.target.value)} placeholder={"One objective per line\nExample: Build a responsive dashboard"} className={inputClass} />
                   <p className="mt-1 text-xs text-white/35">Enter one objective per line.</p>
-                </div>
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-white/75">My contributions</label>
-                  <textarea rows={5} value={form.contributions.join("\n")} onChange={(event) => updateLineList("contributions", event.target.value)} placeholder={"One contribution per line\nExample: Built the authentication flow"} className={inputClass} />
-                  <p className="mt-1 text-xs text-white/35">Enter one contribution per line.</p>
                 </div>
               </div>
 
