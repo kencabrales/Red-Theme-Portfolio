@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { useProjects } from "../hooks/useProjects";
 import { useCertificates } from "../hooks/useCertificates";
-import { techstack } from "../data/techstack";
+import { techstackGroups } from "../data/techstack";
 import Reveal from "./Reveal";
 
 const mainTabs = [
@@ -183,24 +183,55 @@ export default function Portfolio() {
         )}
 
         {mainTab === "tech" && (
-          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-            {techstack.map(({ name, icon: Icon, badge, color }, index) => (
-              <Reveal key={name} delay={(index % 6) * 0.05}>
-                <div className="glass flex flex-col items-center gap-3 py-8 transition hover:-translate-y-1 hover:bg-white/10">
-                  {Icon ? (
-                    <Icon size={44} color={color} />
-                  ) : (
-                    <span
-                      className="flex h-11 w-11 items-center justify-center rounded-lg border-2 text-xl font-bold"
-                      style={{ color, borderColor: color }}
-                    >
-                      {badge}
-                    </span>
-                  )}
-                  <span className="text-sm font-semibold">{name}</span>
-                </div>
-              </Reveal>
-            ))}
+          <div className="mt-10">
+            <Reveal delay={0.05}>
+              <div className="mb-8 text-left">
+                <h3 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                  Technologies <span className="text-brand-soft">&amp; tools.</span>
+                </h3>
+                <p className="mt-3 max-w-xl text-sm leading-6 text-white/60 sm:text-base">
+                  Tools I've used in coursework, projects, and digital art.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {techstackGroups.map((group, index) => (
+                <Reveal
+                  key={group.id}
+                  delay={(index % 2) * 0.08}
+                  className={group.id === "creative" ? "h-full md:col-span-2" : "h-full"}
+                >
+                  <section className="h-full rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.07] via-white/[0.035] to-brand/[0.06] p-5 shadow-lg shadow-black/10 sm:p-6">
+                    <h4 className="mb-5 text-base font-semibold text-white/85 sm:text-lg">
+                      {group.title}
+                    </h4>
+
+                    <div className="flex flex-wrap gap-2.5">
+                      {group.items.map(({ name, icon: Icon, badge, color }) => (
+                        <div
+                          key={name}
+                          className="group flex min-h-[52px] items-center gap-2.5 rounded-xl border border-white/10 bg-black/20 px-3 py-2 transition duration-200 hover:-translate-y-0.5 hover:border-brand/40 hover:bg-brand/10"
+                        >
+                          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-white/10 bg-white/[0.07]">
+                            {Icon ? (
+                              <Icon size={19} color={color} />
+                            ) : (
+                              <span className="text-xs font-bold" style={{ color }}>
+                                {badge}
+                              </span>
+                            )}
+                          </span>
+                          <span className="whitespace-nowrap text-sm font-medium text-white/80 transition group-hover:text-white">
+                            {name}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                </Reveal>
+              ))}
+            </div>
           </div>
         )}
       </div>
