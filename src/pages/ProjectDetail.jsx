@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
-  ArrowLeft, ArrowRight, CalendarDays, ChevronLeft, ChevronRight,
+  ArrowLeft, ArrowRight, ChevronLeft, ChevronRight,
   Code2, ExternalLink, GitBranch, Layers3, Lightbulb, ListChecks,
   Maximize2, Rocket, Target, Users, X,
 } from "lucide-react";
@@ -88,12 +88,7 @@ export default function ProjectDetail() {
   const previousProject = projectIndex > 0 ? projects[projectIndex - 1] : null;
   const nextProject = projectIndex >= 0 && projectIndex < projects.length - 1 ? projects[projectIndex + 1] : null;
   const descriptionHtml = sanitizeRichText(project.fullDescription || plainTextToHtml(project.description || project.shortDescription || ""));
-  const facts = [
-    { label: "Project type", value: project.projectType || project.category || "Project" },
-    { label: "My role", value: project.role },
-    { label: "Timeline", value: project.duration },
-    { label: "Year", value: project.year },
-  ].filter((fact) => fact.value);
+  const projectType = project.projectType || project.category || "Project";
   const tech = Array.isArray(project.techUsed) ? project.techUsed : [];
   const objectives = Array.isArray(project.objectives) ? project.objectives : [];
   const contributions = Array.isArray(project.contributions) ? project.contributions : [];
@@ -117,7 +112,7 @@ export default function ProjectDetail() {
             <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="rounded-full border border-brand/35 bg-brand/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-soft">{project.category || "Project"}</span>
-                {project.year && <span className="inline-flex items-center gap-1.5 text-xs text-white/45"><CalendarDays size={13}/>{project.year}</span>}
+                {projectType !== project.category && <span className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-[10px] font-semibold text-white/65">{projectType}</span>}
               </div>
               <Eyebrow>Selected work / {String(projectIndex + 1).padStart(2, "0")}</Eyebrow>
               <h1 className="mt-4 max-w-3xl text-4xl font-black leading-[1.04] tracking-tight text-white sm:text-5xl lg:text-6xl">{project.title}</h1>
@@ -135,10 +130,6 @@ export default function ProjectDetail() {
           </div>
           <div className="h-1 w-full bg-gradient-to-r from-brand via-brand-soft/80 to-transparent"/>
         </header>
-
-        {facts.length > 0 && <section className="mt-5 grid gap-3 grid-cols-2 lg:grid-cols-4">
-          {facts.map((fact) => <div key={fact.label} className={panel + " p-4 sm:p-5"}><Eyebrow>{fact.label}</Eyebrow><p className="mt-2 text-sm font-semibold text-white/90 sm:text-base">{fact.value}</p></div>)}
-        </section>}
 
         {galleryImages.length > 1 && <section className="mt-12">
           <div className="mb-5 flex items-end justify-between gap-4"><div><Eyebrow>Visual documentation</Eyebrow><h2 className="mt-1 text-2xl font-bold text-white sm:text-3xl">A closer look</h2><p className="mt-2 text-sm text-white/50">Screens, concepts, and moments from the build.</p></div><span className="text-xs tabular-nums text-white/40">{String(activeImage + 1).padStart(2,"0")} / {String(galleryImages.length).padStart(2,"0")}</span></div>
@@ -159,7 +150,17 @@ export default function ProjectDetail() {
             </section>
             {keyFeatures.length > 0 && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="What it can do" title="Key features" icon={Lightbulb}/><ListCards items={keyFeatures}/></section>}
             {objectives.some((item) => String(item || "").trim()) && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="Purpose & direction" title="Project objectives" icon={Target}/><ListCards items={objectives} numbered/></section>}
-            {contributions.some((item) => String(item || "").trim()) && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="Hands-on experience" title="My contributions" icon={Code2}/><ListCards items={contributions}/></section>}
+            {(project.role || contributions.some((item) => String(item || "").trim())) && <section className={panel + " p-6 sm:p-8"}>
+              <SectionTitle eyebrow="Your part in the build" title="My role & contributions" icon={Code2}/>
+              {project.role && <div className="mb-5 rounded-2xl border border-brand/20 bg-brand/[0.08] p-4 sm:p-5">
+                <Eyebrow>My role</Eyebrow>
+                <p className="mt-2 text-base font-semibold text-white sm:text-lg">{project.role}</p>
+              </div>}
+              {contributions.some((item) => String(item || "").trim()) && <>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-white/40">What I contributed</p>
+                <ListCards items={contributions}/>
+              </>}
+            </section>}
             {customSections.filter((section) => section?.title || section?.content || section?.body).map((section,index) => {
               const html = sanitizeRichText(section.content || section.body || "");
               return <section key={section.id || index} className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow={"Additional insight / " + String(index + 1).padStart(2,"0")} title={section.title || "Project notes"} icon={ListChecks}/>{html && <div className="rich-content text-white/70" dangerouslySetInnerHTML={{__html:html}}/>}</section>;
