@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft, ArrowRight, CalendarDays, ChevronLeft, ChevronRight,
-  Code2, ExternalLink, Github, Layers3, Lightbulb, ListChecks,
+  Code2, ExternalLink, Code2, Layers3, Lightbulb, ListChecks,
   Maximize2, Rocket, Target, Users, X,
 } from "lucide-react";
 import { useProjects } from "../hooks/useProjects";
@@ -124,7 +124,7 @@ export default function ProjectDetail() {
               {project.shortDescription && <p className="mt-5 max-w-2xl text-base leading-8 text-white/65 sm:text-lg">{project.shortDescription}</p>}
               <div className="mt-7 flex flex-wrap gap-3">
                 {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-bold text-white shadow-lg shadow-brand/20 transition hover:-translate-y-0.5 hover:bg-brand-soft"><ExternalLink size={16}/> View live project</a>}
-                {project.repositoryUrl && <a href={project.repositoryUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/[0.05] px-5 py-3 text-sm font-semibold text-white/85 transition hover:border-white/30 hover:bg-white/10"><Github size={16}/> Source code</a>}
+                {project.repositoryUrl && <a href={project.repositoryUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/[0.05] px-5 py-3 text-sm font-semibold text-white/85 transition hover:border-white/30 hover:bg-white/10"><Code2 size={16}/> Source code</a>}
               </div>
             </div>
             {galleryImages[0] && <button type="button" onClick={() => setLightboxOpen(true)} className="group relative min-h-[270px] overflow-hidden border-t border-white/10 bg-black/30 text-left lg:min-h-[440px] lg:border-l lg:border-t-0">
