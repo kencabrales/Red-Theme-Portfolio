@@ -23,17 +23,14 @@ function SectionTitle({ eyebrow, title, icon: Icon }) {
   );
 }
 
-function SimpleList({ items, numbered = false }) {
+function SimpleList({ items, bulleted = false }) {
   const values = (Array.isArray(items) ? items : []).filter((item) => String(item || "").trim());
   if (!values.length) return null;
   return (
-    <ul className="space-y-3.5">
+    <ul className={(bulleted ? "list-disc pl-6 marker:text-brand-soft " : "list-none ") + "space-y-3.5"}>
       {values.map((item, index) => (
-        <li key={index} className="flex items-start gap-3.5 text-sm leading-7 text-white/70 sm:text-base">
-          <span className="mt-1 grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-brand/10 text-[11px] font-bold text-brand-soft">
-            {numbered ? String(index + 1).padStart(2, "0") : "✦"}
-          </span>
-          <span>{item}</span>
+        <li key={index} className="text-sm leading-7 text-white/70 sm:text-base">
+          {item}
         </li>
       ))}
     </ul>
@@ -220,8 +217,8 @@ export default function ProjectDetail() {
 
         <div className="mt-12 grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
           <div className="space-y-5">
-            {keyFeatures.length > 0 && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="What it can do" title="Key features"/><SimpleList items={keyFeatures}/></section>}
-            {objectives.some((item) => String(item || "").trim()) && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="Purpose & direction" title="Project objectives"/><SimpleList items={objectives}/></section>}
+            {keyFeatures.length > 0 && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="What it can do" title="Key features"/><SimpleList items={keyFeatures} bulleted={project.keyFeaturesBulleted === true}/></section>}
+            {objectives.some((item) => String(item || "").trim()) && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="Purpose & direction" title="Project objectives"/><SimpleList items={objectives} bulleted={project.objectivesBulleted === true}/></section>}
             {(project.role || contributions.some((item) => String(item || "").trim())) && <section className={panel + " p-6 sm:p-8"}>
               <SectionTitle eyebrow="Your part in the build" title="My role & contributions" icon={Code2}/>
               <p className="max-w-5xl text-sm leading-8 text-white/70 sm:text-base">
