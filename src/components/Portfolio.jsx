@@ -51,7 +51,7 @@ export default function Portfolio() {
 
   return (
     <section id="portfolio" className="px-6 py-28">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-7xl">
         <Reveal>
           <div className="text-center">
             <h2 className="text-4xl font-bold text-brand md:text-5xl">Portfolio Showcase</h2>
@@ -98,47 +98,86 @@ export default function Portfolio() {
               ))}
             </div>
 
-            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
               {filtered.map((project, index) => (
-                <Reveal key={project.id} delay={(index % 3) * 0.1}>
-                  <div className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-white/5">
-                    <img
-                      src={project.imageUrl}
-                      alt={project.title}
-                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                    <div className="absolute bottom-0 p-5">
-                      <h3 className="text-xl font-bold">{project.title}</h3>
-                      <div className="max-h-0 overflow-hidden opacity-0 transition-all duration-300 group-hover:max-h-40 group-hover:opacity-100">
-                        <p className="mt-2 line-clamp-2 text-sm text-white/80">
-                          {project.shortDescription || project.description}
-                        </p>
-                        <div className="mt-3 flex gap-3">
-                          {project.liveUrl && (
-                            <a
-                              href={project.liveUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="glass flex items-center gap-2 rounded-lg px-4 py-2 text-sm"
+                <Reveal key={project.id} delay={(index % 3) * 0.07} className="h-full">
+                  <article className="group relative flex h-full flex-col overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/[0.045] shadow-xl shadow-black/20 transition duration-300 hover:-translate-y-1 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/30">
+                    <div className="relative aspect-[16/9] overflow-hidden bg-black/30">
+                      <img
+                        src={project.imageUrl}
+                        alt={project.title}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.04]"
+                      />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-black/5" />
+                    </div>
+
+                    <div className="flex flex-1 flex-col p-4">
+                      <h3 className="text-xl font-semibold tracking-tight text-white">
+                        {project.title}
+                      </h3>
+                      <p className="mt-2 text-sm leading-6 text-white/65">
+                        {project.shortDescription || project.description}
+                      </p>
+
+                      {Array.isArray(project.techUsed) && project.techUsed.length > 0 && (
+                        <div className="mt-4 flex flex-wrap gap-1.5">
+                          {project.techUsed.map((technology) => (
+                            <span
+                              key={technology}
+                              className="rounded-full border border-brand/20 bg-brand/[0.09] px-2.5 py-1 text-[11px] font-medium text-brand-soft/90"
                             >
-                              <ExternalLink size={14} /> VIEW APP
-                            </a>
-                          )}
-                          <Link
-                            to={"/project/" + project.id}
-                            className="flex items-center gap-1 px-2 py-2 text-sm font-semibold"
-                          >
-                            Details <ArrowRight size={14} />
-                          </Link>
+                              {technology}
+                            </span>
+                          ))}
                         </div>
+                      )}
+
+                      <div className="mt-auto flex flex-wrap gap-2 pt-5 sm:hidden">
+                        {project.liveUrl && (
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-soft"
+                          >
+                            <ExternalLink size={15} /> View App
+                          </a>
+                        )}
+                        <Link
+                          to={"/project/" + project.id}
+                          className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-4 py-2.5 text-sm font-semibold text-white/85 transition hover:border-brand/40 hover:bg-white/5"
+                        >
+                          Details <ArrowRight size={15} />
+                        </Link>
                       </div>
                     </div>
-                  </div>
+
+                    <div className="pointer-events-none absolute inset-0 z-10 hidden items-center justify-center bg-black/75 p-6 opacity-0 transition duration-300 ease-out sm:flex sm:group-hover:pointer-events-auto sm:group-focus-within:pointer-events-auto sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
+                      <div className="pointer-events-none flex translate-y-3 flex-wrap items-center justify-center gap-3 transition duration-300 group-hover:pointer-events-auto group-focus-within:pointer-events-auto group-hover:translate-y-0 group-focus-within:translate-y-0">
+                        {project.liveUrl && (
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-black/25 transition hover:bg-brand-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+                          >
+                            <ExternalLink size={16} /> View App
+                          </a>
+                        )}
+                        <Link
+                          to={"/project/" + project.id}
+                          className="inline-flex items-center gap-2 rounded-xl border border-white/30 bg-white/10 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-black/20 transition hover:border-white/60 hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+                        >
+                          Details <ArrowRight size={16} />
+                        </Link>
+                      </div>
+                    </div>
+                  </article>
                 </Reveal>
               ))}
               {filtered.length === 0 && (
-                <p className="col-span-full text-center text-white/50">Nothing here yet.</p>
+                <p className="col-span-full py-16 text-center text-white/50">Nothing here yet.</p>
               )}
             </div>
           </>
