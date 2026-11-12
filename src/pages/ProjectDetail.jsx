@@ -147,66 +147,96 @@ export default function ProjectDetail() {
             </section>
           </div>
 
-          <section className={panel + " relative min-w-0 overflow-hidden p-4 sm:p-5"}>
+          <section className={panel + " relative min-w-0 overflow-hidden p-4 sm:p-6"}>
             <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-brand/10 blur-3xl"/>
             <div className="relative">
-              <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
-                <div className="flex items-start gap-3">
-                  <div>
-                    <Eyebrow>Visual documentation</Eyebrow>
-                    <h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">Project gallery</h2>
-                    <p className="mt-1 text-xs text-white/45">Explore screenshots, designs, and project progress.</p>
-                  </div>
+              <div className="mb-2 flex flex-wrap items-end justify-between gap-3">
+                <div>
+                  <Eyebrow>Visual documentation</Eyebrow>
+                  <h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">Project gallery</h2>
+                  <p className="mt-1 text-xs text-white/45">Browse project screens and visuals.</p>
                 </div>
                 {galleryImages.length > 0 && <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1.5 text-[11px] font-semibold tabular-nums text-white/60">{String(activeImage + 1).padStart(2,"0")} <span className="text-white/30">/</span> {String(galleryImages.length).padStart(2,"0")}</span>}
               </div>
 
               {galleryImages.length > 0 ? (
                 <>
-                  <div className="group relative isolate overflow-hidden rounded-2xl border border-white/10 bg-[#080609] shadow-[0_18px_50px_rgba(0,0,0,0.28)]">
-                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(120,25,45,0.13),transparent_60%)]"/>
-                    <img
-                      src={galleryImages[activeImage]}
-                      alt={project.title + " gallery image " + (activeImage + 1)}
-                      className="relative aspect-[16/10] max-h-[620px] w-full cursor-zoom-in object-contain"
-                      onClick={() => setLightboxOpen(true)}
-                    />
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/55 to-transparent"/>
-                    <span className="pointer-events-none absolute bottom-3 left-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/65">Preview / {String(activeImage + 1).padStart(2,"0")}</span>
-                    {galleryImages.length > 1 && <>
-                      <button type="button" onClick={() => moveImage(-1)} aria-label="Previous gallery image" className="absolute left-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-xl border border-white/15 bg-black/75 text-white shadow-lg backdrop-blur transition hover:border-brand/50 hover:bg-brand sm:left-4 sm:h-11 sm:w-11"><ChevronLeft size={21}/></button>
-                      <button type="button" onClick={() => moveImage(1)} aria-label="Next gallery image" className="absolute right-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-xl border border-white/15 bg-black/75 text-white shadow-lg backdrop-blur transition hover:border-brand/50 hover:bg-brand sm:right-4 sm:h-11 sm:w-11"><ChevronRight size={21}/></button>
-                    </>}
-                    <button type="button" onClick={() => setLightboxOpen(true)} className="absolute right-3 top-3 inline-flex items-center gap-2 rounded-lg border border-white/15 bg-black/70 px-3 py-2 text-[10px] font-semibold text-white/85 opacity-100 shadow-lg backdrop-blur transition hover:bg-brand sm:right-4 sm:top-4 sm:opacity-0 sm:group-hover:opacity-100"><Maximize2 size={13}/> Full view</button>
-                  </div>
+                  {galleryImages.length > 1 ? (
+                    <div className="relative mx-auto mt-3 flex h-[300px] items-center justify-center overflow-hidden sm:h-[410px] lg:h-[470px]">
+                      <button
+                        type="button"
+                        onClick={() => moveImage(-1)}
+                        aria-label="Show previous project image"
+                        className="absolute left-1 top-1/2 z-40 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/70 text-white shadow-xl backdrop-blur transition hover:scale-105 hover:border-brand/50 hover:bg-brand sm:left-3 sm:h-12 sm:w-12"
+                      >
+                        <ChevronLeft size={25}/>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => moveImage(-1)}
+                        aria-label="Preview previous image"
+                        className="absolute left-[1%] z-10 h-[70%] w-[56%] overflow-hidden rounded-[1.5rem] border border-white/10 bg-black/35 opacity-45 blur-[2px] transition duration-500 hover:opacity-65 sm:left-[4%] sm:w-[52%]"
+                      >
+                        <img src={galleryImages[(activeImage - 1 + galleryImages.length) % galleryImages.length]} alt="" className="h-full w-full scale-105 object-cover"/>
+                        <span className="absolute inset-0 bg-[#10080c]/45"/>
+                      </button>
+
+                      <div className="group relative z-20 w-[76%] overflow-hidden rounded-[1.35rem] border border-brand/30 bg-[#080609] shadow-[0_24px_70px_rgba(0,0,0,0.5)] sm:w-[70%]">
+                        <img
+                          src={galleryImages[activeImage]}
+                          alt={project.title + " gallery image " + (activeImage + 1)}
+                          className="aspect-[16/10] max-h-[420px] w-full cursor-zoom-in object-contain sm:max-h-[440px]"
+                          onClick={() => setLightboxOpen(true)}
+                        />
+                        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/65 to-transparent"/>
+                        <span className="pointer-events-none absolute bottom-3 left-4 text-[10px] font-bold uppercase tracking-[0.18em] text-white/75">Preview / {String(activeImage + 1).padStart(2,"0")}</span>
+                        <button type="button" onClick={() => setLightboxOpen(true)} aria-label="Expand current project image" className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full border border-white/20 bg-black/65 text-white opacity-100 shadow-lg backdrop-blur transition hover:bg-brand sm:opacity-0 sm:group-hover:opacity-100"><Maximize2 size={15}/></button>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => moveImage(1)}
+                        aria-label="Preview next image"
+                        className="absolute right-[1%] z-10 h-[70%] w-[56%] overflow-hidden rounded-[1.5rem] border border-white/10 bg-black/35 opacity-45 blur-[2px] transition duration-500 hover:opacity-65 sm:right-[4%] sm:w-[52%]"
+                      >
+                        <img src={galleryImages[(activeImage + 1) % galleryImages.length]} alt="" className="h-full w-full scale-105 object-cover"/>
+                        <span className="absolute inset-0 bg-[#10080c]/45"/>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => moveImage(1)}
+                        aria-label="Show next project image"
+                        className="absolute right-1 top-1/2 z-40 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/70 text-white shadow-xl backdrop-blur transition hover:scale-105 hover:border-brand/50 hover:bg-brand sm:right-3 sm:h-12 sm:w-12"
+                      >
+                        <ChevronRight size={25}/>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="group relative mx-auto mt-4 max-w-4xl overflow-hidden rounded-[1.5rem] border border-brand/25 bg-[#080609] shadow-[0_24px_70px_rgba(0,0,0,0.4)]">
+                      <img src={galleryImages[0]} alt={project.title + " gallery image"} className="aspect-[16/10] max-h-[500px] w-full cursor-zoom-in object-contain" onClick={() => setLightboxOpen(true)}/>
+                      <button type="button" onClick={() => setLightboxOpen(true)} aria-label="Expand project image" className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full border border-white/20 bg-black/65 text-white opacity-100 backdrop-blur transition hover:bg-brand sm:opacity-0 sm:group-hover:opacity-100"><Maximize2 size={15}/></button>
+                    </div>
+                  )}
 
                   {galleryImages.length > 1 && (
-                    <div className="mt-4">
-                      <div className="mb-2 flex items-center justify-between">
-                        <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-white/40">Browse images</span>
-                        <span className="text-[10px] text-white/35">Select a thumbnail</span>
-                      </div>
-                      <div className="flex gap-2.5 overflow-x-auto pb-2">
-                        {galleryImages.map((image,index) => (
-                          <button
-                            key={image}
-                            type="button"
-                            onClick={() => setActiveImage(index)}
-                            aria-label={"Show gallery image " + (index + 1)}
-                            aria-pressed={activeImage === index}
-                            className={"group/thumb relative h-[68px] w-[92px] shrink-0 overflow-hidden rounded-xl border-2 bg-black/30 transition sm:h-[76px] sm:w-[108px] " + (activeImage === index ? "border-brand shadow-[0_0_0_2px_rgba(180,35,65,0.16)]" : "border-white/10 opacity-55 hover:border-white/30 hover:opacity-100")}
-                          >
-                            <img src={image} alt="" loading="lazy" className="h-full w-full object-cover transition duration-300 group-hover/thumb:scale-105"/>
-                            <span className="absolute bottom-1.5 left-1.5 rounded-md bg-black/75 px-1.5 py-0.5 text-[9px] font-bold tabular-nums text-white/85">{String(index + 1).padStart(2,"0")}</span>
-                          </button>
-                        ))}
-                      </div>
+                    <div className="mt-3 flex items-center justify-center gap-2">
+                      {galleryImages.map((image,index) => (
+                        <button
+                          key={image}
+                          type="button"
+                          onClick={() => setActiveImage(index)}
+                          aria-label={"Go to project image " + (index + 1)}
+                          aria-current={activeImage === index ? "true" : undefined}
+                          className={"h-1.5 rounded-full transition-all duration-300 " + (activeImage === index ? "w-7 bg-brand-soft" : "w-1.5 bg-white/25 hover:bg-white/50")}
+                        />
+                      ))}
                     </div>
                   )}
                 </>
               ) : (
                 <div className="flex aspect-[16/10] flex-col items-center justify-center rounded-2xl border border-dashed border-white/15 bg-black/20 px-5 text-center">
-                  <span className="mb-3 grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-white/[0.04] text-white/35"><Layers3 size={20}/></span>
                   <p className="text-sm font-semibold text-white/65">No gallery images yet</p>
                   <p className="mt-1 max-w-xs text-xs leading-5 text-white/35">Project screenshots and visuals will appear here when added by the administrator.</p>
                 </div>
