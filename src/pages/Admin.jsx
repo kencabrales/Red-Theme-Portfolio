@@ -51,6 +51,7 @@ const emptyForm = {
   duration: "",
   year: "",
   projectOutput: "",
+  keyFeatures: [],
   objectives: [],
   contributions: [],
   teamMembers: [],
@@ -268,6 +269,7 @@ export default function Admin() {
         duration: form.duration.trim(),
         year: form.year.trim(),
         projectOutput: form.projectOutput.trim(),
+        keyFeatures: form.keyFeatures.map((item) => item.trim()).filter(Boolean),
         objectives: form.objectives.map((item) => item.trim()).filter(Boolean),
         contributions: form.contributions.map((item) => item.trim()).filter(Boolean),
         teamMembers: form.teamMembers.map((item) => item.trim()).filter(Boolean),
@@ -334,6 +336,7 @@ export default function Admin() {
       duration: project.duration || "",
       year: project.year || "",
       projectOutput: project.projectOutput || "",
+      keyFeatures: Array.isArray(project.keyFeatures) ? project.keyFeatures : [],
       objectives: Array.isArray(project.objectives) ? project.objectives : [],
       contributions: Array.isArray(project.contributions) ? project.contributions : [],
       teamMembers: Array.isArray(project.teamMembers) ? project.teamMembers : [],
@@ -503,6 +506,12 @@ export default function Admin() {
                 <textarea name="projectOutput" rows={2} value={form.projectOutput} onChange={handleChange} placeholder="What was produced, delivered, or achieved?" className={inputClass} />
               </div>
 
+              <div>
+                <label className="mb-2 block text-sm font-medium text-white/75">Key features</label>
+                <textarea rows={4} value={form.keyFeatures.join("\n")} onChange={(event) => updateLineList("keyFeatures", event.target.value)} placeholder={"One feature per line\nExample: Secure user login and authentication"} className={inputClass} />
+                <p className="mt-1 text-xs text-white/35">List the main functions or capabilities visitors should know about.</p>
+              </div>
+
               <div className="grid gap-4 lg:grid-cols-2">
                 <div>
                   <label className="mb-2 block text-sm font-medium text-white/75">Project objectives</label>
@@ -596,7 +605,7 @@ export default function Admin() {
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/40">05 / Project gallery</p>
                 <h3 className="mt-1 text-lg font-semibold">Add screenshots and extra images</h3>
                 <p className="mt-1 text-sm text-white/50">
-                  Upload multiple UI screenshots, mockups, artwork, or other project images. They appear in a carousel when a visitor opens the project.
+                  Upload multiple UI screenshots, mockups, artwork, or other project images. Visitors can browse them in a visual gallery and open each image full size.
                 </p>
               </div>
 
