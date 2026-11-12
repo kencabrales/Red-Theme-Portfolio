@@ -15,7 +15,7 @@ import {
 import Swal from "sweetalert2";
 import {
   ExternalLink,
-  Github,
+  Code2,
   ImagePlus,
   LogOut,
   Pencil,
@@ -695,7 +695,7 @@ export default function Admin() {
               <div>
                 <label className="mb-2 block text-sm font-medium text-white/75">Source code URL <span className="text-white/35">(optional)</span></label>
                 <div className="relative">
-                  <Github size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/35" />
+                  <Code2 size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/35" />
                   <input name="repositoryUrl" type="url" value={form.repositoryUrl} onChange={handleChange} placeholder="https://github.com/..." className={inputClass + " pl-11"} />
                 </div>
               </div>
