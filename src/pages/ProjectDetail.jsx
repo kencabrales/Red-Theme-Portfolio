@@ -88,6 +88,8 @@ export default function ProjectDetail() {
   const objectives = Array.isArray(project.objectives) ? project.objectives : [];
   const contributions = Array.isArray(project.contributions) ? project.contributions : [];
   const keyFeatures = Array.isArray(project.keyFeatures) ? project.keyFeatures : [];
+  const keyFeaturesHtml = sanitizeRichText(project.keyFeaturesContent || plainTextToHtml(keyFeatures.join("\n")));
+  const objectivesHtml = sanitizeRichText(project.objectivesContent || plainTextToHtml(objectives.join("\n")));
   const team = Array.isArray(project.teamMembers) ? project.teamMembers : [];
   const customSections = Array.isArray(project.customSections) ? project.customSections : [];
   const moveImage = (direction) => setActiveImage((current) => (current + direction + galleryImages.length) % galleryImages.length);
@@ -231,31 +233,24 @@ export default function ProjectDetail() {
         </section>
 
         <div className="mt-12 space-y-5">
-          <div className="grid gap-5 md:grid-cols-2">
-            {keyFeatures.length > 0 && (
+          <div className="grid items-stretch gap-5 md:grid-cols-2">
+            {keyFeaturesHtml && (
               <section className={panel + " min-w-0 p-6 sm:p-8"}>
                 <SectionTitle eyebrow="What it can do" title="Key features"/>
-                <SimpleList items={keyFeatures} bulleted={project.keyFeaturesBulleted === true}/>
+                <div className="rich-content text-sm leading-7 text-white/70 sm:text-base" dangerouslySetInnerHTML={{__html:keyFeaturesHtml}}/>
               </section>
             )}
-            {objectives.some((item) => String(item || "").trim()) && (
+            {objectivesHtml && (
               <section className={panel + " min-w-0 p-6 sm:p-8"}>
                 <SectionTitle eyebrow="Purpose & direction" title="Project objectives"/>
-                <SimpleList items={objectives} bulleted={project.objectivesBulleted === true}/>
+                <div className="rich-content text-sm leading-7 text-white/70 sm:text-base" dangerouslySetInnerHTML={{__html:objectivesHtml}}/>
               </section>
             )}
           </div>
 
           {(project.role || contributions.some((item) => String(item || "").trim())) && (
             <section className={panel + " relative isolate overflow-hidden p-6 sm:p-8"}>
-              <div className="pointer-events-none absolute -right-12 -top-16 -z-10 text-brand/[0.055]">
-                <Code2 size={240} strokeWidth={1.1}/>
-              </div>
-              <div className="mb-6 flex items-center gap-3">
-                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-brand/30 bg-gradient-to-br from-brand/25 to-brand/5 text-brand-soft shadow-lg shadow-brand/10">
-                  <Code2 size={22}/>
-                </span>
-                <div>
+              <div className="mb-6">
                   <Eyebrow>Your part in the build</Eyebrow>
                   <h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">My role & contributions</h2>
                 </div>
@@ -263,9 +258,6 @@ export default function ProjectDetail() {
 
               <div className="grid gap-4 lg:grid-cols-[minmax(220px,0.72fr)_minmax(0,1.5fr)]">
                 <div className="relative overflow-hidden rounded-2xl border border-brand/25 bg-gradient-to-br from-brand/20 via-brand/10 to-black/25 p-5 sm:p-6">
-                  <div className="pointer-events-none absolute -right-5 -top-5 text-white/[0.07]">
-                    <Code2 size={112} strokeWidth={1.2}/>
-                  </div>
                   <div className="relative">
                     <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-soft/80">My role</span>
                     <p className="mt-3 text-xl font-bold leading-snug text-white sm:text-2xl">{project.role || "Project contributor"}</p>
@@ -300,50 +292,59 @@ export default function ProjectDetail() {
             </section>
           )}
 
-          {(customSections.some((section) => section?.title || section?.content || section?.body) || tech.length > 0) && (
-            <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
-              <div className="space-y-5">
-                {customSections.filter((section) => section?.title || section?.content || section?.body).map((section,index) => {
-                  const html = sanitizeRichText(section.content || section.body || "");
-                  return (
-                    <section key={section.id || index} className={panel + " p-6 sm:p-8"}>
-                      <SectionTitle eyebrow={"Additional insight / " + String(index + 1).padStart(2,"0")} title={section.title || "Project notes"} icon={ListChecks}/>
-                      {html && <div className="rich-content text-white/70" dangerouslySetInnerHTML={{__html:html}}/>}
-                    </section>
-                  );
-                })}
-              </div>
-              <aside className="space-y-5 lg:sticky lg:top-6">
-                {tech.length > 0 && (
-                  <section className={panel + " p-5"}>
-                    <SectionTitle eyebrow="Built with" title="Tech & tools" icon={Layers3}/>
-                    <div className="flex flex-wrap gap-2">
-                      {tech.map((item) => <span key={item} className="rounded-full border border-brand/25 bg-brand/[0.09] px-3 py-1.5 text-xs font-medium text-brand-soft/90">{item}</span>)}
-                    </div>
+          {customSections.some((section) => section?.title || section?.content || section?.body) && (
+            <div className="space-y-5">
+              {customSections.filter((section) => section?.title || section?.content || section?.body).map((section,index) => {
+                const html = sanitizeRichText(section.content || section.body || "");
+                return (
+                  <section key={section.id || index} className={panel + " p-6 sm:p-8"}>
+                    <SectionTitle eyebrow={"Additional insight / " + String(index + 1).padStart(2,"0")} title={section.title || "Project notes"} icon={ListChecks}/>
+                    {html && <div className="rich-content text-white/70" dangerouslySetInnerHTML={{__html:html}}/>}
                   </section>
-                )}
-              </aside>
+                );
+              })}
             </div>
           )}
 
-          {team.some((member) => String(member || "").trim()) && (
-            <section className={panel + " p-6 sm:p-8"}>
-              <div className="mb-6">
-                <Eyebrow>People behind the work</Eyebrow>
-                <h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">Project team</h2>
-                <p className="mt-2 text-sm text-white/50">The people who helped bring this project together.</p>
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {team.filter((member) => String(member || "").trim()).map((member,index) => (
-                  <div key={index} className="flex items-center gap-3 rounded-2xl border border-white/[0.08] bg-black/20 p-4 transition hover:border-brand/25 hover:bg-brand/[0.04]">
-                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-brand/25 bg-brand/10 text-sm font-bold text-brand-soft">
-                      {member.trim().charAt(0).toUpperCase()}
-                    </span>
-                    <span className="text-sm font-medium text-white/80">{member}</span>
+          {(tech.length > 0 || team.some((member) => String(member || "").trim())) && (
+            <div className="grid items-stretch gap-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(280px,1fr)]">
+              {tech.length > 0 && (
+                <section className={panel + " min-w-0 p-6 sm:p-8"}>
+                  <div className="mb-6 flex items-center gap-3">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-brand/25 bg-brand/10 text-brand-soft"><Layers3 size={18}/></span>
+                    <div>
+                      <Eyebrow>Built with</Eyebrow>
+                      <h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">Technologies used</h2>
+                    </div>
                   </div>
-                ))}
-              </div>
-            </section>
+                  <div className="flex flex-wrap gap-2.5">
+                    {tech.map((item) => (
+                      <span key={item} className="rounded-xl border border-brand/25 bg-brand/[0.09] px-3.5 py-2 text-sm font-medium text-brand-soft/90">{item}</span>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {team.some((member) => String(member || "").trim()) && (
+                <section className={panel + " min-w-0 p-6 sm:p-8"}>
+                  <div className="mb-6">
+                    <Eyebrow>People behind the work</Eyebrow>
+                    <h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">Project team</h2>
+                    <p className="mt-2 text-sm text-white/50">The people who helped bring this project together.</p>
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+                    {team.filter((member) => String(member || "").trim()).map((member,index) => (
+                      <div key={index} className="flex items-center gap-3 rounded-2xl border border-white/[0.08] bg-black/20 p-4 transition hover:border-brand/25 hover:bg-brand/[0.04]">
+                        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-brand/25 bg-brand/10 text-sm font-bold text-brand-soft">
+                          {member.trim().charAt(0).toUpperCase()}
+                        </span>
+                        <span className="text-sm font-medium text-white/80">{member}</span>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+            </div>
           )}
         </div>
 
