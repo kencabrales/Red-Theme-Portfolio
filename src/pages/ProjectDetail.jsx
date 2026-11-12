@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft, ArrowRight, ChevronLeft, ChevronRight,
@@ -12,6 +12,34 @@ const panel = "rounded-3xl border border-white/10 bg-[#13090e]/75 shadow-[0_20px
 
 function Eyebrow({ children }) {
   return <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-brand-soft/75">{children}</p>;
+}
+
+function ScrollReveal({ children, className = "", variant = "up" }) {
+  const elementRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const element = elementRef.current;
+    if (!element) return undefined;
+    if (!( "IntersectionObserver" in window)) {
+      setIsVisible(true);
+      return undefined;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.unobserve(element);
+      }
+    }, { threshold: 0.12, rootMargin: "0px 0px -35px 0px" });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={elementRef} className={"scroll-reveal reveal-" + variant + " " + (isVisible ? "is-visible " : "") + className}>
+      {children}
+    </div>
+  );
 }
 
 function SectionTitle({ eyebrow, title, icon: Icon }) {
@@ -103,10 +131,10 @@ export default function ProjectDetail() {
           <Link to="/#portfolio" className="hover:text-white">Portfolio</Link><span className="text-white/25">/</span><span className="max-w-[50vw] truncate text-white/80">{project.title}</span>
         </div>
 
-        <header className="relative overflow-hidden rounded-[2rem] border border-brand/20 bg-gradient-to-br from-[#2b0c16] via-[#180a10] to-[#10080c] shadow-[0_28px_100px_rgba(0,0,0,0.35)]">
+        <ScrollReveal variant="left"><header className="relative overflow-hidden rounded-[2rem] border border-brand/20 bg-gradient-to-br from-[#2b0c16] via-[#180a10] to-[#10080c] shadow-[0_28px_100px_rgba(0,0,0,0.35)]">
           <div className="absolute -right-20 -top-28 h-80 w-80 rounded-full bg-brand/20 blur-3xl"/>
           <div className="relative grid lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12 fade-in-left">
+            <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="rounded-full border border-brand/35 bg-brand/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-soft">Project</span>
                 {project.year && <span className="text-xs font-medium text-white/55">{project.year}</span>}
@@ -126,7 +154,7 @@ export default function ProjectDetail() {
             </button>}
           </div>
           <div className="h-1 w-full bg-gradient-to-r from-brand via-brand-soft/80 to-transparent"/>
-        </header>
+        </header></ScrollReveal>
 
         <section className="mt-7 grid items-stretch gap-5 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
           <div className="flex flex-col gap-5">
@@ -149,7 +177,7 @@ export default function ProjectDetail() {
             </section>
           </div>
 
-          <section className={panel + " relative min-w-0 overflow-hidden p-4 sm:p-6 puff-in-center"}>
+          <ScrollReveal variant="puff" className="h-full min-w-0"><section className={panel + " relative h-full min-w-0 overflow-hidden p-4 sm:p-6"}>
             <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-brand/10 blur-3xl"/>
             <div className="relative">
               <div className="mb-2 flex flex-wrap items-end justify-between gap-3">
@@ -229,22 +257,22 @@ export default function ProjectDetail() {
                 </div>
               )}
             </div>
-          </section>
+          </section></ScrollReveal>
         </section>
 
         <div className="mt-12 space-y-5">
           <div className="grid items-stretch gap-5 md:grid-cols-2">
             {keyFeaturesHtml && (
-              <section className={panel + " min-w-0 p-6 sm:p-8"}>
+              <ScrollReveal className="h-full min-w-0"><section className={panel + " h-full min-w-0 p-6 sm:p-8"}>
                 <SectionTitle eyebrow="What it can do" title="Key features"/>
                 <div className="rich-content text-sm leading-7 text-white/70 sm:text-base" dangerouslySetInnerHTML={{__html:keyFeaturesHtml}}/>
-              </section>
+              </section></ScrollReveal>
             )}
             {objectivesHtml && (
-              <section className={panel + " min-w-0 p-6 sm:p-8"}>
+              <ScrollReveal className="h-full min-w-0"><section className={panel + " h-full min-w-0 p-6 sm:p-8"}>
                 <SectionTitle eyebrow="Purpose & direction" title="Project objectives"/>
                 <div className="rich-content text-sm leading-7 text-white/70 sm:text-base" dangerouslySetInnerHTML={{__html:objectivesHtml}}/>
-              </section>
+              </section></ScrollReveal>
             )}
           </div>
 
