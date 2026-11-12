@@ -44,6 +44,16 @@ const emptyForm = {
   imageUrl: "",
   galleryImages: [],
   liveUrl: "",
+  repositoryUrl: "",
+  projectType: "",
+  role: "",
+  duration: "",
+  year: "",
+  projectOutput: "",
+  objectives: [],
+  contributions: [],
+  teamMembers: [],
+  customSections: [],
   techUsed: [],
 };
 
@@ -180,6 +190,36 @@ export default function Admin() {
     }));
   };
 
+  const updateLineList = (field, value) => {
+    setForm((current) => ({
+      ...current,
+      [field]: value.split("\\n").map((item) => item.trim()).filter(Boolean),
+    }));
+  };
+
+  const addCustomSection = () => {
+    setForm((current) => ({
+      ...current,
+      customSections: [...current.customSections, { id: String(Date.now()), title: "", content: "" }],
+    }));
+  };
+
+  const updateCustomSection = (index, field, value) => {
+    setForm((current) => ({
+      ...current,
+      customSections: current.customSections.map((section, sectionIndex) =>
+        sectionIndex === index ? { ...section, [field]: value } : section
+      ),
+    }));
+  };
+
+  const removeCustomSection = (index) => {
+    setForm((current) => ({
+      ...current,
+      customSections: current.customSections.filter((_, sectionIndex) => sectionIndex !== index),
+    }));
+  };
+
   const techSuggestions = techstack
     .map((item) => item.name)
     .filter((name) =>
@@ -221,6 +261,22 @@ export default function Admin() {
         imageUrl,
         galleryImages: form.galleryImages.filter(Boolean),
         liveUrl: form.liveUrl.trim(),
+        repositoryUrl: form.repositoryUrl.trim(),
+        projectType: form.projectType.trim(),
+        role: form.role.trim(),
+        duration: form.duration.trim(),
+        year: form.year.trim(),
+        projectOutput: form.projectOutput.trim(),
+        objectives: form.objectives,
+        contributions: form.contributions,
+        teamMembers: form.teamMembers,
+        customSections: form.customSections
+          .map((section) => ({
+            id: section.id || String(Date.now()),
+            title: (section.title || "").trim(),
+            content: (section.content || "").trim(),
+          }))
+          .filter((section) => section.title || section.content),
         techUsed: form.techUsed,
       };
 
@@ -271,6 +327,16 @@ export default function Admin() {
       imageUrl: project.imageUrl || "",
       galleryImages: Array.isArray(project.galleryImages) ? project.galleryImages : [],
       liveUrl: project.liveUrl || "",
+      repositoryUrl: project.repositoryUrl || "",
+      projectType: project.projectType || "",
+      role: project.role || "",
+      duration: project.duration || "",
+      year: project.year || "",
+      projectOutput: project.projectOutput || "",
+      objectives: Array.isArray(project.objectives) ? project.objectives : [],
+      contributions: Array.isArray(project.contributions) ? project.contributions : [],
+      teamMembers: Array.isArray(project.teamMembers) ? project.teamMembers : [],
+      customSections: Array.isArray(project.customSections) ? project.customSections : [],
       techUsed: legacyTech,
     });
     setTechSearch("");
@@ -415,9 +481,78 @@ export default function Admin() {
               />
             </section>
 
+            <section className="space-y-5 border-t border-white/10 pt-6">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/40">03 / Project information</p>
+                <h3 className="mt-1 text-lg font-semibold">Add context visitors should know</h3>
+                <p className="mt-1 text-sm text-white/50">
+                  These details become compact information cards on the project page. Leave anything blank when it does not apply.
+                </p>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                <input name="projectType" value={form.projectType} onChange={handleChange} placeholder="Project type (e.g. Capstone, Course project)" className={inputClass} />
+                <input name="role" value={form.role} onChange={handleChange} placeholder="My role (e.g. UI/UX Designer, Team Leader)" className={inputClass} />
+                <input name="duration" value={form.duration} onChange={handleChange} placeholder="Duration (e.g. 3 months)" className={inputClass} />
+                <input name="year" value={form.year} onChange={handleChange} placeholder="Year (e.g. 2026)" className={inputClass} />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-white/75">Project output / result</label>
+                <textarea name="projectOutput" rows={2} value={form.projectOutput} onChange={handleChange} placeholder="What was produced, delivered, or achieved?" className={inputClass} />
+              </div>
+
+              <div className="grid gap-4 lg:grid-cols-2">
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-white/75">Project objectives</label>
+                  <textarea rows={5} value={form.objectives.join("\\n")} onChange={(event) => updateLineList("objectives", event.target.value)} placeholder={"One objective per line\\nExample: Build a responsive dashboard"} className={inputClass} />
+                  <p className="mt-1 text-xs text-white/35">Enter one objective per line.</p>
+                </div>
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-white/75">My contributions</label>
+                  <textarea rows={5} value={form.contributions.join("\\n")} onChange={(event) => updateLineList("contributions", event.target.value)} placeholder={"One contribution per line\\nExample: Built the authentication flow"} className={inputClass} />
+                  <p className="mt-1 text-xs text-white/35">Enter one contribution per line.</p>
+                </div>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-white/75">Project team members</label>
+                <textarea rows={3} value={form.teamMembers.join("\\n")} onChange={(event) => updateLineList("teamMembers", event.target.value)} placeholder={"One name per line\\nAdd team members or collaborators"} className={inputClass} />
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-black/10 p-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <h4 className="font-semibold text-white/85">Additional content sections</h4>
+                    <p className="mt-1 text-xs text-white/45">Create optional sections such as Key features, Challenges, Process, or Results.</p>
+                  </div>
+                  <button type="button" onClick={addCustomSection} className="inline-flex items-center gap-2 rounded-lg border border-brand/30 bg-brand/10 px-3 py-2 text-xs font-semibold text-brand-soft transition hover:bg-brand/20">
+                    <Plus size={14} /> Add section
+                  </button>
+                </div>
+
+                <div className="mt-4 space-y-3">
+                  {form.customSections.map((section, index) => (
+                    <div key={section.id || index} className="space-y-3 rounded-xl border border-white/10 bg-white/[0.025] p-3">
+                      <div className="flex items-center gap-2">
+                        <input value={section.title || ""} onChange={(event) => updateCustomSection(index, "title", event.target.value)} placeholder="Section title (e.g. Key features)" className={inputClass} />
+                        <button type="button" onClick={() => removeCustomSection(index)} aria-label="Remove section" className="grid h-11 w-11 shrink-0 place-items-center rounded-xl text-white/45 transition hover:bg-red-500/15 hover:text-red-300">
+                          <X size={16} />
+                        </button>
+                      </div>
+                      <textarea rows={4} value={section.content || ""} onChange={(event) => updateCustomSection(index, "content", event.target.value)} placeholder="Write details for this section..." className={inputClass} />
+                    </div>
+                  ))}
+                  {form.customSections.length === 0 && (
+                    <p className="py-3 text-center text-xs text-white/35">No additional sections added.</p>
+                  )}
+                </div>
+              </div>
+            </section>
+
             <section className="space-y-4 border-t border-white/10 pt-6">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/40">03 / Thumbnail</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/40">04 / Thumbnail</p>
                 <h3 className="mt-1 text-lg font-semibold">Homepage cover image</h3>
                 <p className="mt-1 text-sm text-white/50">
                   This is the main image visitors see in the Projects or Design grid.
@@ -528,7 +663,7 @@ export default function Admin() {
 
             <section className="space-y-4 border-t border-white/10 pt-6">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/40">05 / Links and technologies</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/40">06 / Links and technologies</p>
                 <h3 className="mt-1 text-lg font-semibold">Where can visitors learn more?</h3>
               </div>
 
@@ -544,6 +679,14 @@ export default function Admin() {
                     placeholder="https://your-deployed-project.com"
                     className={inputClass + " pl-11"}
                   />
+                </div>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-white/75">Source code URL <span className="text-white/35">(optional)</span></label>
+                <div className="relative">
+                  <Github size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/35" />
+                  <input name="repositoryUrl" type="url" value={form.repositoryUrl} onChange={handleChange} placeholder="https://github.com/..." className={inputClass + " pl-11"} />
                 </div>
               </div>
 
