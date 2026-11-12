@@ -98,9 +98,9 @@ export default function Portfolio() {
               ))}
             </div>
 
-            <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-7">
+            <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
               {filtered.map((project, index) => (
-                <Reveal key={project.id} delay={(index % 2) * 0.1} className="h-full">
+                <Reveal key={project.id} delay={(index % 3) * 0.07} className="h-full">
                   <article className="group relative flex h-full flex-col overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/[0.045] shadow-xl shadow-black/20 transition duration-300 hover:-translate-y-1 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/30">
                     <div className="relative aspect-[16/9] overflow-hidden bg-black/30">
                       <img
@@ -112,20 +112,20 @@ export default function Portfolio() {
                       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-black/5" />
                     </div>
 
-                    <div className="flex flex-1 flex-col p-5 sm:p-7">
-                      <h3 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                    <div className="flex flex-1 flex-col p-4">
+                      <h3 className="text-xl font-semibold tracking-tight text-white">
                         {project.title}
                       </h3>
-                      <p className="mt-3 max-w-3xl text-sm leading-7 text-white/65 sm:text-base">
+                      <p className="mt-2 text-sm leading-6 text-white/65">
                         {project.shortDescription || project.description}
                       </p>
 
                       {Array.isArray(project.techUsed) && project.techUsed.length > 0 && (
-                        <div className="mt-5 flex flex-wrap gap-2">
+                        <div className="mt-4 flex flex-wrap gap-1.5">
                           {project.techUsed.map((technology) => (
                             <span
                               key={technology}
-                              className="rounded-full border border-brand/20 bg-brand/[0.09] px-3.5 py-1.5 text-xs font-medium text-brand-soft/90 sm:text-sm"
+                              className="rounded-full border border-brand/20 bg-brand/[0.09] px-2.5 py-1 text-[11px] font-medium text-brand-soft/90"
                             >
                               {technology}
                             </span>
@@ -133,7 +133,7 @@ export default function Portfolio() {
                         </div>
                       )}
 
-                      <div className="mt-auto flex flex-wrap gap-2 pt-6 sm:hidden">
+                      <div className="mt-auto flex flex-wrap gap-2 pt-5 sm:hidden">
                         {project.liveUrl && (
                           <a
                             href={project.liveUrl}
