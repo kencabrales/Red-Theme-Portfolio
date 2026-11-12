@@ -215,28 +215,121 @@ export default function ProjectDetail() {
           </section>
         </section>
 
-        <div className="mt-12 grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
-          <div className="space-y-5">
-            {keyFeatures.length > 0 && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="What it can do" title="Key features"/><SimpleList items={keyFeatures} bulleted={project.keyFeaturesBulleted === true}/></section>}
-            {objectives.some((item) => String(item || "").trim()) && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="Purpose & direction" title="Project objectives"/><SimpleList items={objectives} bulleted={project.objectivesBulleted === true}/></section>}
-            {(project.role || contributions.some((item) => String(item || "").trim())) && <section className={panel + " p-6 sm:p-8"}>
-              <SectionTitle eyebrow="Your part in the build" title="My role & contributions" icon={Code2}/>
-              <p className="max-w-5xl text-sm leading-8 text-white/70 sm:text-base">
-                {project.role && <><span className="font-semibold text-white/90">Role:</span> {project.role}.</>}
-                {project.role && contributions.some((item) => String(item || "").trim()) && " "}
-                {contributions.some((item) => String(item || "").trim()) && <><span className="font-semibold text-white/90">Contributions:</span> {contributions.filter((item) => String(item || "").trim()).join("; ").replace(/[.;,\\s]+$/, "")}.</>}
-              </p>
-            </section>}
-            {customSections.filter((section) => section?.title || section?.content || section?.body).map((section,index) => {
-              const html = sanitizeRichText(section.content || section.body || "");
-              return <section key={section.id || index} className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow={"Additional insight / " + String(index + 1).padStart(2,"0")} title={section.title || "Project notes"} icon={ListChecks}/>{html && <div className="rich-content text-white/70" dangerouslySetInnerHTML={{__html:html}}/>}</section>;
-            })}
+        <div className="mt-12 space-y-5">
+          <div className="grid gap-5 md:grid-cols-2">
+            {keyFeatures.length > 0 && (
+              <section className={panel + " min-w-0 p-6 sm:p-8"}>
+                <SectionTitle eyebrow="What it can do" title="Key features"/>
+                <SimpleList items={keyFeatures} bulleted={project.keyFeaturesBulleted === true}/>
+              </section>
+            )}
+            {objectives.some((item) => String(item || "").trim()) && (
+              <section className={panel + " min-w-0 p-6 sm:p-8"}>
+                <SectionTitle eyebrow="Purpose & direction" title="Project objectives"/>
+                <SimpleList items={objectives} bulleted={project.objectivesBulleted === true}/>
+              </section>
+            )}
           </div>
 
-          <aside className="space-y-5 lg:sticky lg:top-6">
-            {tech.length > 0 && <section className={panel + " p-5"}><SectionTitle eyebrow="Built with" title="Tech & tools" icon={Layers3}/><div className="flex flex-wrap gap-2">{tech.map((item)=><span key={item} className="rounded-full border border-brand/25 bg-brand/[0.09] px-3 py-1.5 text-xs font-medium text-brand-soft/90">{item}</span>)}</div></section>}
-            {team.some((member)=>String(member||"").trim()) && <section className={panel + " p-5"}><SectionTitle eyebrow="People behind the work" title="Project team"/><div className="space-y-3">{team.filter((member)=>String(member||"").trim()).map((member,index)=><div key={index} className="flex items-center gap-3"><span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-brand/25 bg-brand/10 text-xs font-bold text-brand-soft">{member.trim().charAt(0).toUpperCase()}</span><span className="text-sm text-white/75">{member}</span></div>)}</div></section>}
-          </aside>
+          {(project.role || contributions.some((item) => String(item || "").trim())) && (
+            <section className={panel + " relative isolate overflow-hidden p-6 sm:p-8"}>
+              <div className="pointer-events-none absolute -right-12 -top-16 -z-10 text-brand/[0.055]">
+                <Code2 size={240} strokeWidth={1.1}/>
+              </div>
+              <div className="mb-6 flex items-center gap-3">
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-brand/30 bg-gradient-to-br from-brand/25 to-brand/5 text-brand-soft shadow-lg shadow-brand/10">
+                  <Code2 size={22}/>
+                </span>
+                <div>
+                  <Eyebrow>Your part in the build</Eyebrow>
+                  <h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">My role & contributions</h2>
+                </div>
+              </div>
+
+              <div className="grid gap-4 lg:grid-cols-[minmax(220px,0.72fr)_minmax(0,1.5fr)]">
+                <div className="relative overflow-hidden rounded-2xl border border-brand/25 bg-gradient-to-br from-brand/20 via-brand/10 to-black/25 p-5 sm:p-6">
+                  <div className="pointer-events-none absolute -right-5 -top-5 text-white/[0.07]">
+                    <Code2 size={112} strokeWidth={1.2}/>
+                  </div>
+                  <div className="relative">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-soft/80">My role</span>
+                    <p className="mt-3 text-xl font-bold leading-snug text-white sm:text-2xl">{project.role || "Project contributor"}</p>
+                    <p className="mt-3 max-w-xs text-xs leading-5 text-white/50">The responsibilities I took on throughout this project.</p>
+                  </div>
+                </div>
+
+                {contributions.some((item) => String(item || "").trim()) && (
+                  <div className="rounded-2xl border border-white/[0.08] bg-black/20 p-5 sm:p-6">
+                    <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                      <div>
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-soft/75">Hands-on work</span>
+                        <h3 className="mt-1 text-base font-semibold text-white">What I contributed</h3>
+                      </div>
+                      <span className="rounded-full border border-brand/25 bg-brand/10 px-3 py-1 text-[10px] font-bold tabular-nums text-brand-soft">
+                        {contributions.filter((item) => String(item || "").trim()).length} CONTRIBUTIONS
+                      </span>
+                    </div>
+                    <div className="grid gap-2.5 sm:grid-cols-2">
+                      {contributions.filter((item) => String(item || "").trim()).map((item, index) => (
+                        <div key={index} className="flex items-start gap-3 rounded-xl border border-white/[0.07] bg-white/[0.025] p-3.5 transition hover:border-brand/25 hover:bg-brand/[0.055]">
+                          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-brand/20 bg-brand/10 text-[10px] font-bold text-brand-soft">
+                            {String(index + 1).padStart(2,"0")}
+                          </span>
+                          <p className="pt-0.5 text-sm leading-6 text-white/75">{item}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
+
+          {(customSections.some((section) => section?.title || section?.content || section?.body) || tech.length > 0) && (
+            <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
+              <div className="space-y-5">
+                {customSections.filter((section) => section?.title || section?.content || section?.body).map((section,index) => {
+                  const html = sanitizeRichText(section.content || section.body || "");
+                  return (
+                    <section key={section.id || index} className={panel + " p-6 sm:p-8"}>
+                      <SectionTitle eyebrow={"Additional insight / " + String(index + 1).padStart(2,"0")} title={section.title || "Project notes"} icon={ListChecks}/>
+                      {html && <div className="rich-content text-white/70" dangerouslySetInnerHTML={{__html:html}}/>}
+                    </section>
+                  );
+                })}
+              </div>
+              <aside className="space-y-5 lg:sticky lg:top-6">
+                {tech.length > 0 && (
+                  <section className={panel + " p-5"}>
+                    <SectionTitle eyebrow="Built with" title="Tech & tools" icon={Layers3}/>
+                    <div className="flex flex-wrap gap-2">
+                      {tech.map((item) => <span key={item} className="rounded-full border border-brand/25 bg-brand/[0.09] px-3 py-1.5 text-xs font-medium text-brand-soft/90">{item}</span>)}
+                    </div>
+                  </section>
+                )}
+              </aside>
+            </div>
+          )}
+
+          {team.some((member) => String(member || "").trim()) && (
+            <section className={panel + " p-6 sm:p-8"}>
+              <div className="mb-6">
+                <Eyebrow>People behind the work</Eyebrow>
+                <h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">Project team</h2>
+                <p className="mt-2 text-sm text-white/50">The people who helped bring this project together.</p>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {team.filter((member) => String(member || "").trim()).map((member,index) => (
+                  <div key={index} className="flex items-center gap-3 rounded-2xl border border-white/[0.08] bg-black/20 p-4 transition hover:border-brand/25 hover:bg-brand/[0.04]">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-brand/25 bg-brand/10 text-sm font-bold text-brand-soft">
+                      {member.trim().charAt(0).toUpperCase()}
+                    </span>
+                    <span className="text-sm font-medium text-white/80">{member}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
 
         <nav className="mt-12 grid grid-cols-[1fr_auto_1fr] items-center gap-3 border-y border-white/10 py-6">
