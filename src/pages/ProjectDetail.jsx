@@ -251,9 +251,8 @@ export default function ProjectDetail() {
           {(project.role || contributions.some((item) => String(item || "").trim())) && (
             <section className={panel + " relative isolate overflow-hidden p-6 sm:p-8"}>
               <div className="mb-6">
-                  <Eyebrow>Your part in the build</Eyebrow>
-                  <h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">My role & contributions</h2>
-                </div>
+                <Eyebrow>Your part in the build</Eyebrow>
+                <h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">My role & contributions</h2>
               </div>
 
               <div className="grid gap-4 lg:grid-cols-[minmax(220px,0.72fr)_minmax(0,1.5fr)]">
