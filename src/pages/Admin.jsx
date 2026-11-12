@@ -15,6 +15,7 @@ import {
 import Swal from "sweetalert2";
 import {
   ExternalLink,
+  Github,
   ImagePlus,
   LogOut,
   Pencil,
@@ -193,7 +194,7 @@ export default function Admin() {
   const updateLineList = (field, value) => {
     setForm((current) => ({
       ...current,
-      [field]: value.split("\\n").map((item) => item.trim()).filter(Boolean),
+      [field]: value.split("\n").map((item) => item.trim()).filter(Boolean),
     }));
   };
 
@@ -505,19 +506,19 @@ export default function Admin() {
               <div className="grid gap-4 lg:grid-cols-2">
                 <div>
                   <label className="mb-2 block text-sm font-medium text-white/75">Project objectives</label>
-                  <textarea rows={5} value={form.objectives.join("\\n")} onChange={(event) => updateLineList("objectives", event.target.value)} placeholder={"One objective per line\\nExample: Build a responsive dashboard"} className={inputClass} />
+                  <textarea rows={5} value={form.objectives.join("\n")} onChange={(event) => updateLineList("objectives", event.target.value)} placeholder={"One objective per line\nExample: Build a responsive dashboard"} className={inputClass} />
                   <p className="mt-1 text-xs text-white/35">Enter one objective per line.</p>
                 </div>
                 <div>
                   <label className="mb-2 block text-sm font-medium text-white/75">My contributions</label>
-                  <textarea rows={5} value={form.contributions.join("\\n")} onChange={(event) => updateLineList("contributions", event.target.value)} placeholder={"One contribution per line\\nExample: Built the authentication flow"} className={inputClass} />
+                  <textarea rows={5} value={form.contributions.join("\n")} onChange={(event) => updateLineList("contributions", event.target.value)} placeholder={"One contribution per line\nExample: Built the authentication flow"} className={inputClass} />
                   <p className="mt-1 text-xs text-white/35">Enter one contribution per line.</p>
                 </div>
               </div>
 
               <div>
                 <label className="mb-2 block text-sm font-medium text-white/75">Project team members</label>
-                <textarea rows={3} value={form.teamMembers.join("\\n")} onChange={(event) => updateLineList("teamMembers", event.target.value)} placeholder={"One name per line\\nAdd team members or collaborators"} className={inputClass} />
+                <textarea rows={3} value={form.teamMembers.join("\n")} onChange={(event) => updateLineList("teamMembers", event.target.value)} placeholder={"One name per line\nAdd team members or collaborators"} className={inputClass} />
               </div>
 
               <div className="rounded-2xl border border-white/10 bg-black/10 p-4">
@@ -592,7 +593,7 @@ export default function Admin() {
 
             <section className="space-y-4 border-t border-white/10 pt-6">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/40">04 / Project gallery</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/40">05 / Project gallery</p>
                 <h3 className="mt-1 text-lg font-semibold">Add screenshots and extra images</h3>
                 <p className="mt-1 text-sm text-white/50">
                   Upload multiple UI screenshots, mockups, artwork, or other project images. They appear in a carousel when a visitor opens the project.
