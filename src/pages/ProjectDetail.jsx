@@ -17,9 +17,7 @@ function Eyebrow({ children }) {
 function SectionTitle({ eyebrow, title, icon: Icon }) {
   return (
     <div className="mb-6 flex items-start gap-3">
-      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-brand/25 bg-brand/10 text-brand-soft">
-        <Icon size={18} />
-      </span>
+      {Icon && <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-brand/25 bg-brand/10 text-brand-soft"><Icon size={18}/></span>}
       <div><Eyebrow>{eyebrow}</Eyebrow><h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">{title}</h2></div>
     </div>
   );
@@ -111,8 +109,8 @@ export default function ProjectDetail() {
           <div className="relative grid lg:grid-cols-[1.05fr_0.95fr]">
             <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="rounded-full border border-brand/35 bg-brand/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-soft">{project.category || "Project"}</span>
-                {projectType !== project.category && <span className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-[10px] font-semibold text-white/65">{projectType}</span>}
+                <span className="rounded-full border border-brand/35 bg-brand/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-soft">Project</span>
+                {project.year && <span className="text-xs font-medium text-white/55">{project.year}</span>}
               </div>
               <Eyebrow>Selected work / {String(projectIndex + 1).padStart(2, "0")}</Eyebrow>
               <h1 className="mt-4 max-w-3xl text-4xl font-black leading-[1.04] tracking-tight text-white sm:text-5xl lg:text-6xl">{project.title}</h1>
@@ -143,7 +141,7 @@ export default function ProjectDetail() {
             </section>
 
             <section className={panel + " flex-1 p-5 sm:p-7"}>
-              <SectionTitle eyebrow="Project overview" title="Description" icon={Layers3}/>
+              <SectionTitle eyebrow="Project overview" title="Description"/>
               {descriptionHtml ? (
                 <div className="rich-content text-sm leading-7 text-white/75 sm:text-base" dangerouslySetInnerHTML={{__html:descriptionHtml}}/>
               ) : (
@@ -157,7 +155,6 @@ export default function ProjectDetail() {
             <div className="relative">
               <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
                 <div className="flex items-start gap-3">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-brand/25 bg-brand/10 text-brand-soft"><Layers3 size={18}/></span>
                   <div>
                     <Eyebrow>Visual documentation</Eyebrow>
                     <h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">Project gallery</h2>
@@ -223,8 +220,8 @@ export default function ProjectDetail() {
 
         <div className="mt-12 grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
           <div className="space-y-5">
-            {keyFeatures.length > 0 && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="What it can do" title="Key features" icon={Lightbulb}/><SimpleList items={keyFeatures}/></section>}
-            {objectives.some((item) => String(item || "").trim()) && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="Purpose & direction" title="Project objectives" icon={Target}/><SimpleList items={objectives}/></section>}
+            {keyFeatures.length > 0 && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="What it can do" title="Key features"/><SimpleList items={keyFeatures}/></section>}
+            {objectives.some((item) => String(item || "").trim()) && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="Purpose & direction" title="Project objectives"/><SimpleList items={objectives}/></section>}
             {(project.role || contributions.some((item) => String(item || "").trim())) && <section className={panel + " p-6 sm:p-8"}>
               <SectionTitle eyebrow="Your part in the build" title="My role & contributions" icon={Code2}/>
               <p className="max-w-5xl text-sm leading-8 text-white/70 sm:text-base">
@@ -241,7 +238,7 @@ export default function ProjectDetail() {
 
           <aside className="space-y-5 lg:sticky lg:top-6">
             {tech.length > 0 && <section className={panel + " p-5"}><SectionTitle eyebrow="Built with" title="Tech & tools" icon={Layers3}/><div className="flex flex-wrap gap-2">{tech.map((item)=><span key={item} className="rounded-full border border-brand/25 bg-brand/[0.09] px-3 py-1.5 text-xs font-medium text-brand-soft/90">{item}</span>)}</div></section>}
-            {team.some((member)=>String(member||"").trim()) && <section className={panel + " p-5"}><SectionTitle eyebrow="People behind the work" title="Project team" icon={Users}/><div className="space-y-3">{team.filter((member)=>String(member||"").trim()).map((member,index)=><div key={index} className="flex items-center gap-3"><span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-brand/25 bg-brand/10 text-xs font-bold text-brand-soft">{member.trim().charAt(0).toUpperCase()}</span><span className="text-sm text-white/75">{member}</span></div>)}</div></section>}
+            {team.some((member)=>String(member||"").trim()) && <section className={panel + " p-5"}><SectionTitle eyebrow="People behind the work" title="Project team"/><div className="space-y-3">{team.filter((member)=>String(member||"").trim()).map((member,index)=><div key={index} className="flex items-center gap-3"><span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-brand/25 bg-brand/10 text-xs font-bold text-brand-soft">{member.trim().charAt(0).toUpperCase()}</span><span className="text-sm text-white/75">{member}</span></div>)}</div></section>}
           </aside>
         </div>
 
