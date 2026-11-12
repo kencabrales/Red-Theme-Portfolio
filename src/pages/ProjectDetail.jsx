@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft, ArrowRight, ChevronLeft, ChevronRight,
   Code2, ExternalLink, GitBranch, Layers3, Lightbulb, ListChecks,
-  Maximize2, Rocket, Target, Users, X,
+  Maximize2, Target, Users, X,
 } from "lucide-react";
 import { useProjects } from "../hooks/useProjects";
 import { plainTextToHtml, sanitizeRichText } from "../utils/richText";
@@ -133,10 +133,13 @@ export default function ProjectDetail() {
 
         <section className="mt-7 grid items-stretch gap-5 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
           <div className="flex flex-col gap-5">
-            <section className={panel + " p-5 sm:p-6"}>
-              <Eyebrow>Project classification</Eyebrow>
-              <h2 className="mt-2 text-xl font-bold text-white sm:text-2xl">{projectType}</h2>
-              <p className="mt-2 text-sm leading-6 text-white/50">What kind of work this project represents.</p>
+            <section className={panel + " relative overflow-hidden p-5 sm:p-6"}>
+              <div className="pointer-events-none absolute -right-12 -top-14 h-40 w-40 rounded-full bg-brand/10 blur-3xl"/>
+              <div className="relative">
+                <Eyebrow>Project classification</Eyebrow>
+                <h2 className="mt-2 text-xl font-bold text-white sm:text-2xl">{projectType}</h2>
+                <p className="mt-2 text-sm leading-6 text-white/50">What kind of work this project represents.</p>
+              </div>
             </section>
 
             <section className={panel + " flex-1 p-5 sm:p-7"}>
@@ -149,51 +152,72 @@ export default function ProjectDetail() {
             </section>
           </div>
 
-          <section className={panel + " min-w-0 p-4 sm:p-5"}>
-            <div className="mb-4 flex items-end justify-between gap-3">
-              <div>
-                <Eyebrow>Visual documentation</Eyebrow>
-                <h2 className="mt-1 text-xl font-bold text-white sm:text-2xl">Project gallery</h2>
-              </div>
-              {galleryImages.length > 0 && <span className="shrink-0 text-xs tabular-nums text-white/45">{String(activeImage + 1).padStart(2,"0")} / {String(galleryImages.length).padStart(2,"0")}</span>}
-            </div>
-
-            {galleryImages.length > 0 ? (
-              <>
-                <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-black/35">
-                  <img
-                    src={galleryImages[activeImage]}
-                    alt={project.title + " gallery image " + (activeImage + 1)}
-                    className="aspect-[16/10] max-h-[620px] w-full cursor-zoom-in object-contain"
-                    onClick={() => setLightboxOpen(true)}
-                  />
-                  {galleryImages.length > 1 && <>
-                    <button type="button" onClick={() => moveImage(-1)} aria-label="Previous gallery image" className="absolute left-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/15 bg-black/70 text-white transition hover:bg-brand sm:h-11 sm:w-11"><ChevronLeft size={21}/></button>
-                    <button type="button" onClick={() => moveImage(1)} aria-label="Next gallery image" className="absolute right-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/15 bg-black/70 text-white transition hover:bg-brand sm:h-11 sm:w-11"><ChevronRight size={21}/></button>
-                  </>}
-                  <button type="button" onClick={() => setLightboxOpen(true)} className="absolute bottom-3 right-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/65 px-3 py-2 text-[11px] font-semibold text-white/85 opacity-100 backdrop-blur transition hover:bg-brand sm:opacity-0 sm:group-hover:opacity-100"><Maximize2 size={13}/> Expand image</button>
-                </div>
-
-                {galleryImages.length > 1 && (
-                  <div className="mt-3 flex gap-2.5 overflow-x-auto pb-1">
-                    {galleryImages.map((image,index) => (
-                      <button
-                        key={image}
-                        type="button"
-                        onClick={() => setActiveImage(index)}
-                        aria-label={"Show gallery image " + (index + 1)}
-                        aria-pressed={activeImage === index}
-                        className={"relative h-[68px] w-[92px] shrink-0 overflow-hidden rounded-lg border-2 transition sm:h-[76px] sm:w-[108px] " + (activeImage === index ? "border-brand opacity-100" : "border-white/10 opacity-55 hover:opacity-100")}
-                      >
-                        <img src={image} alt="" loading="lazy" className="h-full w-full object-cover"/>
-                      </button>
-                    ))}
+          <section className={panel + " relative min-w-0 overflow-hidden p-4 sm:p-5"}>
+            <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-brand/10 blur-3xl"/>
+            <div className="relative">
+              <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+                <div className="flex items-start gap-3">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-brand/25 bg-brand/10 text-brand-soft"><Layers3 size={18}/></span>
+                  <div>
+                    <Eyebrow>Visual documentation</Eyebrow>
+                    <h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">Project gallery</h2>
+                    <p className="mt-1 text-xs text-white/45">Explore screenshots, designs, and project progress.</p>
                   </div>
-                )}
-              </>
-            ) : (
-              <div className="flex aspect-[16/10] items-center justify-center rounded-2xl border border-dashed border-white/15 bg-black/20 text-sm text-white/40">No project images have been added yet.</div>
-            )}
+                </div>
+                {galleryImages.length > 0 && <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1.5 text-[11px] font-semibold tabular-nums text-white/60">{String(activeImage + 1).padStart(2,"0")} <span className="text-white/30">/</span> {String(galleryImages.length).padStart(2,"0")}</span>}
+              </div>
+
+              {galleryImages.length > 0 ? (
+                <>
+                  <div className="group relative isolate overflow-hidden rounded-2xl border border-white/10 bg-[#080609] shadow-[0_18px_50px_rgba(0,0,0,0.28)]">
+                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(120,25,45,0.13),transparent_60%)]"/>
+                    <img
+                      src={galleryImages[activeImage]}
+                      alt={project.title + " gallery image " + (activeImage + 1)}
+                      className="relative aspect-[16/10] max-h-[620px] w-full cursor-zoom-in object-contain"
+                      onClick={() => setLightboxOpen(true)}
+                    />
+                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/55 to-transparent"/>
+                    <span className="pointer-events-none absolute bottom-3 left-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/65">Preview / {String(activeImage + 1).padStart(2,"0")}</span>
+                    {galleryImages.length > 1 && <>
+                      <button type="button" onClick={() => moveImage(-1)} aria-label="Previous gallery image" className="absolute left-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-xl border border-white/15 bg-black/75 text-white shadow-lg backdrop-blur transition hover:border-brand/50 hover:bg-brand sm:left-4 sm:h-11 sm:w-11"><ChevronLeft size={21}/></button>
+                      <button type="button" onClick={() => moveImage(1)} aria-label="Next gallery image" className="absolute right-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-xl border border-white/15 bg-black/75 text-white shadow-lg backdrop-blur transition hover:border-brand/50 hover:bg-brand sm:right-4 sm:h-11 sm:w-11"><ChevronRight size={21}/></button>
+                    </>}
+                    <button type="button" onClick={() => setLightboxOpen(true)} className="absolute right-3 top-3 inline-flex items-center gap-2 rounded-lg border border-white/15 bg-black/70 px-3 py-2 text-[10px] font-semibold text-white/85 opacity-100 shadow-lg backdrop-blur transition hover:bg-brand sm:right-4 sm:top-4 sm:opacity-0 sm:group-hover:opacity-100"><Maximize2 size={13}/> Full view</button>
+                  </div>
+
+                  {galleryImages.length > 1 && (
+                    <div className="mt-4">
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-white/40">Browse images</span>
+                        <span className="text-[10px] text-white/35">Select a thumbnail</span>
+                      </div>
+                      <div className="flex gap-2.5 overflow-x-auto pb-2">
+                        {galleryImages.map((image,index) => (
+                          <button
+                            key={image}
+                            type="button"
+                            onClick={() => setActiveImage(index)}
+                            aria-label={"Show gallery image " + (index + 1)}
+                            aria-pressed={activeImage === index}
+                            className={"group/thumb relative h-[68px] w-[92px] shrink-0 overflow-hidden rounded-xl border-2 bg-black/30 transition sm:h-[76px] sm:w-[108px] " + (activeImage === index ? "border-brand shadow-[0_0_0_2px_rgba(180,35,65,0.16)]" : "border-white/10 opacity-55 hover:border-white/30 hover:opacity-100")}
+                          >
+                            <img src={image} alt="" loading="lazy" className="h-full w-full object-cover transition duration-300 group-hover/thumb:scale-105"/>
+                            <span className="absolute bottom-1.5 left-1.5 rounded-md bg-black/75 px-1.5 py-0.5 text-[9px] font-bold tabular-nums text-white/85">{String(index + 1).padStart(2,"0")}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="flex aspect-[16/10] flex-col items-center justify-center rounded-2xl border border-dashed border-white/15 bg-black/20 px-5 text-center">
+                  <span className="mb-3 grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-white/[0.04] text-white/35"><Layers3 size={20}/></span>
+                  <p className="text-sm font-semibold text-white/65">No gallery images yet</p>
+                  <p className="mt-1 max-w-xs text-xs leading-5 text-white/35">Project screenshots and visuals will appear here when added by the administrator.</p>
+                </div>
+              )}
+            </div>
           </section>
         </section>
 
@@ -201,16 +225,37 @@ export default function ProjectDetail() {
           <div className="space-y-5">
             {keyFeatures.length > 0 && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="What it can do" title="Key features" icon={Lightbulb}/><ListCards items={keyFeatures}/></section>}
             {objectives.some((item) => String(item || "").trim()) && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="Purpose & direction" title="Project objectives" icon={Target}/><ListCards items={objectives} numbered/></section>}
-            {(project.role || contributions.some((item) => String(item || "").trim())) && <section className={panel + " p-6 sm:p-8"}>
-              <SectionTitle eyebrow="Your part in the build" title="My role & contributions" icon={Code2}/>
-              {project.role && <div className="mb-5 rounded-2xl border border-brand/20 bg-brand/[0.08] p-4 sm:p-5">
-                <Eyebrow>My role</Eyebrow>
-                <p className="mt-2 text-base font-semibold text-white sm:text-lg">{project.role}</p>
-              </div>}
-              {contributions.some((item) => String(item || "").trim()) && <>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-white/40">What I contributed</p>
-                <ListCards items={contributions}/>
-              </>}
+            {(project.role || contributions.some((item) => String(item || "").trim())) && <section className={panel + " relative overflow-hidden p-6 sm:p-8"}>
+              <div className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full bg-brand/10 blur-3xl"/>
+              <div className="relative">
+                <SectionTitle eyebrow="Your part in the build" title="My role & contributions" icon={Code2}/>
+                <div className="grid gap-4 lg:grid-cols-[minmax(190px,0.72fr)_minmax(0,1.5fr)]">
+                  <div className="relative overflow-hidden rounded-2xl border border-brand/25 bg-gradient-to-br from-brand/20 via-brand/10 to-black/25 p-5 sm:p-6">
+                    <div className="absolute -right-5 -top-6 opacity-[0.08]"><Code2 size={112}/></div>
+                    <div className="relative">
+                      <span className="grid h-10 w-10 place-items-center rounded-xl border border-brand/30 bg-black/20 text-brand-soft"><Code2 size={19}/></span>
+                      <Eyebrow>My role</Eyebrow>
+                      <p className="mt-2 text-lg font-bold leading-snug text-white sm:text-xl">{project.role || "Project contributor"}</p>
+                      <p className="mt-3 text-xs leading-5 text-white/50">The responsibilities I took on throughout this project.</p>
+                    </div>
+                  </div>
+                  {contributions.some((item) => String(item || "").trim()) && <div className="rounded-2xl border border-white/[0.08] bg-black/20 p-5 sm:p-6">
+                    <div className="mb-4 flex items-center justify-between gap-3">
+                      <div>
+                        <Eyebrow>Hands-on work</Eyebrow>
+                        <h3 className="mt-1 text-base font-semibold text-white">What I contributed</h3>
+                      </div>
+                      <span className="rounded-full border border-brand/25 bg-brand/10 px-3 py-1 text-[10px] font-bold tabular-nums text-brand-soft">{contributions.filter((item) => String(item || "").trim()).length} ITEMS</span>
+                    </div>
+                    <div className="space-y-2.5">
+                      {contributions.filter((item) => String(item || "").trim()).map((item, index) => <div key={index} className="group flex items-start gap-3 rounded-xl border border-white/[0.06] bg-white/[0.025] p-3.5 transition hover:border-brand/25 hover:bg-brand/[0.06]">
+                        <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-brand/20 bg-brand/10 text-[10px] font-bold text-brand-soft">{String(index + 1).padStart(2,"0")}</span>
+                        <p className="pt-0.5 text-sm leading-6 text-white/70 transition group-hover:text-white/90">{item}</p>
+                      </div>)}
+                    </div>
+                  </div>}
+                </div>
+              </div>
             </section>}
             {customSections.filter((section) => section?.title || section?.content || section?.body).map((section,index) => {
               const html = sanitizeRichText(section.content || section.body || "");
@@ -219,7 +264,6 @@ export default function ProjectDetail() {
           </div>
 
           <aside className="space-y-5 lg:sticky lg:top-6">
-            {project.projectOutput && <section className={panel + " p-5"}><SectionTitle eyebrow="The result" title="Project outcome" icon={Rocket}/><p className="text-sm leading-7 text-white/70">{project.projectOutput}</p></section>}
             {tech.length > 0 && <section className={panel + " p-5"}><SectionTitle eyebrow="Built with" title="Tech & tools" icon={Layers3}/><div className="flex flex-wrap gap-2">{tech.map((item)=><span key={item} className="rounded-full border border-brand/25 bg-brand/[0.09] px-3 py-1.5 text-xs font-medium text-brand-soft/90">{item}</span>)}</div></section>}
             {team.some((member)=>String(member||"").trim()) && <section className={panel + " p-5"}><SectionTitle eyebrow="People behind the work" title="Project team" icon={Users}/><div className="space-y-3">{team.filter((member)=>String(member||"").trim()).map((member,index)=><div key={index} className="flex items-center gap-3"><span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-brand/25 bg-brand/10 text-xs font-bold text-brand-soft">{member.trim().charAt(0).toUpperCase()}</span><span className="text-sm text-white/75">{member}</span></div>)}</div></section>}
           </aside>
