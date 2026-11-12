@@ -25,20 +25,20 @@ function SectionTitle({ eyebrow, title, icon: Icon }) {
   );
 }
 
-function ListCards({ items, numbered = false }) {
+function SimpleList({ items, numbered = false }) {
   const values = (Array.isArray(items) ? items : []).filter((item) => String(item || "").trim());
   if (!values.length) return null;
   return (
-    <div className="grid gap-3 sm:grid-cols-2">
+    <ul className="space-y-3.5">
       {values.map((item, index) => (
-        <div key={index} className="flex items-start gap-3 rounded-2xl border border-white/[0.07] bg-black/20 p-4">
-          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-brand/10 text-[11px] font-bold text-brand-soft">
+        <li key={index} className="flex items-start gap-3.5 text-sm leading-7 text-white/70 sm:text-base">
+          <span className="mt-1 grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-brand/10 text-[11px] font-bold text-brand-soft">
             {numbered ? String(index + 1).padStart(2, "0") : "✦"}
           </span>
-          <p className="text-sm leading-7 text-white/70">{item}</p>
-        </div>
+          <span>{item}</span>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
 
@@ -223,39 +223,15 @@ export default function ProjectDetail() {
 
         <div className="mt-12 grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
           <div className="space-y-5">
-            {keyFeatures.length > 0 && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="What it can do" title="Key features" icon={Lightbulb}/><ListCards items={keyFeatures}/></section>}
-            {objectives.some((item) => String(item || "").trim()) && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="Purpose & direction" title="Project objectives" icon={Target}/><ListCards items={objectives} numbered/></section>}
-            {(project.role || contributions.some((item) => String(item || "").trim())) && <section className={panel + " relative overflow-hidden p-6 sm:p-8"}>
-              <div className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full bg-brand/10 blur-3xl"/>
-              <div className="relative">
-                <SectionTitle eyebrow="Your part in the build" title="My role & contributions" icon={Code2}/>
-                <div className="grid gap-4 lg:grid-cols-[minmax(190px,0.72fr)_minmax(0,1.5fr)]">
-                  <div className="relative overflow-hidden rounded-2xl border border-brand/25 bg-gradient-to-br from-brand/20 via-brand/10 to-black/25 p-5 sm:p-6">
-                    <div className="absolute -right-5 -top-6 opacity-[0.08]"><Code2 size={112}/></div>
-                    <div className="relative">
-                      <span className="grid h-10 w-10 place-items-center rounded-xl border border-brand/30 bg-black/20 text-brand-soft"><Code2 size={19}/></span>
-                      <Eyebrow>My role</Eyebrow>
-                      <p className="mt-2 text-lg font-bold leading-snug text-white sm:text-xl">{project.role || "Project contributor"}</p>
-                      <p className="mt-3 text-xs leading-5 text-white/50">The responsibilities I took on throughout this project.</p>
-                    </div>
-                  </div>
-                  {contributions.some((item) => String(item || "").trim()) && <div className="rounded-2xl border border-white/[0.08] bg-black/20 p-5 sm:p-6">
-                    <div className="mb-4 flex items-center justify-between gap-3">
-                      <div>
-                        <Eyebrow>Hands-on work</Eyebrow>
-                        <h3 className="mt-1 text-base font-semibold text-white">What I contributed</h3>
-                      </div>
-                      <span className="rounded-full border border-brand/25 bg-brand/10 px-3 py-1 text-[10px] font-bold tabular-nums text-brand-soft">{contributions.filter((item) => String(item || "").trim()).length} ITEMS</span>
-                    </div>
-                    <div className="space-y-2.5">
-                      {contributions.filter((item) => String(item || "").trim()).map((item, index) => <div key={index} className="group flex items-start gap-3 rounded-xl border border-white/[0.06] bg-white/[0.025] p-3.5 transition hover:border-brand/25 hover:bg-brand/[0.06]">
-                        <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-brand/20 bg-brand/10 text-[10px] font-bold text-brand-soft">{String(index + 1).padStart(2,"0")}</span>
-                        <p className="pt-0.5 text-sm leading-6 text-white/70 transition group-hover:text-white/90">{item}</p>
-                      </div>)}
-                    </div>
-                  </div>}
-                </div>
-              </div>
+            {keyFeatures.length > 0 && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="What it can do" title="Key features" icon={Lightbulb}/><SimpleList items={keyFeatures}/></section>}
+            {objectives.some((item) => String(item || "").trim()) && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="Purpose & direction" title="Project objectives" icon={Target}/><SimpleList items={objectives}/></section>}
+            {(project.role || contributions.some((item) => String(item || "").trim())) && <section className={panel + " p-6 sm:p-8"}>
+              <SectionTitle eyebrow="Your part in the build" title="My role & contributions" icon={Code2}/>
+              <p className="max-w-5xl text-sm leading-8 text-white/70 sm:text-base">
+                {project.role && <><span className="font-semibold text-white/90">Role:</span> {project.role}.</>}
+                {project.role && contributions.some((item) => String(item || "").trim()) && " "}
+                {contributions.some((item) => String(item || "").trim()) && <><span className="font-semibold text-white/90">Contributions:</span> {contributions.filter((item) => String(item || "").trim()).join("; ").replace(/[.;,\\s]+$/, "")}.</>}
+              </p>
             </section>}
             {customSections.filter((section) => section?.title || section?.content || section?.body).map((section,index) => {
               const html = sanitizeRichText(section.content || section.body || "");
