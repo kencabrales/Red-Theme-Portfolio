@@ -106,7 +106,7 @@ export default function ProjectDetail() {
         <header className="relative overflow-hidden rounded-[2rem] border border-brand/20 bg-gradient-to-br from-[#2b0c16] via-[#180a10] to-[#10080c] shadow-[0_28px_100px_rgba(0,0,0,0.35)]">
           <div className="absolute -right-20 -top-28 h-80 w-80 rounded-full bg-brand/20 blur-3xl"/>
           <div className="relative grid lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12">
+            <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12 fade-in-left">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="rounded-full border border-brand/35 bg-brand/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-soft">Project</span>
                 {project.year && <span className="text-xs font-medium text-white/55">{project.year}</span>}
@@ -149,7 +149,7 @@ export default function ProjectDetail() {
             </section>
           </div>
 
-          <section className={panel + " relative min-w-0 overflow-hidden p-4 sm:p-6"}>
+          <section className={panel + " relative min-w-0 overflow-hidden p-4 sm:p-6 puff-in-center"}>
             <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-brand/10 blur-3xl"/>
             <div className="relative">
               <div className="mb-2 flex flex-wrap items-end justify-between gap-3">
