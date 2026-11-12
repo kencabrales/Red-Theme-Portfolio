@@ -270,7 +270,7 @@ export default function ProjectDetail() {
           </section>
         )}
 
-        <div className="mt-9 grid gap-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(260px,0.8fr)]">
+        <div className={"mt-9 grid gap-5 " + (project.projectOutput ? "lg:grid-cols-[minmax(0,1.5fr)_minmax(260px,0.8fr)]" : "grid-cols-1")}>
           <section className={panelClass + " p-6 sm:p-8"}>
             <SectionHeading eyebrow="The story" title="Project overview" icon={Layers3} />
             {descriptionHtml ? (
@@ -280,25 +280,12 @@ export default function ProjectDetail() {
             )}
           </section>
 
-          <aside className={panelClass + " p-6 sm:p-7"}>
-            <SectionHeading eyebrow="At a glance" title="Project details" icon={Code2} />
-            <div className="space-y-4">
-              {facts.length ? facts.map((fact) => (
-                <div key={fact.label} className="flex items-start justify-between gap-4 border-b border-white/[0.07] pb-3 last:border-0 last:pb-0">
-                  <span className="text-xs text-white/40">{fact.label}</span>
-                  <span className="max-w-[60%] text-right text-sm font-semibold text-white/80">{fact.value}</span>
-                </div>
-              )) : (
-                <p className="text-sm leading-6 text-white/45">Project details will appear here when added in the admin dashboard.</p>
-              )}
-            </div>
-            {project.projectOutput && (
-              <div className="mt-6 rounded-2xl border border-brand/20 bg-brand/[0.08] p-4">
-                <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-brand-soft/75">Final output</p>
-                <p className="mt-2 text-sm leading-6 text-white/75">{project.projectOutput}</p>
-              </div>
-            )}
-          </aside>
+          {project.projectOutput && (
+            <aside className={panelClass + " flex flex-col justify-center p-6 sm:p-7"}>
+              <SectionHeading eyebrow="The result" title="Project outcome" icon={Rocket} />
+              <p className="text-sm leading-7 text-white/70">{project.projectOutput}</p>
+            </aside>
+          )}
         </div>
 
         {objectives.some((item) => String(item || "").trim()) && (
@@ -338,7 +325,7 @@ export default function ProjectDetail() {
         )}
 
         {customSections.filter((section) => section?.title || section?.content).map((section, index) => {
-          const html = sanitizeRichText(section.content || plainTextToHtml(section.body || ""));
+          const html = sanitizeRichText(plainTextToHtml(section.content || section.body || ""));
           return (
             <section key={section.id || index} className={panelClass + " mt-5 p-6 sm:p-8"}>
               <SectionHeading eyebrow={"Project notes / " + String(index + 1).padStart(2, "0")} title={section.title || "Additional information"} icon={ListChecks} />
