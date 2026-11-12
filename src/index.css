@@ -112,6 +112,25 @@ html.theme-fade body { transition: background-color 1s ease; }
   animation: puff-in-center 0.7s cubic-bezier(0.470, 0.000, 0.745, 0.715) both;
 }
 
+/* ---------- scroll-triggered project card reveals ---------- */
+.scroll-reveal {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0) scale(0.985);
+  transition: opacity 650ms cubic-bezier(0.22, 1, 0.36, 1), transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.scroll-reveal.reveal-left { transform: translate3d(-42px, 0, 0); }
+.scroll-reveal.reveal-puff { transform: scale(0.94); filter: blur(5px); }
+.scroll-reveal.is-visible { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0); }
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal, .scroll-reveal.reveal-left, .scroll-reveal.reveal-puff {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+}
+
 /* ---------- rich-text editor ---------- */
 .rich-editor-tool {
   display: grid;
