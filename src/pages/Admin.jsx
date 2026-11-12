@@ -194,7 +194,7 @@ export default function Admin() {
   const updateLineList = (field, value) => {
     setForm((current) => ({
       ...current,
-      [field]: value.split("\n").map((item) => item.trim()).filter(Boolean),
+      [field]: value.split("\n").map((item) => item.trim()),
     }));
   };
 
@@ -268,9 +268,9 @@ export default function Admin() {
         duration: form.duration.trim(),
         year: form.year.trim(),
         projectOutput: form.projectOutput.trim(),
-        objectives: form.objectives,
-        contributions: form.contributions,
-        teamMembers: form.teamMembers,
+        objectives: form.objectives.map((item) => item.trim()).filter(Boolean),
+        contributions: form.contributions.map((item) => item.trim()).filter(Boolean),
+        teamMembers: form.teamMembers.map((item) => item.trim()).filter(Boolean),
         customSections: form.customSections
           .map((section) => ({
             id: section.id || String(Date.now()),
