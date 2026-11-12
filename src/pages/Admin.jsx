@@ -42,6 +42,7 @@ const emptyForm = {
   shortDescription: "",
   fullDescription: "",
   category: "Project",
+  year: "",
   imageUrl: "",
   galleryImages: [],
   liveUrl: "",
@@ -257,6 +258,7 @@ export default function Admin() {
         description: shortDescription,
         fullDescription,
         category: form.category,
+        year: form.year.trim(),
         imageUrl,
         galleryImages: form.galleryImages.filter(Boolean),
         liveUrl: form.liveUrl.trim(),
@@ -321,6 +323,7 @@ export default function Admin() {
       shortDescription: project.shortDescription || project.description || "",
       fullDescription: project.fullDescription || plainTextToHtml(project.description || ""),
       category: project.category || "Project",
+      year: project.year || "",
       imageUrl: project.imageUrl || "",
       galleryImages: Array.isArray(project.galleryImages) ? project.galleryImages : [],
       liveUrl: project.liveUrl || "",
@@ -485,9 +488,16 @@ export default function Admin() {
                 </p>
               </div>
 
-              <div>
-                <label className="mb-2 block text-sm font-medium text-white/75">Project type</label>
-                <input name="projectType" value={form.projectType} onChange={handleChange} placeholder="e.g. Capstone project, Course project, Personal project" className={inputClass} />
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-white/75">Project year</label>
+                  <input name="year" type="number" min="1900" max="2100" value={form.year} onChange={handleChange} placeholder="e.g. 2026" className={inputClass} />
+                  <p className="mt-1 text-xs text-white/35">Displayed beside the Project label on the detail page.</p>
+                </div>
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-white/75">Project type</label>
+                  <input name="projectType" value={form.projectType} onChange={handleChange} placeholder="e.g. Capstone project, Course project, Personal project" className={inputClass} />
+                </div>
               </div>
 
               <div className="rounded-2xl border border-brand/20 bg-brand/[0.045] p-4 sm:p-5">
