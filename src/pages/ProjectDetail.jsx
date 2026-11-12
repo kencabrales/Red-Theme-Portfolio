@@ -167,7 +167,6 @@ export default function ProjectDetail() {
                         const offset = index - activeImage;
                         const distance = Math.abs(offset);
                         if (distance > 2) return null;
-
                         return (
                           <button
                             key={image}
@@ -185,19 +184,9 @@ export default function ProjectDetail() {
                               borderColor: distance === 0 ? "rgba(190,55,82,0.65)" : "rgba(255,255,255,0.10)",
                             }}
                           >
-                            <img
-                              src={image}
-                              alt=""
-                              aria-hidden="true"
-                              className="absolute inset-0 h-full w-full scale-125 object-cover opacity-65 blur-2xl"
-                            />
+                            <img src={image} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full scale-125 object-cover opacity-65 blur-2xl"/>
                             <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-black/35"/>
-                            <img
-                              src={image}
-                              alt={project.title + " gallery image " + (index + 1)}
-                              draggable="false"
-                              className={"relative z-10 h-full w-full select-none " + (index === activeImage ? "object-contain" : "object-cover")}
-                            />
+                            <img src={image} alt={project.title + " gallery image " + (index + 1)} draggable="false" className={"relative z-10 h-full w-full select-none " + (index === activeImage ? "object-contain" : "object-cover")}/>
                             {index === activeImage && <>
                               <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-20 bg-gradient-to-t from-black/65 to-transparent"/>
                               <span className="pointer-events-none absolute bottom-3 left-4 z-30 text-[10px] font-bold uppercase tracking-[0.18em] text-white/85 drop-shadow">Preview / {String(index + 1).padStart(2,"0")}</span>
@@ -206,26 +195,81 @@ export default function ProjectDetail() {
                           </button>
                         );
                       })}
-
-                      <button
-                        type="button"
-                        onClick={() => moveImage(-1)}
-                        aria-label="Show previous project image"
-                        className="absolute left-0 top-1/2 z-50 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/75 text-white shadow-xl backdrop-blur transition hover:scale-105 hover:border-brand/50 hover:bg-brand sm:left-1 sm:h-12 sm:w-12"
-                      >
-                        <ChevronLeft size={25}/>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => moveImage(1)}
-                        aria-label="Show next project image"
-                        className="absolute right-0 top-1/2 z-50 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/75 text-white shadow-xl backdrop-blur transition hover:scale-105 hover:border-brand/50 hover:bg-brand sm:right-1 sm:h-12 sm:w-12"
-                      >
-                        <ChevronRight size={25}/>
-                      </button>
+                      <button type="button" onClick={() => moveImage(-1)} aria-label="Show previous project image" className="absolute left-0 top-1/2 z-50 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/75 text-white shadow-xl backdrop-blur transition hover:scale-105 hover:border-brand/50 hover:bg-brand sm:left-1 sm:h-12 sm:w-12"><ChevronLeft size={25}/></button>
+                      <button type="button" onClick={() => moveImage(1)} aria-label="Show next project image" className="absolute right-0 top-1/2 z-50 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/75 text-white shadow-xl backdrop-blur transition hover:scale-105 hover:border-brand/50 hover:bg-brand sm:right-1 sm:h-12 sm:w-12"><ChevronRight size={25}/></button>
                     </div>
                   ) : (
-assName="mt-3 max-w-xs text-xs leading-5 text-white/50">The responsibilities I took on throughout this project.</p>
+                    <div className="group relative mx-auto mt-4 max-w-4xl overflow-hidden rounded-[1.5rem] border border-brand/25 bg-[#130b12] shadow-[0_24px_70px_rgba(0,0,0,0.4)]">
+                      <img src={galleryImages[0]} alt={project.title + " gallery image"} className="aspect-[16/10] max-h-[500px] w-full cursor-zoom-in object-contain" onClick={() => setLightboxOpen(true)}/>
+                      <button type="button" onClick={() => setLightboxOpen(true)} aria-label="Expand project image" className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full border border-white/20 bg-black/65 text-white opacity-100 backdrop-blur transition hover:bg-brand sm:opacity-0 sm:group-hover:opacity-100"><Maximize2 size={15}/></button>
+                    </div>
+                  )}
+
+                  {galleryImages.length > 1 && (
+                    <div className="mt-3 flex items-center justify-center gap-2">
+                      {galleryImages.map((image,index) => (
+                        <button
+                          key={image}
+                          type="button"
+                          onClick={() => setActiveImage(index)}
+                          aria-label={"Go to project image " + (index + 1)}
+                          aria-current={activeImage === index ? "true" : undefined}
+                          className={"h-1.5 rounded-full transition-all duration-300 " + (activeImage === index ? "w-7 bg-brand-soft" : "w-1.5 bg-white/25 hover:bg-white/50")}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="flex aspect-[16/10] flex-col items-center justify-center rounded-2xl border border-dashed border-white/15 bg-black/20 px-5 text-center">
+                  <p className="text-sm font-semibold text-white/65">No gallery images yet</p>
+                  <p className="mt-1 max-w-xs text-xs leading-5 text-white/35">Project screenshots and visuals will appear here when added by the administrator.</p>
+                </div>
+              )}
+            </div>
+          </section>
+        </section>
+
+        <div className="mt-12 space-y-5">
+          <div className="grid gap-5 md:grid-cols-2">
+            {keyFeatures.length > 0 && (
+              <section className={panel + " min-w-0 p-6 sm:p-8"}>
+                <SectionTitle eyebrow="What it can do" title="Key features"/>
+                <SimpleList items={keyFeatures} bulleted={project.keyFeaturesBulleted === true}/>
+              </section>
+            )}
+            {objectives.some((item) => String(item || "").trim()) && (
+              <section className={panel + " min-w-0 p-6 sm:p-8"}>
+                <SectionTitle eyebrow="Purpose & direction" title="Project objectives"/>
+                <SimpleList items={objectives} bulleted={project.objectivesBulleted === true}/>
+              </section>
+            )}
+          </div>
+
+          {(project.role || contributions.some((item) => String(item || "").trim())) && (
+            <section className={panel + " relative isolate overflow-hidden p-6 sm:p-8"}>
+              <div className="pointer-events-none absolute -right-12 -top-16 -z-10 text-brand/[0.055]">
+                <Code2 size={240} strokeWidth={1.1}/>
+              </div>
+              <div className="mb-6 flex items-center gap-3">
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-brand/30 bg-gradient-to-br from-brand/25 to-brand/5 text-brand-soft shadow-lg shadow-brand/10">
+                  <Code2 size={22}/>
+                </span>
+                <div>
+                  <Eyebrow>Your part in the build</Eyebrow>
+                  <h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">My role & contributions</h2>
+                </div>
+              </div>
+
+              <div className="grid gap-4 lg:grid-cols-[minmax(220px,0.72fr)_minmax(0,1.5fr)]">
+                <div className="relative overflow-hidden rounded-2xl border border-brand/25 bg-gradient-to-br from-brand/20 via-brand/10 to-black/25 p-5 sm:p-6">
+                  <div className="pointer-events-none absolute -right-5 -top-5 text-white/[0.07]">
+                    <Code2 size={112} strokeWidth={1.2}/>
+                  </div>
+                  <div className="relative">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-soft/80">My role</span>
+                    <p className="mt-3 text-xl font-bold leading-snug text-white sm:text-2xl">{project.role || "Project contributor"}</p>
+                    <p className="mt-3 max-w-xs text-xs leading-5 text-white/50">The responsibilities I took on throughout this project.</p>
                   </div>
                 </div>
 
