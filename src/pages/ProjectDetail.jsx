@@ -53,6 +53,16 @@ export default function ProjectDetail() {
   useEffect(() => {
     setActiveImage(0);
     setLightboxOpen(false);
+
+    const root = document.documentElement;
+    root.classList.remove("project-page-enter");
+    void root.offsetWidth;
+    root.classList.add("project-page-enter");
+    const timer = window.setTimeout(() => root.classList.remove("project-page-enter"), 1500);
+    return () => {
+      window.clearTimeout(timer);
+      root.classList.remove("project-page-enter");
+    };
   }, [id]);
 
   useEffect(() => {
@@ -95,9 +105,16 @@ export default function ProjectDetail() {
   const moveImage = (direction) => setActiveImage((current) => (current + direction + galleryImages.length) % galleryImages.length);
 
   return (
-    <main className="min-h-screen overflow-hidden px-5 pb-20 pt-7 md:px-8 md:pt-10">
-      <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(ellipse_at_12%_8%,rgb(var(--glow)/0.19),transparent_32%),radial-gradient(ellipse_at_90%_42%,rgb(var(--glow)/0.1),transparent_34%)]" />
-      <div className="mx-auto max-w-7xl">
+    <main className="project-detail-page relative isolate min-h-screen overflow-hidden px-5 pb-20 pt-7 md:px-8 md:pt-10">
+      <div aria-hidden="true" className="project-cosmos pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <div className="project-nebula project-nebula-one absolute -left-[22rem] top-[8%] h-[42rem] w-[42rem] rounded-full" />
+        <div className="project-nebula project-nebula-two absolute -right-[24rem] top-[34%] h-[48rem] w-[48rem] rounded-full" />
+        <div className="project-nebula project-nebula-three absolute left-[22%] top-[68%] h-[36rem] w-[36rem] rounded-full" />
+        <div className="project-starfield absolute inset-0" />
+        <div className="project-cosmic-orbit absolute left-1/2 top-[42rem] h-[min(86vw,74rem)] w-[min(86vw,74rem)] -translate-x-1/2 rounded-full" />
+      </div>
+      <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_12%_8%,rgb(var(--glow)/0.19),transparent_32%),radial-gradient(ellipse_at_90%_42%,rgb(var(--glow)/0.1),transparent_34%)]" />
+      <div className="relative z-10 mx-auto max-w-7xl">
         <div className="mb-7 flex flex-wrap items-center gap-3 text-sm text-white/50">
           <button onClick={() => navigate(-1)} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 transition hover:border-brand/40 hover:text-white"><ArrowLeft size={15}/> Back</button>
           <Link to="/#portfolio" className="hover:text-white">Portfolio</Link><span className="text-white/25">/</span><span className="max-w-[50vw] truncate text-white/80">{project.title}</span>
