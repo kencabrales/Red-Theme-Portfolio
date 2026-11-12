@@ -48,7 +48,6 @@ const emptyForm = {
   repositoryUrl: "",
   projectType: "",
   role: "",
-  projectOutput: "",
   keyFeatures: [],
   objectives: [],
   contributions: [],
@@ -264,7 +263,6 @@ export default function Admin() {
         repositoryUrl: form.repositoryUrl.trim(),
         projectType: form.projectType.trim(),
         role: form.role.trim(),
-        projectOutput: form.projectOutput.trim(),
         keyFeatures: form.keyFeatures.map((item) => item.trim()).filter(Boolean),
         objectives: form.objectives.map((item) => item.trim()).filter(Boolean),
         contributions: form.contributions.map((item) => item.trim()).filter(Boolean),
@@ -329,7 +327,6 @@ export default function Admin() {
       repositoryUrl: project.repositoryUrl || "",
       projectType: project.projectType || "",
       role: project.role || "",
-      projectOutput: project.projectOutput || "",
       keyFeatures: Array.isArray(project.keyFeatures) ? project.keyFeatures : [],
       objectives: Array.isArray(project.objectives) ? project.objectives : [],
       contributions: Array.isArray(project.contributions) ? project.contributions : [],
@@ -506,10 +503,6 @@ export default function Admin() {
                 </div>
               </div>
 
-              <div>
-                <label className="mb-2 block text-sm font-medium text-white/75">Project output / result</label>
-                <textarea name="projectOutput" rows={2} value={form.projectOutput} onChange={handleChange} placeholder="What was produced, delivered, or achieved?" className={inputClass} />
-              </div>
 
               <div>
                 <label className="mb-2 block text-sm font-medium text-white/75">Key features</label>
