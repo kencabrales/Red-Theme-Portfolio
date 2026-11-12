@@ -50,7 +50,9 @@ const emptyForm = {
   projectType: "",
   role: "",
   keyFeatures: [],
+  keyFeaturesBulleted: false,
   objectives: [],
+  objectivesBulleted: false,
   contributions: [],
   teamMembers: [],
   customSections: [],
@@ -266,7 +268,9 @@ export default function Admin() {
         projectType: form.projectType.trim(),
         role: form.role.trim(),
         keyFeatures: form.keyFeatures.map((item) => item.trim()).filter(Boolean),
+        keyFeaturesBulleted: form.keyFeaturesBulleted,
         objectives: form.objectives.map((item) => item.trim()).filter(Boolean),
+        objectivesBulleted: form.objectivesBulleted,
         contributions: form.contributions.map((item) => item.trim()).filter(Boolean),
         teamMembers: form.teamMembers.map((item) => item.trim()).filter(Boolean),
         customSections: form.customSections
@@ -331,7 +335,9 @@ export default function Admin() {
       projectType: project.projectType || "",
       role: project.role || "",
       keyFeatures: Array.isArray(project.keyFeatures) ? project.keyFeatures : [],
+      keyFeaturesBulleted: project.keyFeaturesBulleted === true,
       objectives: Array.isArray(project.objectives) ? project.objectives : [],
+      objectivesBulleted: project.objectivesBulleted === true,
       contributions: Array.isArray(project.contributions) ? project.contributions : [],
       teamMembers: Array.isArray(project.teamMembers) ? project.teamMembers : [],
       customSections: Array.isArray(project.customSections) ? project.customSections : [],
@@ -518,6 +524,10 @@ export default function Admin() {
                 <label className="mb-2 block text-sm font-medium text-white/75">Key features</label>
                 <textarea rows={4} value={form.keyFeatures.join("\n")} onChange={(event) => updateLineList("keyFeatures", event.target.value)} placeholder={"One feature per line\nExample: Secure user login and authentication"} className={inputClass} />
                 <p className="mt-1 text-xs text-white/35">List the main functions or capabilities visitors should know about.</p>
+                <label className="mt-3 inline-flex cursor-pointer items-center gap-2.5 text-sm text-white/65">
+                  <input type="checkbox" checked={form.keyFeaturesBulleted} onChange={(event) => setForm((current) => ({ ...current, keyFeaturesBulleted: event.target.checked }))} className="h-4 w-4 accent-[var(--color-brand)]"/>
+                  <span>Show as bulleted list on project page</span>
+                </label>
               </div>
 
               <div className="grid gap-4 lg:grid-cols-2">
@@ -525,6 +535,10 @@ export default function Admin() {
                   <label className="mb-2 block text-sm font-medium text-white/75">Project objectives</label>
                   <textarea rows={5} value={form.objectives.join("\n")} onChange={(event) => updateLineList("objectives", event.target.value)} placeholder={"One objective per line\nExample: Build a responsive dashboard"} className={inputClass} />
                   <p className="mt-1 text-xs text-white/35">Enter one objective per line.</p>
+                  <label className="mt-3 inline-flex cursor-pointer items-center gap-2.5 text-sm text-white/65">
+                    <input type="checkbox" checked={form.objectivesBulleted} onChange={(event) => setForm((current) => ({ ...current, objectivesBulleted: event.target.checked }))} className="h-4 w-4 accent-[var(--color-brand)]"/>
+                    <span>Show as bulleted list on project page</span>
+                  </label>
                 </div>
               </div>
 
