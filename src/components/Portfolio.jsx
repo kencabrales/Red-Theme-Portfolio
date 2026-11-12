@@ -153,8 +153,8 @@ export default function Portfolio() {
                       </div>
                     </div>
 
-                    <div className="pointer-events-none absolute inset-0 z-10 hidden items-center justify-center bg-black/75 p-6 opacity-0 transition duration-300 ease-out sm:flex sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
-                      <div className="pointer-events-auto flex flex-wrap items-center justify-center gap-3 translate-y-3 transition duration-300 group-hover:translate-y-0 group-focus-within:translate-y-0">
+                    <div className="pointer-events-none absolute inset-0 z-10 hidden items-center justify-center bg-black/75 p-6 opacity-0 transition duration-300 ease-out sm:flex sm:group-hover:pointer-events-auto sm:group-focus-within:pointer-events-auto sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
+                      <div className="pointer-events-none flex translate-y-3 flex-wrap items-center justify-center gap-3 transition duration-300 group-hover:pointer-events-auto group-focus-within:pointer-events-auto group-hover:translate-y-0 group-focus-within:translate-y-0">
                         {project.liveUrl && (
                           <a
                             href={project.liveUrl}
