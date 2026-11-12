@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useId, useRef } from "react";
 import {
   Bold,
   Italic,
@@ -19,7 +19,8 @@ const sizeOptions = [
   { label: "32 px", value: "7" },
 ];
 
-export default function RichTextEditor({ value, onChange }) {
+export default function RichTextEditor({ value, onChange, label = "Rich text content" }) {
+  const editorId = useId().replace(/:/g, "");
   const editorRef = useRef(null);
   const savedRange = useRef(null);
 
@@ -111,9 +112,9 @@ export default function RichTextEditor({ value, onChange }) {
 
         <span className="mx-1 h-6 w-px bg-white/15" />
 
-        <label className="sr-only" htmlFor="project-font-size">Text size</label>
+        <label className="sr-only" htmlFor={`${editorId}-font-size`}>Text size</label>
         <select
-          id="project-font-size"
+          id={`${editorId}-font-size`}
           defaultValue="3"
           onMouseDown={saveSelection}
           onChange={(event) => applyCommand("fontSize", event.target.value)}
@@ -124,9 +125,9 @@ export default function RichTextEditor({ value, onChange }) {
           ))}
         </select>
 
-        <label className="sr-only" htmlFor="project-block-format">Paragraph style</label>
+        <label className="sr-only" htmlFor={`${editorId}-block-format`}>Paragraph style</label>
         <select
-          id="project-block-format"
+          id={`${editorId}-block-format`}
           defaultValue="p"
           onMouseDown={saveSelection}
           onChange={(event) => applyCommand("formatBlock", "<" + event.target.value + ">")}
@@ -177,9 +178,9 @@ export default function RichTextEditor({ value, onChange }) {
         contentEditable
         suppressContentEditableWarning
         role="textbox"
-        aria-label="Full project description"
+        aria-label={label}
         aria-multiline="true"
-        data-placeholder="Write the complete project description here. Select text to format it..."
+        data-placeholder={`Write ${label.toLowerCase()} here. Select text to format it...`}
         className="rich-editor-surface"
         onInput={syncValue}
         onKeyUp={saveSelection}
