@@ -131,23 +131,74 @@ export default function ProjectDetail() {
           <div className="h-1 w-full bg-gradient-to-r from-brand via-brand-soft/80 to-transparent"/>
         </header>
 
-        {galleryImages.length > 1 && <section className="mt-12">
-          <div className="mb-5 flex items-end justify-between gap-4"><div><Eyebrow>Visual documentation</Eyebrow><h2 className="mt-1 text-2xl font-bold text-white sm:text-3xl">A closer look</h2><p className="mt-2 text-sm text-white/50">Screens, concepts, and moments from the build.</p></div><span className="text-xs tabular-nums text-white/40">{String(activeImage + 1).padStart(2,"0")} / {String(galleryImages.length).padStart(2,"0")}</span></div>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {galleryImages.map((image, index) => <button key={image} type="button" onClick={() => {setActiveImage(index);setLightboxOpen(true);}} className={(index === 0 ? "sm:col-span-2 sm:row-span-2 " : "") + "group relative min-h-48 overflow-hidden rounded-2xl border border-white/10 bg-black/25 text-left"}>
-              <img src={image} alt={project.title + " gallery image " + (index + 1)} loading="lazy" className={(index === 0 ? "aspect-[16/10] sm:aspect-auto sm:h-full " : "aspect-[16/10] ") + "w-full object-cover transition duration-500 group-hover:scale-[1.035]"}/>
-              <span className="absolute bottom-3 left-3 rounded-full border border-white/15 bg-black/60 px-3 py-1.5 text-[10px] font-semibold text-white/80 backdrop-blur">IMAGE {String(index + 1).padStart(2,"0")}</span>
-              <span className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full border border-white/20 bg-black/55 text-white opacity-0 transition group-hover:opacity-100"><Maximize2 size={15}/></span>
-            </button>)}
+        <section className="mt-7 grid items-stretch gap-5 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
+          <div className="flex flex-col gap-5">
+            <section className={panel + " p-5 sm:p-6"}>
+              <Eyebrow>Project classification</Eyebrow>
+              <h2 className="mt-2 text-xl font-bold text-white sm:text-2xl">{projectType}</h2>
+              <p className="mt-2 text-sm leading-6 text-white/50">What kind of work this project represents.</p>
+            </section>
+
+            <section className={panel + " flex-1 p-5 sm:p-7"}>
+              <SectionTitle eyebrow="Project overview" title="Description" icon={Layers3}/>
+              {descriptionHtml ? (
+                <div className="rich-content text-sm leading-7 text-white/75 sm:text-base" dangerouslySetInnerHTML={{__html:descriptionHtml}}/>
+              ) : (
+                <p className="text-sm leading-7 text-white/50">A detailed project description has not been added yet.</p>
+              )}
+            </section>
           </div>
-        </section>}
+
+          <section className={panel + " min-w-0 p-4 sm:p-5"}>
+            <div className="mb-4 flex items-end justify-between gap-3">
+              <div>
+                <Eyebrow>Visual documentation</Eyebrow>
+                <h2 className="mt-1 text-xl font-bold text-white sm:text-2xl">Project gallery</h2>
+              </div>
+              {galleryImages.length > 0 && <span className="shrink-0 text-xs tabular-nums text-white/45">{String(activeImage + 1).padStart(2,"0")} / {String(galleryImages.length).padStart(2,"0")}</span>}
+            </div>
+
+            {galleryImages.length > 0 ? (
+              <>
+                <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-black/35">
+                  <img
+                    src={galleryImages[activeImage]}
+                    alt={project.title + " gallery image " + (activeImage + 1)}
+                    className="aspect-[16/10] max-h-[620px] w-full cursor-zoom-in object-contain"
+                    onClick={() => setLightboxOpen(true)}
+                  />
+                  {galleryImages.length > 1 && <>
+                    <button type="button" onClick={() => moveImage(-1)} aria-label="Previous gallery image" className="absolute left-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/15 bg-black/70 text-white transition hover:bg-brand sm:h-11 sm:w-11"><ChevronLeft size={21}/></button>
+                    <button type="button" onClick={() => moveImage(1)} aria-label="Next gallery image" className="absolute right-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/15 bg-black/70 text-white transition hover:bg-brand sm:h-11 sm:w-11"><ChevronRight size={21}/></button>
+                  </>}
+                  <button type="button" onClick={() => setLightboxOpen(true)} className="absolute bottom-3 right-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/65 px-3 py-2 text-[11px] font-semibold text-white/85 opacity-100 backdrop-blur transition hover:bg-brand sm:opacity-0 sm:group-hover:opacity-100"><Maximize2 size={13}/> Expand image</button>
+                </div>
+
+                {galleryImages.length > 1 && (
+                  <div className="mt-3 flex gap-2.5 overflow-x-auto pb-1">
+                    {galleryImages.map((image,index) => (
+                      <button
+                        key={image}
+                        type="button"
+                        onClick={() => setActiveImage(index)}
+                        aria-label={"Show gallery image " + (index + 1)}
+                        aria-pressed={activeImage === index}
+                        className={"relative h-[68px] w-[92px] shrink-0 overflow-hidden rounded-lg border-2 transition sm:h-[76px] sm:w-[108px] " + (activeImage === index ? "border-brand opacity-100" : "border-white/10 opacity-55 hover:opacity-100")}
+                      >
+                        <img src={image} alt="" loading="lazy" className="h-full w-full object-cover"/>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="flex aspect-[16/10] items-center justify-center rounded-2xl border border-dashed border-white/15 bg-black/20 text-sm text-white/40">No project images have been added yet.</div>
+            )}
+          </section>
+        </section>
 
         <div className="mt-12 grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
           <div className="space-y-5">
-            <section className={panel + " p-6 sm:p-8"}>
-              <SectionTitle eyebrow="Project background" title="The story behind the work" icon={Layers3}/>
-              {descriptionHtml ? <div className="rich-content text-white/75" dangerouslySetInnerHTML={{__html:descriptionHtml}}/> : <p className="text-sm leading-7 text-white/50">A detailed overview has not been added yet.</p>}
-            </section>
             {keyFeatures.length > 0 && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="What it can do" title="Key features" icon={Lightbulb}/><ListCards items={keyFeatures}/></section>}
             {objectives.some((item) => String(item || "").trim()) && <section className={panel + " p-6 sm:p-8"}><SectionTitle eyebrow="Purpose & direction" title="Project objectives" icon={Target}/><ListCards items={objectives} numbered/></section>}
             {(project.role || contributions.some((item) => String(item || "").trim())) && <section className={panel + " p-6 sm:p-8"}>
