@@ -308,7 +308,15 @@ export default function ProjectDetail() {
           </div>
 
           {(project.role || contributions.some((item) => String(item || "").trim())) && (
-            <section className={panel + " relative isolate overflow-hidden p-6 sm:p-8"}>
+            <ScrollReveal className="relative">
+            <section className={panel + " relative isolate overflow-visible p-6 pt-9 sm:p-8 sm:pt-10"}>
+              <div className="role-cert-badge absolute -top-4 right-5 z-20 flex origin-top-right items-center gap-2 rounded-xl border border-[#f5d77a]/70 bg-gradient-to-br from-[#f8e7a5] via-[#d6ad4f] to-[#9b7028] px-3.5 py-2 text-[#39270d] shadow-[0_8px_24px_rgba(0,0,0,0.45),inset_0_1px_1px_rgba(255,255,255,0.8),inset_0_-2px_3px_rgba(91,58,13,0.35)] transition-transform duration-300 hover:scale-110 sm:right-8">
+                <span className="flex flex-col leading-none">
+                  <span className="text-[8px] font-black tracking-[0.28em] opacity-75">CERTIFIED</span>
+                  <span className="mt-1 text-[10px] font-extrabold uppercase tracking-[0.16em]">My Role</span>
+                </span>
+                <span className="grid h-7 w-7 place-items-center rounded-full border border-[#72501d]/50 bg-[#f7e6aa]/45 text-[12px] font-black shadow-inner">★</span>
+              </div>
               <div className="mb-6">
                 <Eyebrow>Your part in the build</Eyebrow>
                 <h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">My role & contributions</h2>
@@ -348,6 +356,7 @@ export default function ProjectDetail() {
                 )}
               </div>
             </section>
+            </ScrollReveal>
           )}
 
           {customSections.some((section) => section?.title || section?.content || section?.body) && (
