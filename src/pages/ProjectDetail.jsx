@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft, ArrowRight, ChevronLeft, ChevronRight,
-  Code2, ExternalLink, GitBranch, ListChecks,
+  Award, Code2, ExternalLink, GitBranch, ListChecks,
   Maximize2, Target, Users, X,
 } from "lucide-react";
 import { useProjects } from "../hooks/useProjects";
@@ -310,12 +310,10 @@ export default function ProjectDetail() {
           {(project.role || contributions.some((item) => String(item || "").trim())) && (
             <ScrollReveal className="relative">
             <section className={panel + " relative isolate overflow-visible p-6 pt-9 sm:p-8 sm:pt-10"}>
-              <div className="role-cert-badge absolute -top-4 right-5 z-20 flex origin-top-right items-center gap-2 rounded-xl border border-[#f5d77a]/70 bg-gradient-to-br from-[#f8e7a5] via-[#d6ad4f] to-[#9b7028] px-3.5 py-2 text-[#39270d] shadow-[0_8px_24px_rgba(0,0,0,0.45),inset_0_1px_1px_rgba(255,255,255,0.8),inset_0_-2px_3px_rgba(91,58,13,0.35)] transition-transform duration-300 hover:scale-110 sm:right-8">
-                <span className="flex flex-col leading-none">
-                  <span className="text-[8px] font-black tracking-[0.28em] opacity-75">CERTIFIED</span>
-                  <span className="mt-1 text-[10px] font-extrabold uppercase tracking-[0.16em]">My Role</span>
-                </span>
-                <span className="grid h-7 w-7 place-items-center rounded-full border border-[#72501d]/50 bg-[#f7e6aa]/45 text-[12px] font-black shadow-inner">★</span>
+              <div className="role-cert-badge absolute -top-5 right-5 z-20 flex h-[88px] w-[76px] origin-top-right items-center justify-center transition-transform duration-300 hover:scale-110 sm:-top-6 sm:right-8 sm:h-[100px] sm:w-[86px]" aria-label="Certified role badge">
+                <span className="role-cert-ribbon role-cert-ribbon-left" />
+                <span className="role-cert-ribbon role-cert-ribbon-right" />
+                <Award className="relative z-10 drop-shadow-[0_5px_5px_rgba(0,0,0,0.3)]" size={82} strokeWidth={2.4} fill="#fbbf24" color="#f59e0b"/>
               </div>
               <div className="mb-6">
                 <Eyebrow>Your part in the build</Eyebrow>
