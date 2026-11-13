@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft, ArrowRight, ChevronLeft, ChevronRight,
-  Award, Code2, ExternalLink, GitBranch, ListChecks, Star,
+  Code2, ExternalLink, GitBranch, ListChecks,
   Maximize2, Target, Users, X,
 } from "lucide-react";
 import { useProjects } from "../hooks/useProjects";
@@ -316,13 +316,7 @@ export default function ProjectDetail() {
               </div>
 
               <div className="grid gap-4 lg:grid-cols-[minmax(220px,0.72fr)_minmax(0,1.5fr)]">
-                <div className="relative overflow-visible rounded-2xl border border-brand/25 bg-gradient-to-br from-brand/20 via-brand/10 to-black/25 p-5 pt-9 sm:p-6 sm:pt-10">
-                  <div className="role-cert-badge absolute -top-5 right-4 z-20 flex h-[88px] w-[76px] origin-top-right items-center justify-center transition-transform duration-300 hover:scale-110 sm:-top-6 sm:right-6 sm:h-[100px] sm:w-[86px]" aria-label="Certified role badge">
-                    <span className="role-cert-ribbon role-cert-ribbon-left" />
-                    <span className="role-cert-ribbon role-cert-ribbon-right" />
-                    <Award className="relative z-10 drop-shadow-[0_5px_5px_rgba(0,0,0,0.3)]" size={82} strokeWidth={2.4} fill="#fbbf24" color="#f59e0b"/>
-                    <Star className="absolute left-1/2 top-[34%] z-20 -translate-x-1/2 -translate-y-1/2" size={27} fill="#f59e0b" color="#d97706" strokeWidth={1.8}/>
-                  </div>
+                <div className="relative overflow-hidden rounded-2xl border border-brand/25 bg-gradient-to-br from-brand/20 via-brand/10 to-black/25 p-5 sm:p-6">
                   <div className="relative">
                     <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-soft/80">My role</span>
                     <p className="mt-3 text-xl font-bold leading-snug text-white sm:text-2xl">{project.role || "Project contributor"}</p>
