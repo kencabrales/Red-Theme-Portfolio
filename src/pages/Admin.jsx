@@ -194,6 +194,22 @@ export default function Admin() {
     }));
   };
 
+  const addTeamMember = () => {
+    setForm((current) => ({ ...current, teamMembers: [...current.teamMembers, { name: "", role: "" }] }));
+  };
+
+  const updateTeamMember = (index, field, value) => {
+    setForm((current) => ({
+      ...current,
+      teamMembers: current.teamMembers.map((member, memberIndex) =>
+        memberIndex === index ? { ...(typeof member === "string" ? { name: member, role: "" } : member), [field]: value } : member
+      ),
+    }));
+  };
+
+  const removeTeamMember = (index) => {
+    setForm((current) => ({ ...current, teamMembers: current.teamMembers.filter((_, memberIndex) => memberIndex !== index) }));
+  };
   const updateLineList = (field, value) => {
     setForm((current) => ({
       ...current,
@@ -276,7 +292,7 @@ export default function Admin() {
         objectivesContent: sanitizeRichText(form.objectivesContent),
         objectivesBulleted: form.objectivesBulleted,
         contributions: form.contributions.map((item) => item.trim()).filter(Boolean),
-        teamMembers: form.teamMembers.map((item) => item.trim()).filter(Boolean),
+        teamMembers: form.teamMembers.map((member) => ({ name: (typeof member === "string" ? member : member.name || "").trim(), role: (typeof member === "string" ? "" : member.role || "").trim() })).filter((member) => member.name),
         customSections: form.customSections
           .map((section) => ({
             id: section.id || String(Date.now()),
@@ -345,7 +361,7 @@ export default function Admin() {
       objectivesContent: project.objectivesContent || plainTextToHtml((Array.isArray(project.objectives) ? project.objectives : []).join("\n")),
       objectivesBulleted: project.objectivesBulleted === true,
       contributions: Array.isArray(project.contributions) ? project.contributions : [],
-      teamMembers: Array.isArray(project.teamMembers) ? project.teamMembers : [],
+      teamMembers: Array.isArray(project.teamMembers) ? project.teamMembers.map((member) => typeof member === "string" ? { name: member, role: "" } : { name: member?.name || "", role: member?.role || "" }) : [],
       customSections: Array.isArray(project.customSections) ? project.customSections : [],
       techUsed: legacyTech,
     });
@@ -548,8 +564,27 @@ export default function Admin() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-white/75">Project team members</label>
-                <textarea rows={3} value={form.teamMembers.join("\n")} onChange={(event) => updateLineList("teamMembers", event.target.value)} placeholder={"One name per line\nAdd team members or collaborators"} className={inputClass} />
+                <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <label className="block text-sm font-medium text-white/75">Project team members</label>
+                    <p className="mt-1 text-xs text-white/40">Add each contributor's name and their role in the project.</p>
+                  </div>
+                  <button type="button" onClick={addTeamMember} className="inline-flex items-center gap-2 rounded-lg border border-brand/30 bg-brand/10 px-3 py-2 text-xs font-semibold text-brand-soft transition hover:bg-brand/20">
+                    <Plus size={14}/> Add member
+                  </button>
+                </div>
+                <div className="space-y-3">
+                  {form.teamMembers.map((member, index) => (
+                    <div key={index} className="grid gap-2 rounded-xl border border-white/10 bg-white/[0.025] p-3 sm:grid-cols-[1fr_1fr_auto]">
+                      <input value={typeof member === "string" ? member : member.name || ""} onChange={(event) => updateTeamMember(index, "name", event.target.value)} placeholder="Contributor name (e.g. Daniel)" className={inputClass}/>
+                      <input value={typeof member === "string" ? "" : member.role || ""} onChange={(event) => updateTeamMember(index, "role", event.target.value)} placeholder="Role (e.g. Quality Assurance)" className={inputClass}/>
+                      <button type="button" onClick={() => removeTeamMember(index)} aria-label={"Remove team member " + (index + 1)} className="grid h-11 w-11 place-items-center rounded-xl text-white/45 transition hover:bg-red-500/15 hover:text-red-300">
+                        <X size={16}/>
+                      </button>
+                    </div>
+                  ))}
+                  {form.teamMembers.length === 0 && <p className="rounded-xl border border-dashed border-white/10 px-4 py-5 text-center text-xs text-white/35">No team members added yet.</p>}
+                </div>
               </div>
 
               <div className="rounded-2xl border border-white/10 bg-black/10 p-4">
