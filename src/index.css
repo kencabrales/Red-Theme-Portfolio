@@ -131,43 +131,6 @@ html.theme-fade body { transition: background-color 1s ease; }
   }
 }
 
-/* ---------- award medal role badge ---------- */
-@keyframes role-badge-stamp {
-  0% { translate: 0 -36px; scale: 1.22; opacity: 0; filter: blur(2px); }
-  62% { translate: 0 3px; scale: 0.94; opacity: 1; filter: blur(0); }
-  82% { translate: 0 -2px; scale: 1.04; }
-  100% { translate: 0 0; scale: 1; opacity: 1; filter: blur(0); }
-}
-
-.scroll-reveal.is-visible .role-cert-badge {
-  animation: role-badge-stamp 680ms cubic-bezier(0.2, 0.85, 0.25, 1.15) both;
-}
-
-.role-cert-ribbon {
-  position: absolute;
-  z-index: 0;
-  bottom: 0;
-  width: 19px;
-  height: 34px;
-  background: linear-gradient(180deg, #ef4444, #b91c1c);
-  clip-path: polygon(0 0, 100% 0, 82% 100%, 50% 78%, 18% 100%);
-  filter: drop-shadow(0 3px 3px rgba(0,0,0,0.28));
-}
-
-.role-cert-ribbon-left {
-  left: 24px;
-  transform: rotate(9deg);
-}
-
-.role-cert-ribbon-right {
-  right: 24px;
-  transform: rotate(-9deg);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scroll-reveal.is-visible .role-cert-badge { animation: none; }
-}
-
 /* ---------- rich-text editor ---------- */
 .rich-editor-tool {
   display: grid;
