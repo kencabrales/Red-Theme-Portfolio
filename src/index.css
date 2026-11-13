@@ -79,6 +79,49 @@ html.theme-fade body { transition: background-color 1s ease; }
   -webkit-backdrop-filter: none !important;
 }
 
+/* ---------- theme-aware project detail surfaces ---------- */
+:root {
+  --project-panel-bg: rgba(19, 9, 14, 0.78);
+  --project-panel-border: rgba(239, 68, 68, 0.14);
+  --project-hero-bg: linear-gradient(135deg, #2b0c16 0%, #180a10 55%, #10080c 100%);
+  --project-hero-border: rgba(239, 68, 68, 0.2);
+  --project-gallery-border: rgba(255, 255, 255, 0.10);
+  --project-gallery-active-border: rgba(190, 55, 82, 0.65);
+}
+html[data-theme="blood"] {
+  --project-panel-bg: rgba(19, 9, 14, 0.78);
+  --project-panel-border: rgba(239, 68, 68, 0.14);
+  --project-hero-bg: linear-gradient(135deg, #2b0c16 0%, #180a10 55%, #10080c 100%);
+  --project-hero-border: rgba(239, 68, 68, 0.2);
+  --project-gallery-active-border: rgba(190, 55, 82, 0.65);
+}
+html[data-theme="white"] {
+  --project-panel-bg: rgba(13, 16, 30, 0.86);
+  --project-panel-border: rgba(202, 216, 255, 0.18);
+  --project-hero-bg: linear-gradient(135deg, #202744 0%, #141a30 55%, #0b1020 100%);
+  --project-hero-border: rgba(160, 178, 240, 0.3);
+  --project-gallery-active-border: rgba(160, 178, 240, 0.8);
+}
+html[data-theme="blue"] {
+  --project-panel-bg: rgba(5, 16, 32, 0.86);
+  --project-panel-border: rgba(53, 165, 255, 0.18);
+  --project-hero-bg: linear-gradient(135deg, #09213b 0%, #071525 55%, #050d1a 100%);
+  --project-hero-border: rgba(53, 165, 255, 0.3);
+  --project-gallery-active-border: rgba(53, 165, 255, 0.8);
+}
+.project-panel {
+  border-color: var(--project-panel-border);
+  background-color: var(--project-panel-bg);
+}
+.project-hero {
+  border-color: var(--project-hero-border);
+  background: var(--project-hero-bg);
+}
+.project-gallery-image {
+  border-color: var(--project-gallery-border);
+  background-color: var(--project-panel-bg);
+}
+
 /* ---------- project detail entrance animations ---------- */
 @keyframes fade-in-left {
   0% {
