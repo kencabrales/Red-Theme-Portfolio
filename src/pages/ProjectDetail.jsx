@@ -44,80 +44,28 @@ function ScrollReveal({ children, className = "", variant = "up" }) {
 }
 
 
-function TechStackArena({ technologies }) {
-  const arenaRef = useRef(null);
-  const chipRefs = useRef([]);
-
-  useEffect(() => {
-    const arena = arenaRef.current;
-    if (!arena || !technologies.length) return undefined;
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const chips = chipRefs.current.filter(Boolean);
-    if (reduceMotion) return undefined;
-
-    let width = arena.clientWidth;
-    let height = arena.clientHeight;
-    const movers = chips.map((element, index) => {
-      const chipWidth = element.offsetWidth;
-      const chipHeight = element.offsetHeight;
-      const angle = (index * 2.399) + 0.7;
-      const speed = 42 + (index % 4) * 12;
-      return {
-        element,
-        width: chipWidth,
-        height: chipHeight,
-        x: Math.max(0, (width - chipWidth) * ((index * 0.173 + 0.08) % 1)),
-        y: Math.max(0, (height - chipHeight) * ((index * 0.291 + 0.12) % 1)),
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
-      };
-    });
-
-    let frame = 0;
-    let previousTime = 0;
-    const animate = (time) => {
-      const delta = previousTime ? Math.min((time - previousTime) / 1000, 0.04) : 0;
-      previousTime = time;
-      width = arena.clientWidth;
-      height = arena.clientHeight;
-
-      movers.forEach((mover) => {
-        const maxX = Math.max(0, width - mover.width);
-        const maxY = Math.max(0, height - mover.height);
-        mover.x += mover.vx * delta;
-        mover.y += mover.vy * delta;
-
-        if (mover.x <= 0) { mover.x = 0; mover.vx = Math.abs(mover.vx); }
-        if (mover.x >= maxX) { mover.x = maxX; mover.vx = -Math.abs(mover.vx); }
-        if (mover.y <= 0) { mover.y = 0; mover.vy = Math.abs(mover.vy); }
-        if (mover.y >= maxY) { mover.y = maxY; mover.vy = -Math.abs(mover.vy); }
-
-        mover.element.style.transform = "translate3d(" + mover.x + "px, " + mover.y + "px, 0)";
-      });
-      frame = window.requestAnimationFrame(animate);
-    };
-
-    frame = window.requestAnimationFrame(animate);
-    return () => window.cancelAnimationFrame(frame);
-  }, [technologies]);
-
+function TechStackTiles({ technologies }) {
   return (
-    <div ref={arenaRef} className="tech-bouncer-arena relative mt-5 h-[300px] overflow-hidden rounded-2xl border border-white/[0.08] bg-black/20 sm:h-[340px]">
-      <div className="pointer-events-none absolute inset-0 opacity-40" style={{backgroundImage:"radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px)",backgroundSize:"22px 22px"}} />
+    <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
       {technologies.map((technology, index) => {
         const match = techstack.find((item) => item.name.toLowerCase() === technology.toLowerCase());
         const Icon = match?.icon;
         return (
           <div
             key={technology + "-" + index}
-            ref={(element) => { chipRefs.current[index] = element; }}
-            className="tech-bouncer-chip absolute left-0 top-0 inline-flex items-center gap-2.5 rounded-xl border border-brand/30 bg-[#1b0c12]/95 px-3.5 py-3 shadow-[0_10px_28px_rgba(0,0,0,0.35)]"
-            style={{color:match?.color || "#ff7777"}}
+            className="group relative flex aspect-square min-w-0 flex-col items-center justify-center overflow-hidden rounded-[1.6rem] border border-white/[0.12] bg-gradient-to-br from-white/[0.075] to-white/[0.025] p-4 text-center shadow-[0_12px_30px_rgba(0,0,0,0.18)] transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-brand/50 hover:bg-brand/[0.08] hover:shadow-[0_18px_38px_rgba(0,0,0,0.3),0_0_24px_rgba(239,68,68,0.12)]"
           >
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-white/[0.07]">
-              {Icon ? <Icon size={23}/> : <Code2 size={22}/>}
+            <span className="pointer-events-none absolute inset-[5px] rounded-[1.3rem] border border-white/[0.045] transition-colors duration-300 group-hover:border-brand/20" />
+            <span
+              className="relative grid h-16 w-16 place-items-center rounded-2xl border border-white/[0.10] bg-black/20 text-white/90 shadow-inner transition-all duration-300 group-hover:scale-105 group-hover:border-brand/30 group-hover:bg-black/30 sm:h-[4.5rem] sm:w-[4.5rem]"
+              style={{ color: match?.color || "#fca5a5" }}
+            >
+              {Icon ? <Icon size={38} /> : <Code2 size={36} />}
             </span>
-            <span className="whitespace-nowrap text-sm font-semibold text-white/90">{technology}</span>
+            <span className="relative mt-4 inline-flex max-w-full items-center justify-center rounded-full border border-white/[0.10] bg-black/25 px-4 py-2 text-xs font-bold tracking-wide text-white/85 shadow-sm transition-all duration-300 group-hover:border-brand/35 group-hover:bg-brand/15 group-hover:text-white sm:text-sm">
+              <span className="truncate">{technology}</span>
+            </span>
+            <span className="pointer-events-none absolute inset-0 rounded-[1.6rem] ring-1 ring-inset ring-transparent transition-all duration-300 group-hover:ring-brand/20" />
           </div>
         );
       })}
@@ -424,7 +372,7 @@ export default function ProjectDetail() {
                     <Eyebrow>Built with</Eyebrow>
                     <h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">Technologies used</h2>
                   </div>
-                  <TechStackArena technologies={tech}/>
+                  <TechStackTiles technologies={tech}/>
                 </section>
               )}
 
