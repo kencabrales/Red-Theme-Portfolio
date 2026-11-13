@@ -9,7 +9,7 @@ import { useProjects } from "../hooks/useProjects";
 import { plainTextToHtml, sanitizeRichText } from "../utils/richText";
 import { techstack } from "../data/techstack";
 
-const panel = "rounded-3xl border border-white/10 bg-[#13090e]/75 shadow-[0_20px_65px_rgba(0,0,0,0.22)] backdrop-blur-sm";
+const panel = "project-panel rounded-3xl border shadow-[0_20px_65px_rgba(0,0,0,0.22)] backdrop-blur-sm";
 
 function Eyebrow({ children }) {
   return <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-brand-soft/75">{children}</p>;
@@ -162,7 +162,7 @@ export default function ProjectDetail() {
           <Link to="/#portfolio" className="hover:text-white">Portfolio</Link><span className="text-white/25">/</span><span className="max-w-[50vw] truncate text-white/80">{project.title}</span>
         </div>
 
-        <ScrollReveal variant="left"><header className="relative overflow-hidden rounded-[2rem] border border-brand/20 bg-gradient-to-br from-[#2b0c16] via-[#180a10] to-[#10080c] shadow-[0_28px_100px_rgba(0,0,0,0.35)]">
+        <ScrollReveal variant="left"><header className="project-hero relative overflow-hidden rounded-[2rem] border shadow-[0_28px_100px_rgba(0,0,0,0.35)]">
           <div className="absolute -right-20 -top-28 h-80 w-80 rounded-full bg-brand/20 blur-3xl"/>
           <div className="relative grid lg:grid-cols-[1.05fr_0.95fr]">
             <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12">
@@ -235,14 +235,14 @@ export default function ProjectDetail() {
                             onClick={() => index === activeImage ? setLightboxOpen(true) : setActiveImage(index)}
                             aria-label={index === activeImage ? "Open current image in full view" : "Show project image " + (index + 1)}
                             aria-current={index === activeImage ? "true" : undefined}
-                            className="absolute left-1/2 top-1/2 h-full w-[76%] overflow-hidden rounded-[1.35rem] border border-white/10 bg-[#130b12] shadow-[0_24px_70px_rgba(0,0,0,0.45)] transition-[transform,filter,opacity,border-color] duration-500 ease-out sm:w-[72%] lg:w-[70%]"
+                            className="project-gallery-image absolute left-1/2 top-1/2 h-full w-[76%] overflow-hidden rounded-[1.35rem] border shadow-[0_24px_70px_rgba(0,0,0,0.45)] transition-[transform,filter,opacity,border-color] duration-500 ease-out sm:w-[72%] lg:w-[70%]"
                             style={{
                               transform: `translate(-50%, -50%) translateX(${offset * 78}%) rotateY(${offset * -13}deg) scale(${1 - distance * 0.13}) translateZ(${-distance * 90}px)`,
                               filter: `blur(${distance * 1.15}px)`,
                               opacity: distance === 0 ? 1 : distance === 1 ? 0.58 : 0.24,
                               zIndex: 30 - distance,
                               pointerEvents: distance > 1 ? "none" : "auto",
-                              borderColor: distance === 0 ? "rgba(190,55,82,0.65)" : "rgba(255,255,255,0.10)",
+                              borderColor: distance === 0 ? "var(--project-gallery-active-border)" : "var(--project-gallery-border)",
                             }}
                           >
                             <img src={image} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full scale-125 object-cover opacity-65 blur-2xl"/>
@@ -260,7 +260,7 @@ export default function ProjectDetail() {
                       <button type="button" onClick={() => moveImage(1)} aria-label="Show next project image" className="absolute right-0 top-1/2 z-50 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/75 text-white shadow-xl backdrop-blur transition hover:scale-105 hover:border-brand/50 hover:bg-brand sm:right-1 sm:h-12 sm:w-12"><ChevronRight size={25}/></button>
                     </div>
                   ) : (
-                    <div className="group relative mx-auto mt-4 max-w-4xl overflow-hidden rounded-[1.5rem] border border-brand/25 bg-[#130b12] shadow-[0_24px_70px_rgba(0,0,0,0.4)]">
+                    <div className="project-gallery-image group relative mx-auto mt-4 max-w-4xl overflow-hidden rounded-[1.5rem] border shadow-[0_24px_70px_rgba(0,0,0,0.4)]">
                       <img src={galleryImages[0]} alt={project.title + " gallery image"} className="aspect-[16/10] max-h-[500px] w-full cursor-zoom-in object-contain" onClick={() => setLightboxOpen(true)}/>
                       <button type="button" onClick={() => setLightboxOpen(true)} aria-label="Expand project image" className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full border border-white/20 bg-black/65 text-white opacity-100 backdrop-blur transition hover:bg-brand sm:opacity-0 sm:group-hover:opacity-100"><Maximize2 size={15}/></button>
                     </div>
