@@ -2,11 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft, ArrowRight, ChevronLeft, ChevronRight,
-  Code2, ExternalLink, GitBranch, Layers3, Lightbulb, ListChecks,
+  Code2, ExternalLink, GitBranch, ListChecks,
   Maximize2, Target, Users, X,
 } from "lucide-react";
 import { useProjects } from "../hooks/useProjects";
 import { plainTextToHtml, sanitizeRichText } from "../utils/richText";
+import { techstack } from "../data/techstack";
 
 const panel = "rounded-3xl border border-white/10 bg-[#13090e]/75 shadow-[0_20px_65px_rgba(0,0,0,0.22)] backdrop-blur-sm";
 
@@ -38,6 +39,88 @@ function ScrollReveal({ children, className = "", variant = "up" }) {
   return (
     <div ref={elementRef} className={"scroll-reveal reveal-" + variant + " " + (isVisible ? "is-visible " : "") + className}>
       {children}
+    </div>
+  );
+}
+
+
+function TechStackArena({ technologies }) {
+  const arenaRef = useRef(null);
+  const chipRefs = useRef([]);
+
+  useEffect(() => {
+    const arena = arenaRef.current;
+    if (!arena || !technologies.length) return undefined;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const chips = chipRefs.current.filter(Boolean);
+    if (reduceMotion) return undefined;
+
+    let width = arena.clientWidth;
+    let height = arena.clientHeight;
+    const movers = chips.map((element, index) => {
+      const chipWidth = element.offsetWidth;
+      const chipHeight = element.offsetHeight;
+      const angle = (index * 2.399) + 0.7;
+      const speed = 42 + (index % 4) * 12;
+      return {
+        element,
+        width: chipWidth,
+        height: chipHeight,
+        x: Math.max(0, (width - chipWidth) * ((index * 0.173 + 0.08) % 1)),
+        y: Math.max(0, (height - chipHeight) * ((index * 0.291 + 0.12) % 1)),
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+      };
+    });
+
+    let frame = 0;
+    let previousTime = 0;
+    const animate = (time) => {
+      const delta = previousTime ? Math.min((time - previousTime) / 1000, 0.04) : 0;
+      previousTime = time;
+      width = arena.clientWidth;
+      height = arena.clientHeight;
+
+      movers.forEach((mover) => {
+        const maxX = Math.max(0, width - mover.width);
+        const maxY = Math.max(0, height - mover.height);
+        mover.x += mover.vx * delta;
+        mover.y += mover.vy * delta;
+
+        if (mover.x <= 0) { mover.x = 0; mover.vx = Math.abs(mover.vx); }
+        if (mover.x >= maxX) { mover.x = maxX; mover.vx = -Math.abs(mover.vx); }
+        if (mover.y <= 0) { mover.y = 0; mover.vy = Math.abs(mover.vy); }
+        if (mover.y >= maxY) { mover.y = maxY; mover.vy = -Math.abs(mover.vy); }
+
+        mover.element.style.transform = "translate3d(" + mover.x + "px, " + mover.y + "px, 0)";
+      });
+      frame = window.requestAnimationFrame(animate);
+    };
+
+    frame = window.requestAnimationFrame(animate);
+    return () => window.cancelAnimationFrame(frame);
+  }, [technologies]);
+
+  return (
+    <div ref={arenaRef} className="tech-bouncer-arena relative mt-5 h-[300px] overflow-hidden rounded-2xl border border-white/[0.08] bg-black/20 sm:h-[340px]">
+      <div className="pointer-events-none absolute inset-0 opacity-40" style={{backgroundImage:"radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px)",backgroundSize:"22px 22px"}} />
+      {technologies.map((technology, index) => {
+        const match = techstack.find((item) => item.name.toLowerCase() === technology.toLowerCase());
+        const Icon = match?.icon;
+        return (
+          <div
+            key={technology + "-" + index}
+            ref={(element) => { chipRefs.current[index] = element; }}
+            className="tech-bouncer-chip absolute left-0 top-0 inline-flex items-center gap-2.5 rounded-xl border border-brand/30 bg-[#1b0c12]/95 px-3.5 py-3 shadow-[0_10px_28px_rgba(0,0,0,0.35)]"
+            style={{color:match?.color || "#ff7777"}}
+          >
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-white/[0.07]">
+              {Icon ? <Icon size={23}/> : <Code2 size={22}/>}
+            </span>
+            <span className="whitespace-nowrap text-sm font-semibold text-white/90">{technology}</span>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -163,7 +246,7 @@ export default function ProjectDetail() {
               <div className="relative">
                 <Eyebrow>Project classification</Eyebrow>
                 <h2 className="mt-2 text-xl font-bold text-white sm:text-2xl">{projectType}</h2>
-                <p className="mt-2 text-sm leading-6 text-white/50">What kind of work this project represents.</p>
+                
               </div>
             </section>
 
@@ -184,7 +267,7 @@ export default function ProjectDetail() {
                 <div>
                   <Eyebrow>Visual documentation</Eyebrow>
                   <h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">Project gallery</h2>
-                  <p className="mt-1 text-xs text-white/45">Browse project screens and visuals.</p>
+                  
                 </div>
                 {galleryImages.length > 0 && <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1.5 text-[11px] font-semibold tabular-nums text-white/60">{String(activeImage + 1).padStart(2,"0")} <span className="text-white/30">/</span> {String(galleryImages.length).padStart(2,"0")}</span>}
               </div>
@@ -337,18 +420,11 @@ export default function ProjectDetail() {
             <div className="grid items-stretch gap-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(280px,1fr)]">
               {tech.length > 0 && (
                 <section className={panel + " min-w-0 p-6 sm:p-8"}>
-                  <div className="mb-6 flex items-center gap-3">
-                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-brand/25 bg-brand/10 text-brand-soft"><Layers3 size={18}/></span>
-                    <div>
-                      <Eyebrow>Built with</Eyebrow>
-                      <h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">Technologies used</h2>
-                    </div>
+                  <div className="mb-2">
+                    <Eyebrow>Built with</Eyebrow>
+                    <h2 className="mt-1 text-xl font-bold tracking-tight text-white sm:text-2xl">Technologies used</h2>
                   </div>
-                  <div className="flex flex-wrap gap-2.5">
-                    {tech.map((item) => (
-                      <span key={item} className="rounded-xl border border-brand/25 bg-brand/[0.09] px-3.5 py-2 text-sm font-medium text-brand-soft/90">{item}</span>
-                    ))}
-                  </div>
+                  <TechStackArena technologies={tech}/>
                 </section>
               )}
 
@@ -360,14 +436,15 @@ export default function ProjectDetail() {
                     <p className="mt-2 text-sm text-white/50">The people who helped bring this project together.</p>
                   </div>
                   <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-                    {team.filter((member) => String(member || "").trim()).map((member,index) => (
-                      <div key={index} className="flex items-center gap-3 rounded-2xl border border-white/[0.08] bg-black/20 p-4 transition hover:border-brand/25 hover:bg-brand/[0.04]">
-                        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-brand/25 bg-brand/10 text-sm font-bold text-brand-soft">
-                          {member.trim().charAt(0).toUpperCase()}
-                        </span>
-                        <span className="text-sm font-medium text-white/80">{member}</span>
+                    {team.filter((member) => (typeof member === "string" ? member : member?.name || "").trim()).map((member,index) => {
+                      const memberName = typeof member === "string" ? member : member.name;
+                      const memberRole = typeof member === "string" ? "" : member.role;
+                      return (
+                      <div key={index} className="rounded-2xl border border-white/[0.08] bg-black/20 p-4 transition hover:border-brand/25 hover:bg-brand/[0.04]">
+                        <p className="text-sm font-semibold text-white/90">{memberName}</p>
+                        {memberRole && <p className="mt-1 text-xs leading-5 text-brand-soft/80">Role: {memberRole}</p>}
                       </div>
-                    ))}
+                    ); })}
                   </div>
                 </section>
               )}
