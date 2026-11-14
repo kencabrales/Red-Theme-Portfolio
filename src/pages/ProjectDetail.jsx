@@ -53,19 +53,19 @@ function TechStackTiles({ technologies }) {
         return (
           <div
             key={technology + "-" + index}
-            className="group relative flex aspect-square min-w-0 flex-col items-center justify-center overflow-hidden rounded-2xl border border-white/[0.09] bg-gradient-to-br from-[#160b10] to-[#090609] p-2 text-center shadow-[0_8px_20px_rgba(0,0,0,0.42)] transition-all duration-300 ease-out hover:-translate-y-1 hover:border-brand/50 hover:from-[#241016] hover:to-[#10080c] hover:shadow-[0_12px_25px_rgba(0,0,0,0.55),0_0_18px_rgba(239,68,68,0.12)]"
+            className="tech-stack-tile group relative flex aspect-square min-w-0 flex-col items-center justify-center overflow-hidden rounded-2xl border p-2 text-center shadow-[0_8px_20px_rgba(0,0,0,0.42)] transition-all duration-300 ease-out hover:-translate-y-1"
           >
-            <span className="pointer-events-none absolute inset-[4px] rounded-[0.85rem] border border-white/[0.035] transition-colors duration-300 group-hover:border-brand/20" />
+            <span className="tech-stack-tile-inner pointer-events-none absolute inset-[4px] rounded-[0.85rem] border transition-colors duration-300" />
             <span
-              className="relative grid h-9 w-9 place-items-center rounded-xl border border-white/[0.08] bg-black/45 text-white/90 shadow-inner transition-all duration-300 group-hover:scale-105 group-hover:border-brand/30 group-hover:bg-black/60 sm:h-10 sm:w-10"
+              className="tech-stack-icon relative grid h-9 w-9 place-items-center rounded-xl border text-white/90 shadow-inner transition-all duration-300 group-hover:scale-105 sm:h-10 sm:w-10"
               style={{ color: match?.color || "#fca5a5" }}
             >
               {Icon ? <Icon size={25} /> : <Code2 size={24} />}
             </span>
-            <span className="relative mt-2 inline-flex max-w-full items-center justify-center rounded-full border border-white/[0.08] bg-black/55 px-2 py-1 text-[9px] font-bold tracking-wide text-white/85 shadow-sm transition-all duration-300 group-hover:border-brand/35 group-hover:bg-brand/15 group-hover:text-white sm:text-[10px]">
+            <span className="tech-stack-label relative mt-2 inline-flex max-w-full items-center justify-center rounded-full border px-2 py-1 text-[9px] font-bold tracking-wide shadow-sm transition-all duration-300 sm:text-[10px]">
               <span className="truncate">{technology}</span>
             </span>
-            <span className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-transparent transition-all duration-300 group-hover:ring-brand/20" />
+            <span className="tech-stack-tile-ring pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-transparent transition-all duration-300" />
           </div>
         );
       })}
