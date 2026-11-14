@@ -79,6 +79,63 @@ html.theme-fade body { transition: background-color 1s ease; }
   -webkit-backdrop-filter: none !important;
 }
 
+/* ---------- theme-aware technology stack tiles ---------- */
+:root,
+html[data-theme="blood"] {
+  --tech-tile-bg: linear-gradient(145deg, #160b10, #090609);
+  --tech-tile-hover-bg: linear-gradient(145deg, #241016, #10080c);
+  --tech-tile-border: rgba(255, 255, 255, 0.09);
+  --tech-tile-inner-border: rgba(255, 255, 255, 0.045);
+  --tech-tile-icon-bg: rgba(0, 0, 0, 0.45);
+  --tech-tile-label-bg: rgba(0, 0, 0, 0.55);
+  --tech-tile-accent: 239, 68, 68;
+}
+html[data-theme="white"] {
+  --tech-tile-bg: linear-gradient(145deg, #202744, #101629);
+  --tech-tile-hover-bg: linear-gradient(145deg, #2b365e, #151d35);
+  --tech-tile-border: rgba(202, 216, 255, 0.2);
+  --tech-tile-inner-border: rgba(202, 216, 255, 0.09);
+  --tech-tile-icon-bg: rgba(7, 11, 27, 0.62);
+  --tech-tile-label-bg: rgba(7, 11, 27, 0.68);
+  --tech-tile-accent: 160, 178, 240;
+}
+html[data-theme="blue"] {
+  --tech-tile-bg: linear-gradient(145deg, #09213b, #050d1a);
+  --tech-tile-hover-bg: linear-gradient(145deg, #10365b, #071629);
+  --tech-tile-border: rgba(53, 165, 255, 0.2);
+  --tech-tile-inner-border: rgba(53, 165, 255, 0.09);
+  --tech-tile-icon-bg: rgba(2, 12, 25, 0.62);
+  --tech-tile-label-bg: rgba(2, 12, 25, 0.68);
+  --tech-tile-accent: 53, 165, 255;
+}
+.tech-stack-tile {
+  border-color: var(--tech-tile-border);
+  background: var(--tech-tile-bg);
+}
+.tech-stack-tile:hover {
+  border-color: rgba(var(--tech-tile-accent), 0.55);
+  background: var(--tech-tile-hover-bg);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.55), 0 0 18px rgba(var(--tech-tile-accent),0.16);
+}
+.tech-stack-tile-inner { border-color: var(--tech-tile-inner-border); }
+.tech-stack-tile:hover .tech-stack-tile-inner { border-color: rgba(var(--tech-tile-accent),0.22); }
+.tech-stack-icon {
+  border-color: var(--tech-tile-inner-border);
+  background: var(--tech-tile-icon-bg);
+}
+.tech-stack-icon:hover { border-color: rgba(var(--tech-tile-accent),0.35); }
+.tech-stack-label {
+  border-color: var(--tech-tile-inner-border);
+  background: var(--tech-tile-label-bg);
+  color: rgba(255,255,255,0.88);
+}
+.tech-stack-tile:hover .tech-stack-label {
+  border-color: rgba(var(--tech-tile-accent),0.4);
+  background: rgba(var(--tech-tile-accent),0.14);
+  color: #fff;
+}
+.tech-stack-tile:hover .tech-stack-tile-ring { --tw-ring-color: rgba(var(--tech-tile-accent),0.22); }
+
 /* ---------- theme-aware project detail surfaces ---------- */
 :root {
   --project-panel-bg: rgba(19, 9, 14, 0.78);
